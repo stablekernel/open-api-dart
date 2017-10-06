@@ -1,0 +1,14 @@
+name: open_api
+description: OpenAPI (Swagger) specification data structures.
+version: 0.0.1
+homepage: https://github.com/stablekernel/open-api-dart
+author: stable|kernel <jobs@stablekernel.com>
+
+environment:
+  sdk: '>=1.20.1 <2.0.0'
+
+#dependencies:
+#  path: ^1.4.1
+
+dev_dependencies:
+  test: ^0.12.0
