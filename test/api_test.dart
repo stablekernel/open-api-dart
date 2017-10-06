@@ -12,6 +12,9 @@ void main() {
     Map<String, dynamic> original;
 
     setUpAll(() {
+      // Spec file is too large for pub, and no other way to remove from pub publish
+      // than putting in .gitignore. Therefore, this file must be downloaded locally
+      // to this path, from this path: https://github.com/kubernetes/kubernetes/blob/master/api/openapi-spec/swagger.json.
       var file = new File("test/specs/kubernetes.json");
       original = JSON.decode(file.readAsStringSync());
       doc = new APIDocument.fromJSON(original);
