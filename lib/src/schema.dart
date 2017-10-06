@@ -3,7 +3,7 @@ import 'util.dart';
 import 'json_object.dart';
 
 /// Represents a schema object in the OpenAPI specification.
-class APISchemaObject implements APIObject {
+class APISchemaObject extends APIObject {
   APISchemaObject();
 
   APISchemaObject.fromJSON(JSONObject json) {

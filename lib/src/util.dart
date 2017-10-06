@@ -11,8 +11,7 @@ class APIException implements Exception {
 
 abstract class APIObject {
   void encodeInto(JSONObject object);
-
-//  void resolve(APIDocument document);
+  String referenceURL;
 }
 
 Map<String, dynamic> stripNullAndEmpty(Map<String, dynamic> m) {

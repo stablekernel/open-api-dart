@@ -4,7 +4,7 @@ import 'operation.dart';
 import 'json_object.dart';
 
 /// Represents a path (also known as a route) in the OpenAPI specification.
-class APIPath implements APIObject {
+class APIPath extends APIObject {
   APIPath();
 
   APIPath.fromJSON(JSONObject json) {

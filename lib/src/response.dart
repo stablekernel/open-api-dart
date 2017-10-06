@@ -4,7 +4,7 @@ import 'util.dart';
 import 'json_object.dart';
 
 /// Represents an HTTP response in the OpenAPI specification.
-class APIResponse implements APIObject {
+class APIResponse extends APIObject {
   APIResponse();
 
   APIResponse.fromJSON(JSONObject json) {

@@ -4,7 +4,7 @@ import 'schema.dart';
 import 'json_object.dart';
 
 /// Represents a header in the OpenAPI specification.
-class APIHeader implements APIObject {
+class APIHeader extends APIObject {
   APIHeader();
 
   APIHeader.fromJSON(JSONObject json) {

@@ -8,7 +8,7 @@ import 'response.dart';
 import 'json_object.dart';
 
 /// Represents an OpenAPI 2.0 specification.
-class APIDocument implements APIObject {
+class APIDocument extends APIObject {
   /// Creates an empty specification.
   APIDocument();
 

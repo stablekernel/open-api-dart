@@ -2,7 +2,7 @@ import 'json_object.dart';
 import 'util.dart';
 
 /// Represents a metadata for an API in the OpenAPI specification.
-class APIInfo implements APIObject {
+class APIInfo extends APIObject {
   /// Creates empty metadata for specification.
   APIInfo();
 
@@ -33,7 +33,7 @@ class APIInfo implements APIObject {
 }
 
 /// Represents contact information in the OpenAPI specification.
-class APIContact implements APIObject {
+class APIContact extends APIObject {
   APIContact();
 
   APIContact.fromJSON(JSONObject json) {
@@ -54,7 +54,7 @@ class APIContact implements APIObject {
 }
 
 /// Represents a copyright/open source license in the OpenAPI specification.
-class APILicense implements APIObject {
+class APILicense extends APIObject {
   APILicense();
   APILicense.fromJSON(JSONObject json) {
     name = json.decode("name");
@@ -70,7 +70,7 @@ class APILicense implements APIObject {
   }
 }
 
-class APITag implements APIObject {
+class APITag extends APIObject {
   APITag();
 
   APITag.fromJSON(JSONObject json) {

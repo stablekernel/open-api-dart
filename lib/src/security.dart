@@ -42,7 +42,7 @@ class APISecuritySchemeFlowCodec {
 
 
 /// Represents a security scheme in the OpenAPI specification.
-class APISecurityScheme implements APIObject {
+class APISecurityScheme extends APIObject {
   APISecurityScheme.basic() {
     type = "basic";
   }

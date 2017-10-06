@@ -4,7 +4,7 @@ import 'response.dart';
 import 'util.dart';
 
 /// Represents a HTTP operation (a path/method pair) in the OpenAPI specification.
-class APIOperation implements APIObject {
+class APIOperation extends APIObject {
   APIOperation();
 
   APIOperation.fromJSON(JSONObject json) {

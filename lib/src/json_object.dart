@@ -54,14 +54,16 @@ class JSONObject {
     return null;
   }
 
-  T decode<T>(String key, {T objectDecoder(dynamic v)}) {
+  T decode<T extends APIObject>(String key, {T objectDecoder(dynamic v)}) {
     var v = _getValue(key);
     if (v == null) {
       return null;
     }
 
     if (objectDecoder != null) {
-      return objectDecoder(new JSONObject(v, parent: this));
+      var j = new JSONObject(v, parent: this);
+      return objectDecoder(j)
+        ..referenceURL = j._referenceURI;
     }
 
     return v;
@@ -112,9 +114,17 @@ class JSONObject {
       return;
     }
 
+    _map[key] = _encodedObject(value);
+  }
+
+  Map<String, dynamic> _encodedObject(APIObject object) {
     var json = new JSONObject({}, parent: this);
-    value.encodeInto(json);
-    _map[key] = json.asMap();
+    if (object.referenceURL != null) {
+      json._referenceURI = object.referenceURL;
+    } else {
+      object.encodeInto(json);
+    }
+    return json.asMap();
   }
 
   void encodeObjects(String key, List<APIObject> value) {
@@ -122,10 +132,6 @@ class JSONObject {
       return;
     }
 
-    _map[key] = value.map((v) {
-      var j = new JSONObject({}, parent: this);
-      v.encodeInto(j);
-      return j.asMap();
-    }).toList();
+    _map[key] = value.map((v) => _encodedObject(v)).toList();
   }
 }

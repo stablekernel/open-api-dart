@@ -81,6 +81,16 @@ void main() {
     test("Can encode as JSON", () {
       expect(JSON.encode(doc.asMap()), new isInstanceOf<String>());
     });
+
+    test("References are kept when encoding", () {
+      var encoded = doc.asMap();
+      var expectedRef = encoded["paths"]["/api/"]["get"]["responses"]["200"]["schema"];
+      expect(expectedRef[r"$ref"], "#/definitions/io.k8s.apimachinery.pkg.apis.meta.v1.APIVersions");
+
+      expectedRef = encoded["definitions"]["io.k8s.kubernetes.pkg.apis.storage.v1beta1.StorageClassList"];
+      expect(expectedRef["description"], contains("Deprecated."));
+      expect(expectedRef[r"$ref"], "#/definitions/io.k8s.api.storage.v1beta1.StorageClassList");
+    });
   });
 
 }

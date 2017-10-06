@@ -37,7 +37,7 @@ class APIParameterLocationCodec {
 }
 
 /// Represents a parameter in the OpenAPI specification.
-class APIParameter implements APIObject {
+class APIParameter extends APIObject {
   APIParameter();
 
   APIParameter.fromJSON(JSONObject json) {
