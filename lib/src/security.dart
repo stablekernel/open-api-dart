@@ -43,6 +43,8 @@ class APISecuritySchemeFlowCodec {
 
 /// Represents a security scheme in the OpenAPI specification.
 class APISecurityScheme extends APIObject {
+  APISecurityScheme();
+
   APISecurityScheme.basic() {
     type = "basic";
   }
@@ -56,7 +58,7 @@ class APISecurityScheme extends APIObject {
     type = "oauth2";
   }
 
-  APISecurityScheme.fromJSON(JSONObject json) {
+  void decode(JSONObject json) {
     type = json.decode("type");
     description = json.decode("description");
 
@@ -90,7 +92,7 @@ class APISecurityScheme extends APIObject {
     return type == "oauth2";
   }
 
-  void encodeInto(JSONObject json) {
+  void encode(JSONObject json) {
     json.encode("type", type);
     json.encode("description", description);
 

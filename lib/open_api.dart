@@ -16,4 +16,5 @@ export 'src/response.dart';
 export 'src/schema.dart';
 export 'src/security.dart';
 export 'src/types.dart';
+export 'src/generator.dart';
 

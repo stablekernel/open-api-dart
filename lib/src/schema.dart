@@ -6,7 +6,7 @@ import 'json_object.dart';
 class APISchemaObject extends APIObject {
   APISchemaObject();
 
-  APISchemaObject.fromJSON(JSONObject json) {
+  void decode(JSONObject json) {
     title = json.decode("title");
     format = json.decode("format");
     type = APITypeCodec.decode(json.decode("type"));
@@ -15,10 +15,9 @@ class APISchemaObject extends APIObject {
     example = json.decode("example");
     readOnly = json.decode("readOnly") ?? false;
 
-    items = json.decode("items", objectDecoder: (v) => new APISchemaObject.fromJSON(v));
-
-    properties = json.decodeObjectMap("properties", (v) => new APISchemaObject.fromJSON(v));
-    additionalProperties = json.decode("additionalProperties", objectDecoder: (v) => new APISchemaObject.fromJSON(v));
+    items = json.decode("items", inflate: () => new APISchemaObject());
+    additionalProperties = json.decode("additionalProperties", inflate: () => new APISchemaObject());
+    properties = json.decodeObjectMap("properties", () => new APISchemaObject());
   }
 
   String title;
@@ -34,7 +33,7 @@ class APISchemaObject extends APIObject {
   Map<String, APISchemaObject> properties;
   APISchemaObject additionalProperties;
 
-  void encodeInto(JSONObject json) {
+  void encode(JSONObject json) {
     json.encode("type", APITypeCodec.encode(type));
     json.encode("required", required);
     json.encode("readOnly", readOnly);
@@ -43,7 +42,7 @@ class APISchemaObject extends APIObject {
     json.encode("description", description);
     json.encode("example", example);
     json.encodeObject("items", items);
-    json.encodeObjectMap("properties", properties);
     json.encodeObject("additionalProperties", additionalProperties);
+    json.encodeObjectMap("properties", properties);
   }
 }

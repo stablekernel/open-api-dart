@@ -1,5 +1,4 @@
 import 'json_object.dart';
-import 'document.dart';
 
 class APIException implements Exception {
   APIException(this.message);
@@ -10,8 +9,10 @@ class APIException implements Exception {
 }
 
 abstract class APIObject {
-  void encodeInto(JSONObject object);
-  String referenceURL;
+  String referenceURI;
+
+  void decode(JSONObject object);
+  void encode(JSONObject object);
 }
 
 Map<String, dynamic> stripNullAndEmpty(Map<String, dynamic> m) {

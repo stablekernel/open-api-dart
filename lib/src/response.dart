@@ -7,17 +7,17 @@ import 'json_object.dart';
 class APIResponse extends APIObject {
   APIResponse();
 
-  APIResponse.fromJSON(JSONObject json) {
+  void decode(JSONObject json) {
     description = json.decode("description");
-    schema = json.decode("schema", objectDecoder: (v) => new APISchemaObject.fromJSON(v));
-    headers = json.decodeObjectMap("headers", (v) => new APIHeader.fromJSON(v));
+    schema = json.decode("schema", inflate: () => new APISchemaObject());
+    headers = json.decodeObjectMap("headers", () => new APIHeader());
   }
 
   String description = "";
   APISchemaObject schema;
   Map<String, APIHeader> headers = {};
 
-  void encodeInto(JSONObject json) {
+  void encode(JSONObject json) {
     json.encodeObjectMap("headers", headers);
     json.encodeObject("schema", schema);
     json.encode("description", description);

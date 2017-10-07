@@ -6,12 +6,12 @@ class APIInfo extends APIObject {
   /// Creates empty metadata for specification.
   APIInfo();
 
-  APIInfo.fromJSON(JSONObject json) {
+  void decode(JSONObject json) {
     title = json.decode("title") ?? "Untitled";
     description = json.decode("description");
     termsOfServiceURL = json.decode("termsOfService");
-    contact = json.decode("contact", objectDecoder: (v) => new APIContact.fromJSON(v));
-    license = json.decode("license", objectDecoder: (v) => new APILicense.fromJSON(v));
+    contact = json.decode("contact", inflate: () => new APIContact());
+    license = json.decode("license", inflate: () => new APILicense());
     version = json.decode("version") ?? "1.0.0";
   }
 
@@ -22,7 +22,7 @@ class APIInfo extends APIObject {
   APIContact contact = new APIContact();
   APILicense license = new APILicense();
 
-  void encodeInto(JSONObject object) {
+  void encode(JSONObject object) {
     object.encode("title", title);
     object.encode("desription", description);
     object.encode("version", version);
@@ -36,7 +36,7 @@ class APIInfo extends APIObject {
 class APIContact extends APIObject {
   APIContact();
 
-  APIContact.fromJSON(JSONObject json) {
+  void decode(JSONObject json) {
     name = json.decode("name");
     url = json.decode("url");
     email = json.decode("email");
@@ -46,7 +46,7 @@ class APIContact extends APIObject {
   String url = "http://localhost";
   String email = "default";
 
-  void encodeInto(JSONObject object) {
+  void encode(JSONObject object) {
     object.encode("name", name);
     object.encode("url", url);
     object.encode("email", email);
@@ -56,7 +56,7 @@ class APIContact extends APIObject {
 /// Represents a copyright/open source license in the OpenAPI specification.
 class APILicense extends APIObject {
   APILicense();
-  APILicense.fromJSON(JSONObject json) {
+  void decode(JSONObject json) {
     name = json.decode("name");
     url = json.decode("url");
   }
@@ -64,7 +64,7 @@ class APILicense extends APIObject {
   String name = "default";
   String url = "http://localhost";
 
-  void encodeInto(JSONObject object) {
+  void encode(JSONObject object) {
     object.encode("name", name);
     object.encode("url", url);
   }
@@ -73,7 +73,7 @@ class APILicense extends APIObject {
 class APITag extends APIObject {
   APITag();
 
-  APITag.fromJSON(JSONObject json) {
+  void decode(JSONObject json) {
     name = json.decode("name");
     description = json.decode("description");
   }
@@ -81,7 +81,7 @@ class APITag extends APIObject {
   String name;
   String description;
 
-  void encodeInto(JSONObject object) {
+  void encode(JSONObject object) {
     object.encode("name", name);
     object.encode("description", description);
   }

@@ -40,9 +40,7 @@ class APIParameterLocationCodec {
 class APIParameter extends APIObject {
   APIParameter();
 
-  APIParameter.fromJSON(JSONObject json) {
-    // todo: reference
-
+  void decode(JSONObject json) {
     name = json.decode("name");
     location = APIParameterLocationCodec.decode(json.decode("in"));
     description = json.decode("description");
@@ -54,7 +52,7 @@ class APIParameter extends APIObject {
     }
 
     if (location == APIParameterLocation.body) {
-      schema = json.decode("schema", objectDecoder: (v) => new APISchemaObject.fromJSON(v));
+      schema = json.decode("schema", inflate: () => new APISchemaObject());
     } else {
       type = APITypeCodec.decode(json.decode("type"));
       format = json.decode("format");
@@ -90,7 +88,7 @@ class APIParameter extends APIObject {
 //  bool uniqueItems;
 //  num multipleOf;
 
-  void encodeInto(JSONObject json) {
+  void encode(JSONObject json) {
     json.encode("name", name);
     json.encode("description", description);
 

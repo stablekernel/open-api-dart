@@ -16,8 +16,9 @@ void main() {
       // than putting in .gitignore. Therefore, this file must be downloaded locally
       // to this path, from this path: https://github.com/kubernetes/kubernetes/blob/master/api/openapi-spec/swagger.json.
       var file = new File("test/specs/kubernetes.json");
-      original = JSON.decode(file.readAsStringSync());
-      doc = new APIDocument.fromJSON(original);
+      var contents = file.readAsStringSync();
+      original = JSON.decode(contents);
+      doc = new APIDocument.fromJSON(contents);
     });
 
     test("Has all metadata", () {
@@ -80,16 +81,6 @@ void main() {
 
     test("Can encode as JSON", () {
       expect(JSON.encode(doc.asMap()), new isInstanceOf<String>());
-    });
-
-    test("References are kept when encoding", () {
-      var encoded = doc.asMap();
-      var expectedRef = encoded["paths"]["/api/"]["get"]["responses"]["200"]["schema"];
-      expect(expectedRef[r"$ref"], "#/definitions/io.k8s.apimachinery.pkg.apis.meta.v1.APIVersions");
-
-      expectedRef = encoded["definitions"]["io.k8s.kubernetes.pkg.apis.storage.v1beta1.StorageClassList"];
-      expect(expectedRef["description"], contains("Deprecated."));
-      expect(expectedRef[r"$ref"], "#/definitions/io.k8s.api.storage.v1beta1.StorageClassList");
     });
   });
 

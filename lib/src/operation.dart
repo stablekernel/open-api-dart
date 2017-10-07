@@ -7,7 +7,7 @@ import 'util.dart';
 class APIOperation extends APIObject {
   APIOperation();
 
-  APIOperation.fromJSON(JSONObject json) {
+  void decode(JSONObject json) {
     tags = json.decode("tags");
     summary = json.decode("summary");
     description = json.decode("description");
@@ -15,10 +15,8 @@ class APIOperation extends APIObject {
     consumes = json.decode("consumes");
     produces = json.decode("produces");
     deprecated = json.decode("deprecated") ?? false;
-
-    parameters = json.decodeObjects("parameters", (v) => new APIParameter.fromJSON(v));
-
-    responses = json.decodeObjectMap("responses", (v) => new APIResponse.fromJSON(v));
+    parameters = json.decodeObjects("parameters", () => new APIParameter());
+    responses = json.decodeObjectMap("responses", () => new APIResponse());
     schemes = json.decode("schemes");
     security = json.decode("security");
   }
@@ -38,7 +36,7 @@ class APIOperation extends APIObject {
   List<Map<String, List<String>>> security = [];
   Map<String, APIResponse> responses = {};
 
-  void encodeInto(JSONObject json) {
+  void encode(JSONObject json) {
     json.encode("tags", tags);
     json.encode("summary", summary);
     json.encode("description", description);

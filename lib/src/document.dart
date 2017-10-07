@@ -3,34 +3,30 @@ import 'security.dart';
 import 'metadata.dart';
 import 'util.dart';
 import 'parameter.dart';
-import 'schema.dart';
 import 'response.dart';
 import 'json_object.dart';
+import 'dart:convert';
+import 'schema.dart';
 
 /// Represents an OpenAPI 2.0 specification.
-class APIDocument extends APIObject {
+class APIDocument extends APIObject with JSONObjectCache {
   /// Creates an empty specification.
   APIDocument();
 
   /// Creates a specification from JSON.
-  APIDocument.fromJSON(Map<String, dynamic> map) {
-    var json = new JSONObject(map);
+  APIDocument.fromJSON(String jsonString) {
+    _root = JSON.decode(jsonString, reviver: (k, v) {
+      if (v is Map) {
+        return new JSONObject(v, this);
+      }
 
-    version = json.decode("swagger");
-    info = json.decode("info", objectDecoder: (v) => new APIInfo.fromJSON(v));
-    host = json.decode("host");
-    basePath = json.decode("basePath");
-    schemes = json.decode("schemes");
-    consumes = json.decode("consumes");
-    produces = json.decode("produces");
+      return v;
+    });
 
-    definitions = json.decode("definitions");
-    paths = json.decodeObjectMap("paths", (v) => new APIPath.fromJSON(v));
-    parameters = json.decodeObjectMap("parameters", (v) => new APIParameter.fromJSON(v));
-    responses = json.decodeObjectMap("responses", (v) => new APIResponse.fromJSON(v));
-    securityDefinitions = json.decodeObjectMap("securityDefinitions", (v) => new APISecurityScheme.fromJSON(v));
-    security = json.decode("security");
-    tags = json.decodeObjects("tags", (v) => new APITag.fromJSON(v));
+    decode(_root);
+
+    // Can release this once we're done, since it is just a duplicate structure to the one rooted by this instance.
+    _root = null;
   }
 
   String version = "2.0";
@@ -41,22 +37,46 @@ class APIDocument extends APIObject {
   List<String> consumes = [];
   List<String> produces = [];
   Map<String, APIPath> paths = {};
-  Map<String, dynamic> definitions = {};
+  Map<String, APISchemaObject> definitions = {};
   Map<String, APIParameter> parameters = {};
   Map<String, APIResponse> responses = {};
   List<Map<String, List<String>>> security = [];
   Map<String, APISecurityScheme> securityDefinitions = {};
   List<APITag> tags = [];
 
+  JSONObject get root => _root;
+  JSONObject _root;
+
   Map<String, dynamic> asMap() {
-    var m = new JSONObject({});
+    _root = new JSONObject({}, this);
 
-    encodeInto(m);
+    encode(_root);
 
+    var m = _root;
+    _root = null;
     return m.asMap();
   }
 
-  void encodeInto(JSONObject object) {
+  void decode(JSONObject object) {
+    version = object.decode("swagger");
+    host = object.decode("host");
+    basePath = object.decode("basePath");
+    schemes = object.decode("schemes");
+    consumes = object.decode("consumes");
+    produces = object.decode("produces");
+    security = object.decode("security");
+    info = object.decode("info", inflate: () => new APIInfo());
+
+    tags = object.decodeObjects("tags", () => new APITag());
+
+    paths = object.decodeObjectMap("paths", () => new APIPath());
+    responses = object.decodeObjectMap("responses", () => new APIResponse());
+    parameters = object.decodeObjectMap("parameters", () => new APIParameter());
+    definitions = object.decodeObjectMap("definitions", () => new APISchemaObject());
+    securityDefinitions = object.decodeObjectMap("securityDefinitions", () => new APISecurityScheme());
+  }
+
+  void encode(JSONObject object) {
     object.encode("swagger", version);
     object.encode("host", host);
     object.encode("basePath", basePath);
@@ -65,12 +85,12 @@ class APIDocument extends APIObject {
     object.encode("produces", produces);
     object.encodeObjectMap("paths", paths);
     object.encodeObject("info", info);
-    object.encode("definitions", definitions);
     object.encodeObjectMap("parameters", parameters);
     object.encodeObjectMap("responses", responses);
     object.encodeObjectMap("securityDefinitions", securityDefinitions);
     object.encode("security", security);
     object.encodeObjects("tags", tags);
+    object.encodeObjectMap("definitions", definitions);
   }
 }
 

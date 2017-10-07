@@ -7,11 +7,11 @@ import 'json_object.dart';
 class APIHeader extends APIObject {
   APIHeader();
 
-  APIHeader.fromJSON(JSONObject json) {
+  void decode(JSONObject json) {
     description = json.decode("description");
     type = APITypeCodec.decode(json.decode("type"));
     format = json.decode("format");
-    items = json.decode("items", objectDecoder: (v) => new APISchemaObject.fromJSON(v));
+    items = json.decode("items", inflate: () => new APISchemaObject());
   }
 
   String description;
@@ -19,7 +19,7 @@ class APIHeader extends APIObject {
   String format;
   APISchemaObject items;
 
-  void encodeInto(JSONObject json) {
+  void encode(JSONObject json) {
     json.encode("descriptiopn", description);
     json.encode("type", APITypeCodec.encode(type));
     json.encode("format", format);
