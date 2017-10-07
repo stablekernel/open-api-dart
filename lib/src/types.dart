@@ -1,5 +1,5 @@
 enum APIType {
-  string, number, integer, boolean, array, file
+  string, number, integer, boolean, array, file, object
 }
 
 class APITypeCodec {
@@ -11,6 +11,7 @@ class APITypeCodec {
       case "boolean": return APIType.boolean;
       case "array": return APIType.array;
       case "file": return APIType.file;
+      case "object": return APIType.object;
     }
     return null;
   }
@@ -23,6 +24,7 @@ class APITypeCodec {
       case APIType.boolean: return "boolean";
       case APIType.array: return "array";
       case APIType.file: return "file";
+      case APIType.object: return "object";
     }
 
     return null;
