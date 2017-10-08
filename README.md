@@ -1,19 +1,15 @@
 # open_api_dart
 
-A library for Dart developers. It is awesome.
+Reads and writes OpenAPI (Swagger) specifications.
 
-## Usage
+Example
+---
 
-A simple usage example:
+```dart
+final file = new File("test/specs/kubernetes.json");
+final contents = await file.readAsString();
+final doc = new APIDocument.fromJSON(contents);
 
-    import 'package:open_api_dart/open_api_dart.dart';
+final output = JSON.encode(doc.asMap());
+```
 
-    main() {
-      var awesome = new Awesome();
-    }
-
-## Features and bugs
-
-Please file feature requests and bugs at the [issue tracker][tracker].
-
-[tracker]: http://example.com/issues/replaceme
