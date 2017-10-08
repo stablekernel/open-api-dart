@@ -2,6 +2,10 @@ import 'types.dart';
 import 'util.dart';
 import 'json_object.dart';
 
+enum APISchemaRepresentation {
+  primitive, array, object, structure, unknownOrInvalid
+}
+
 /// Represents a schema object in the OpenAPI specification.
 class APISchemaObject extends APIObject {
   APISchemaObject();
@@ -20,8 +24,19 @@ class APISchemaObject extends APIObject {
     properties = json.decodeObjectMap("properties", () => new APISchemaObject());
   }
 
+  APISchemaRepresentation get representation {
+    if (type == APIType.array && items != null) {
+      return APISchemaRepresentation.array;
+    } else if (properties != null) {
+      return APISchemaRepresentation.structure;
+    } else if (type == APIType.object) {
+      return APISchemaRepresentation.object;
+    }
+
+    return APISchemaRepresentation.primitive;
+  }
+
   String title;
-  APIType type;
   String format;
   String description;
 
@@ -29,8 +44,15 @@ class APISchemaObject extends APIObject {
   List<String> required = [];
   bool readOnly = false;
 
+  APIType type;
+
+  /// Only valid if type == array.
   APISchemaObject items;
+
+  /// Valid when type == null
   Map<String, APISchemaObject> properties;
+
+  /// Valid when type == object
   APISchemaObject additionalProperties;
 
   void encode(JSONObject json) {
