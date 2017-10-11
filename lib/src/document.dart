@@ -33,16 +33,18 @@ class APIDocument extends APIObject with JSONObjectCache {
   APIInfo info = new APIInfo();
   String host;
   String basePath;
-  List<String> schemes;
+
+  List<APITag> tags = [];
+  List<String> schemes = [];
   List<String> consumes = [];
   List<String> produces = [];
-  Map<String, APIPath> paths = {};
-  Map<String, APISchemaObject> definitions = {};
-  Map<String, APIParameter> parameters = {};
-  Map<String, APIResponse> responses = {};
   List<Map<String, List<String>>> security = [];
+
+  Map<String, APIPath> paths = {};
+  Map<String, APIResponse> responses = {};
+  Map<String, APIParameter> parameters = {};
+  Map<String, APISchemaObject> definitions = {};
   Map<String, APISecurityScheme> securityDefinitions = {};
-  List<APITag> tags = [];
 
   JSONObject get root => _root;
   JSONObject _root;

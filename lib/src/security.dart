@@ -58,23 +58,6 @@ class APISecurityScheme extends APIObject {
     type = "oauth2";
   }
 
-  void decode(JSONObject json) {
-    type = json.decode("type");
-    description = json.decode("description");
-
-    if (type == "basic") {
-
-    } else if (type == "oauth2") {
-      oauthFlow = APISecuritySchemeFlowCodec.decode(json.decode("flow"));
-      authorizationURL = json.decode("authorizationUrl");
-      tokenURL = json.decode("tokenUrl");
-      scopes = json.decode("scopes");
-    } else if (type == "apiKey") {
-      apiKeyName = json.decode("name");
-      apiKeyLocation = APIParameterLocationCodec.decode(json.decode("in"));
-    }
-  }
-
   String type;
   String description;
 
@@ -90,6 +73,23 @@ class APISecurityScheme extends APIObject {
 
   bool get isOAuth2 {
     return type == "oauth2";
+  }
+
+  void decode(JSONObject json) {
+    type = json.decode("type");
+    description = json.decode("description");
+
+    if (type == "basic") {
+
+    } else if (type == "oauth2") {
+      oauthFlow = APISecuritySchemeFlowCodec.decode(json.decode("flow"));
+      authorizationURL = json.decode("authorizationUrl");
+      tokenURL = json.decode("tokenUrl");
+      scopes = json.decode("scopes");
+    } else if (type == "apiKey") {
+      apiKeyName = json.decode("name");
+      apiKeyLocation = APIParameterLocationCodec.decode(json.decode("in"));
+    }
   }
 
   void encode(JSONObject json) {

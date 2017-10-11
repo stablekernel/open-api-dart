@@ -7,10 +7,13 @@ import 'json_object.dart';
 class APIPath extends APIObject {
   APIPath();
 
+  List<APIParameter> parameters = [];
+  Map<String, APIOperation> operations = {};
+
   void decode(JSONObject json) {
     json.keys.forEach((k) {
       if (k == r"$ref") {
-      // todo: reference
+        // todo: reference
       } else if (k == "parameters") {
         parameters = json.decodeObjects(k, () => new APIParameter());
       } else {
@@ -18,9 +21,6 @@ class APIPath extends APIObject {
       }
     });
   }
-
-  List<APIParameter> parameters = [];
-  Map<String, APIOperation> operations = {};
 
   void encode(JSONObject json) {
     json.encodeObjects("parameters", parameters);

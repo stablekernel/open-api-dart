@@ -83,5 +83,4 @@ void main() {
       expect(JSON.encode(doc.asMap()), new isInstanceOf<String>());
     });
   });
-
 }

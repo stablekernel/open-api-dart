@@ -6,6 +6,13 @@ class APIInfo extends APIObject {
   /// Creates empty metadata for specification.
   APIInfo();
 
+  String title = "API";
+  String description = "Description";
+  String version = "1.0";
+  String termsOfServiceURL = "";
+  APIContact contact = new APIContact();
+  APILicense license = new APILicense();
+
   void decode(JSONObject json) {
     title = json.decode("title") ?? "Untitled";
     description = json.decode("description");
@@ -14,13 +21,6 @@ class APIInfo extends APIObject {
     license = json.decode("license", inflate: () => new APILicense());
     version = json.decode("version") ?? "1.0.0";
   }
-
-  String title = "API";
-  String description = "Description";
-  String version = "1.0";
-  String termsOfServiceURL = "";
-  APIContact contact = new APIContact();
-  APILicense license = new APILicense();
 
   void encode(JSONObject object) {
     object.encode("title", title);

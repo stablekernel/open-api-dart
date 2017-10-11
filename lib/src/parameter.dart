@@ -1,6 +1,6 @@
 import 'json_object.dart';
 import 'schema.dart';
-import 'util.dart';
+import 'property.dart';
 import 'types.dart';
 
 /// Represents a parameter location in the OpenAPI specification.
@@ -37,14 +37,25 @@ class APIParameterLocationCodec {
 }
 
 /// Represents a parameter in the OpenAPI specification.
-class APIParameter extends APIObject {
+class APIParameter extends APIProperty {
   APIParameter();
+
+  String name;
+  String description;
+  bool required = false;
+  APIParameterLocation location;
+
+  // Valid if location is body.
+  APISchemaObject schema;
+
+  // Valid if location is not body.
+  bool allowEmptyValue = false;
+  APIProperty items;
 
   void decode(JSONObject json) {
     name = json.decode("name");
-    location = APIParameterLocationCodec.decode(json.decode("in"));
     description = json.decode("description");
-
+    location = APIParameterLocationCodec.decode(json.decode("in"));
     if (location == APIParameterLocation.path) {
       required = true;
     } else {
@@ -54,52 +65,28 @@ class APIParameter extends APIObject {
     if (location == APIParameterLocation.body) {
       schema = json.decode("schema", inflate: () => new APISchemaObject());
     } else {
-      type = APITypeCodec.decode(json.decode("type"));
-      format = json.decode("format");
+      super.decode(json);
       allowEmptyValue = json.decode("allowEmptyValue") ?? false;
+      if (type == APIType.array) {
+        items = json.decode("items", inflate: () => new APIProperty());
+      }
     }
   }
-
-  String name;
-  String description = "";
-  bool required = false;
-  APIParameterLocation location;
-
-  // Valid if location is body.
-  APISchemaObject schema;
-
-  // Valid if location is not body.
-  APIType type;
-  String format;
-  bool allowEmptyValue = false;
-
-//  List<APIItem> items;
-//  String collectionFormat = "csv";
-//  dynamic defaultValue;
-//  num maximum;
-//  bool exclusiveMaximum;
-//  num minimum;
-//  bool exclusiveMinimum;
-//  int maxLength;
-//  int minLength;
-//  String pattern;
-//  int maxItems;
-//  int minItems;
-//  bool uniqueItems;
-//  num multipleOf;
 
   void encode(JSONObject json) {
     json.encode("name", name);
     json.encode("description", description);
-
     json.encode("in", APIParameterLocationCodec.encode(location));
+    json.encode("required", required);
 
     if (location == APIParameterLocation.body) {
       json.encodeObject("schema", schema);
     } else {
-      json.encode("type", APITypeCodec.encode(type));
-      json.encode("format", format);
+      super.encode(json);
       json.encode("allowEmptyValue", allowEmptyValue);
+      if (type == APIType.array) {
+        json.encodeObject("items", items);
+      }
     }
   }
 }
