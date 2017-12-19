@@ -1,7 +1,7 @@
 // Copyright (c) 2017, joeconway. All rights reserved. Use of this source code
 // is governed by a BSD-style license that can be found in the LICENSE file.
 
-import 'package:open_api/open_api.dart';
+import 'package:open_api/v2.dart';
 import 'package:test/test.dart';
 import 'dart:io';
 import 'dart:convert';

@@ -1,7 +1,7 @@
-import 'json_object.dart';
-import 'schema.dart';
-import 'property.dart';
-import 'types.dart';
+import 'package:open_api/src/json_object.dart';
+import 'package:open_api/src/v2/schema.dart';
+import 'package:open_api/src/v2/property.dart';
+import 'package:open_api/src/v2/types.dart';
 
 /// Represents a parameter location in the OpenAPI specification.
 enum APIParameterLocation { query, header, path, formData, body }

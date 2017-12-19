@@ -1,5 +1,5 @@
-import 'json_object.dart';
-import 'util.dart';
+import 'package:open_api/src/json_object.dart';
+import 'package:open_api/src/util.dart';
 
 /// Represents a metadata for an API in the OpenAPI specification.
 class APIInfo extends APIObject {

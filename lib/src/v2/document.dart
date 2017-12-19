@@ -1,12 +1,12 @@
-import 'path.dart';
-import 'security.dart';
-import 'metadata.dart';
-import 'util.dart';
-import 'parameter.dart';
-import 'response.dart';
-import 'json_object.dart';
+import 'package:open_api/src/v2/path.dart';
+import 'package:open_api/src/v2/security.dart';
+import 'package:open_api/src/v2/metadata.dart';
+import 'package:open_api/src/util.dart';
+import 'package:open_api/src/v2/parameter.dart';
+import 'package:open_api/src/v2/response.dart';
+import 'package:open_api/src/json_object.dart';
 import 'dart:convert';
-import 'schema.dart';
+import 'package:open_api/src/v2/schema.dart';
 
 /// Represents an OpenAPI 2.0 specification.
 class APIDocument extends APIObject with JSONObjectCache {

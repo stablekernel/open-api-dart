@@ -1,6 +1,6 @@
-import 'util.dart';
-import 'types.dart';
-import 'json_object.dart';
+import 'package:open_api/src/json_object.dart';
+import 'package:open_api/src/util.dart';
+import 'package:open_api/src/v3/types.dart';
 
 enum APISchemaRepresentation {
   primitive, array, object, structure, unknownOrInvalid

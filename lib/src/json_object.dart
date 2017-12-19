@@ -1,5 +1,5 @@
 import 'dart:collection';
-import 'util.dart';
+import 'package:open_api/src/util.dart';
 
 abstract class JSONObjectCache {
   JSONObject get root;

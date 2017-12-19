@@ -1,6 +1,6 @@
-import 'types.dart';
-import 'json_object.dart';
-import 'property.dart';
+import 'package:open_api/src/v2/types.dart';
+import 'package:open_api/src/json_object.dart';
+import 'package:open_api/src/v2/property.dart';
 
 /// Represents a header in the OpenAPI specification.
 class APIHeader extends APIProperty {

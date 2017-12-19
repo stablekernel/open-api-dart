@@ -12,3 +12,4 @@ doc/api/
 .idea/
 *.iml
 test/specs/kubernetes.json
+test/specs/stripe.json

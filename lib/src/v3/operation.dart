@@ -1,36 +1,34 @@
-import 'json_object.dart';
-import 'parameter.dart';
-import 'response.dart';
-import 'util.dart';
+import 'package:open_api/src/json_object.dart';
+import 'package:open_api/src/v3/parameter.dart';
+import 'package:open_api/src/v3/response.dart';
+import 'package:open_api/src/v3/request_body.dart';
+import 'package:open_api/src/util.dart';
 
 /// Represents a HTTP operation (a path/method pair) in the OpenAPI specification.
 class APIOperation extends APIObject {
   APIOperation();
 
+  List<String> tags = [];
   String summary = "";
   String description = "";
   String id;
-  bool deprecated = false;
-
-  List<String> tags = [];
-  List<String> schemes = [];
-  List<String> consumes = [];
-  List<String> produces = [];
   List<APIParameter> parameters = [];
-  List<Map<String, List<String>>> security = [];
+  APIRequestBody requestBody = new APIRequestBody();
   Map<String, APIResponse> responses = {};
+//  Map<String, APICallback> callbacks = {};
+  bool deprecated = false;
+  List<Map<String, List<String>>> security = [];
 
   void decode(JSONObject json) {
     tags = json.decode("tags");
     summary = json.decode("summary");
     description = json.decode("description");
     id = json.decode("operationId");
-    consumes = json.decode("consumes");
-    produces = json.decode("produces");
-    deprecated = json.decode("deprecated") ?? false;
     parameters = json.decodeObjects("parameters", () => new APIParameter());
+    requestBody = json.decode("requestBody", inflate: () => new APIRequestBody());
     responses = json.decodeObjectMap("responses", () => new APIResponse());
-    schemes = json.decode("schemes");
+//    callbacks = json.decodeObjectMap("callbacks", () => new APICallback());
+    deprecated = json.decode("deprecated") ?? false;
     security = json.decode("security");
   }
 
@@ -39,12 +37,11 @@ class APIOperation extends APIObject {
     json.encode("summary", summary);
     json.encode("description", description);
     json.encode("operationId", id);
-    json.encode("consumes", consumes);
-    json.encode("produces", produces);
-    json.encode("deprecated", deprecated);
-
     json.encodeObjects("parameters", parameters);
+    json.encodeObject("requestBody", requestBody);
     json.encodeObjectMap("responses", responses);
+//    json.encodeObjectMap("callbacks", callbacks);
+    json.encode("deprecated", deprecated);
     json.encode("security", security);
   }
 }

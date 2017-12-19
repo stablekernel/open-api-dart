@@ -1,7 +1,7 @@
-import 'schema.dart';
-import 'header.dart';
-import 'util.dart';
-import 'json_object.dart';
+import 'package:open_api/src/v2/schema.dart';
+import 'package:open_api/src/v2/header.dart';
+import 'package:open_api/src/util.dart';
+import 'package:open_api/src/json_object.dart';
 
 /// Represents an HTTP response in the OpenAPI specification.
 class APIResponse extends APIObject {

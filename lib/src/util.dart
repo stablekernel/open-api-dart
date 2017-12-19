@@ -1,4 +1,4 @@
-import 'json_object.dart';
+import 'package:open_api/src/json_object.dart';
 
 class APIException implements Exception {
   APIException(this.message);

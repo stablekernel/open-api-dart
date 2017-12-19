@@ -1,6 +1,6 @@
-import 'parameter.dart';
-import 'util.dart';
-import 'json_object.dart';
+import 'package:open_api/src/json_object.dart';
+import 'package:open_api/src/util.dart';
+import 'package:open_api/src/v3/parameter.dart';
 
 /// Represents a OAuth 2.0 security scheme flow in the OpenAPI specification.
 enum APISecuritySchemeFlow {

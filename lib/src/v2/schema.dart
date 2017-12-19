@@ -1,5 +1,5 @@
-import 'json_object.dart';
-import 'property.dart';
+import 'package:open_api/src/json_object.dart';
+import 'package:open_api/src/v2/property.dart';
 
 /// Represents a schema object in the OpenAPI specification.
 class APISchemaObject extends APIProperty {
