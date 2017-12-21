@@ -1,5 +1,6 @@
 import 'package:open_api/src/json_object.dart';
 import 'package:open_api/src/util.dart';
+import 'package:open_api/src/v3/callback.dart';
 import 'package:open_api/src/v3/header.dart';
 import 'package:open_api/src/v3/parameter.dart';
 import 'package:open_api/src/v3/response.dart';
@@ -17,7 +18,7 @@ class APIComponents extends APIObject {
   Map<String, APIHeader> headers = {};
   Map<String, APISecurityScheme> securitySchemes = {};
   //Map<String, APILink> links = {};
-  //Map<String, APICallback> callbacks = {};
+  Map<String, APICallback> callbacks = {};
 
   void decode(JSONObject object) {
     super.decode(object);
@@ -33,7 +34,7 @@ class APIComponents extends APIObject {
     securitySchemes = object.decodeObjectMap(
         "securitySchemes", () => new APISecurityScheme());
 //    links = object.decodeObjectMap("links", () => new APILink());
-//    callbacks = object.decodeObjectMap("callbacks", () => new APICallback());
+    callbacks = object.decodeObjectMap("callbacks", () => new APICallback());
   }
 
   void encode(JSONObject object) {
@@ -47,6 +48,6 @@ class APIComponents extends APIObject {
     object.encodeObjectMap("headers", headers);
     object.encodeObjectMap("securitySchemes", securitySchemes);
 //    object.encodeObjectMap("links", links);
-//    object.encodeObjectMap("callbacks", callbacks);
+    object.encodeObjectMap("callbacks", callbacks);
   }
 }
