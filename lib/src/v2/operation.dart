@@ -20,31 +20,35 @@ class APIOperation extends APIObject {
   List<Map<String, List<String>>> security = [];
   Map<String, APIResponse> responses = {};
 
-  void decode(JSONObject json) {
-    tags = json.decode("tags");
-    summary = json.decode("summary");
-    description = json.decode("description");
-    id = json.decode("operationId");
-    consumes = json.decode("consumes");
-    produces = json.decode("produces");
-    deprecated = json.decode("deprecated") ?? false;
-    parameters = json.decodeObjects("parameters", () => new APIParameter());
-    responses = json.decodeObjectMap("responses", () => new APIResponse());
-    schemes = json.decode("schemes");
-    security = json.decode("security");
+  void decode(JSONObject object) {
+    super.decode(object);
+
+    tags = object.decode("tags");
+    summary = object.decode("summary");
+    description = object.decode("description");
+    id = object.decode("operationId");
+    consumes = object.decode("consumes");
+    produces = object.decode("produces");
+    deprecated = object.decode("deprecated") ?? false;
+    parameters = object.decodeObjects("parameters", () => new APIParameter());
+    responses = object.decodeObjectMap("responses", () => new APIResponse());
+    schemes = object.decode("schemes");
+    security = object.decode("security");
   }
 
-  void encode(JSONObject json) {
-    json.encode("tags", tags);
-    json.encode("summary", summary);
-    json.encode("description", description);
-    json.encode("operationId", id);
-    json.encode("consumes", consumes);
-    json.encode("produces", produces);
-    json.encode("deprecated", deprecated);
+  void encode(JSONObject object) {
+    super.encode(object);
 
-    json.encodeObjects("parameters", parameters);
-    json.encodeObjectMap("responses", responses);
-    json.encode("security", security);
+    object.encode("tags", tags);
+    object.encode("summary", summary);
+    object.encode("description", description);
+    object.encode("operationId", id);
+    object.encode("consumes", consumes);
+    object.encode("produces", produces);
+    object.encode("deprecated", deprecated);
+
+    object.encodeObjects("parameters", parameters);
+    object.encodeObjectMap("responses", responses);
+    object.encode("security", security);
   }
 }

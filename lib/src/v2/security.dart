@@ -40,7 +40,6 @@ class APISecuritySchemeFlowCodec {
   }
 }
 
-
 /// Represents a security scheme in the OpenAPI specification.
 class APISecurityScheme extends APIObject {
   APISecurityScheme();
@@ -75,38 +74,40 @@ class APISecurityScheme extends APIObject {
     return type == "oauth2";
   }
 
-  void decode(JSONObject json) {
-    type = json.decode("type");
-    description = json.decode("description");
+  void decode(JSONObject object) {
+    super.decode(object);
 
-    if (type == "basic") {
+    type = object.decode("type");
+    description = object.decode("description");
 
-    } else if (type == "oauth2") {
-      oauthFlow = APISecuritySchemeFlowCodec.decode(json.decode("flow"));
-      authorizationURL = json.decode("authorizationUrl");
-      tokenURL = json.decode("tokenUrl");
-      scopes = json.decode("scopes");
+    if (type == "basic") {} else if (type == "oauth2") {
+      oauthFlow = APISecuritySchemeFlowCodec.decode(object.decode("flow"));
+      authorizationURL = object.decode("authorizationUrl");
+      tokenURL = object.decode("tokenUrl");
+      scopes = object.decode("scopes");
     } else if (type == "apiKey") {
-      apiKeyName = json.decode("name");
-      apiKeyLocation = APIParameterLocationCodec.decode(json.decode("in"));
+      apiKeyName = object.decode("name");
+      apiKeyLocation = APIParameterLocationCodec.decode(object.decode("in"));
     }
   }
 
-  void encode(JSONObject json) {
-    json.encode("type", type);
-    json.encode("description", description);
+  void encode(JSONObject object) {
+    super.encode(object);
+
+    object.encode("type", type);
+    object.encode("description", description);
 
     if (type == "basic") {
       /* nothing to do */
     } else if (type == "apiKey") {
-      json.encode("name", apiKeyName);
-      json.encode("in", APIParameterLocationCodec.encode(apiKeyLocation));
+      object.encode("name", apiKeyName);
+      object.encode("in", APIParameterLocationCodec.encode(apiKeyLocation));
     } else if (type == "oauth2") {
-      json.encode("flow", APISecuritySchemeFlowCodec.encode(oauthFlow));
+      object.encode("flow", APISecuritySchemeFlowCodec.encode(oauthFlow));
 
-      json.encode("authorizationUrl", authorizationURL);
-      json.encode("tokenUrl", tokenURL);
-      json.encode("scopes", scopes);
+      object.encode("authorizationUrl", authorizationURL);
+      object.encode("tokenUrl", tokenURL);
+      object.encode("scopes", scopes);
     }
   }
 }

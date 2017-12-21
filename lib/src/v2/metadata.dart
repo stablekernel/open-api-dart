@@ -13,18 +13,22 @@ class APIInfo extends APIObject {
   APIContact contact = new APIContact();
   APILicense license = new APILicense();
 
-  void decode(JSONObject json) {
-    title = json.decode("title") ?? "Untitled";
-    description = json.decode("description");
-    termsOfServiceURL = json.decode("termsOfService");
-    contact = json.decode("contact", inflate: () => new APIContact());
-    license = json.decode("license", inflate: () => new APILicense());
-    version = json.decode("version") ?? "1.0.0";
+  void decode(JSONObject object) {
+    super.decode(object);
+
+    title = object.decode("title");
+    description = object.decode("description");
+    termsOfServiceURL = object.decode("termsOfService");
+    contact = object.decode("contact", inflate: () => new APIContact());
+    license = object.decode("license", inflate: () => new APILicense());
+    version = object.decode("version");
   }
 
   void encode(JSONObject object) {
+    super.encode(object);
+
     object.encode("title", title);
-    object.encode("desription", description);
+    object.encode("description", description);
     object.encode("version", version);
     object.encode("termsOfService", termsOfServiceURL);
     object.encodeObject("contact", contact);
@@ -36,10 +40,12 @@ class APIInfo extends APIObject {
 class APIContact extends APIObject {
   APIContact();
 
-  void decode(JSONObject json) {
-    name = json.decode("name");
-    url = json.decode("url");
-    email = json.decode("email");
+  void decode(JSONObject object) {
+    super.decode(object);
+
+    name = object.decode("name");
+    url = object.decode("url");
+    email = object.decode("email");
   }
 
   String name = "default";
@@ -47,6 +53,8 @@ class APIContact extends APIObject {
   String email = "default";
 
   void encode(JSONObject object) {
+    super.encode(object);
+
     object.encode("name", name);
     object.encode("url", url);
     object.encode("email", email);
@@ -56,15 +64,20 @@ class APIContact extends APIObject {
 /// Represents a copyright/open source license in the OpenAPI specification.
 class APILicense extends APIObject {
   APILicense();
-  void decode(JSONObject json) {
-    name = json.decode("name");
-    url = json.decode("url");
+
+  void decode(JSONObject object) {
+    super.decode(object);
+
+    name = object.decode("name");
+    url = object.decode("url");
   }
 
   String name = "default";
   String url = "http://localhost";
 
   void encode(JSONObject object) {
+    super.encode(object);
+
     object.encode("name", name);
     object.encode("url", url);
   }
@@ -73,15 +86,19 @@ class APILicense extends APIObject {
 class APITag extends APIObject {
   APITag();
 
-  void decode(JSONObject json) {
-    name = json.decode("name");
-    description = json.decode("description");
+  void decode(JSONObject object) {
+    super.decode(object);
+
+    name = object.decode("name");
+    description = object.decode("description");
   }
 
   String name;
   String description;
 
   void encode(JSONObject object) {
+    super.encode(object);
+
     object.encode("name", name);
     object.encode("description", description);
   }

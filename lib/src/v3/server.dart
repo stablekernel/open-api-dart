@@ -4,18 +4,23 @@ import 'package:open_api/src/util.dart';
 class APIServerDescription extends APIObject {
   String url;
   String description;
-  Map<String, APIServerVariable> variables;
+  Map<String, APIServerVariable> variables = {};
 
-  void decode(JSONObject json) {
-    url = json.decode("url");
-    description = json.decode("description");
-    variables = json.decodeObjectMap("variables", () => new APIServerVariable());
+  void decode(JSONObject object) {
+    super.decode(object);
+
+    url = object.decode("url");
+    description = object.decode("description");
+    variables =
+        object.decodeObjectMap("variables", () => new APIServerVariable());
   }
 
-  void encode(JSONObject json) {
-    json.encode("url", url);
-    json.encode("description", description);
-    json.encodeObjectMap("variables", variables);
+  void encode(JSONObject object) {
+    super.encode(object);
+
+    object.encode("url", url);
+    object.encode("description", description);
+    object.encodeObjectMap("variables", variables);
   }
 }
 
@@ -24,15 +29,19 @@ class APIServerVariable extends APIObject {
   String defaultValue;
   String description;
 
-  void decode(JSONObject json) {
-    availableValues = json.decode("enum");
-    defaultValue = json.decode("default");
-    description = json.decode("description");
+  void decode(JSONObject object) {
+    super.decode(object);
+
+    availableValues = object.decode("enum");
+    defaultValue = object.decode("default");
+    description = object.decode("description");
   }
 
-  void encode(JSONObject json) {
-    json.encode("enum", availableValues);
-    json.encode("default", defaultValue);
-    json.encode("description", description);
+  void encode(JSONObject object) {
+    super.encode(object);
+
+    object.encode("enum", availableValues);
+    object.encode("default", defaultValue);
+    object.encode("description", description);
   }
 }

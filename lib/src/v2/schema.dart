@@ -39,8 +39,10 @@ class APISchemaObject extends APIProperty {
     readOnly = json.decode("readOnly") ?? false;
 
     items = json.decode("items", inflate: () => new APISchemaObject());
-    additionalProperties = json.decode("additionalProperties", inflate: () => new APISchemaObject());
-    properties = json.decodeObjectMap("properties", () => new APISchemaObject());
+    additionalProperties = json.decode("additionalProperties",
+        inflate: () => new APISchemaObject());
+    properties =
+        json.decodeObjectMap("properties", () => new APISchemaObject());
   }
 
   void encode(JSONObject json) {

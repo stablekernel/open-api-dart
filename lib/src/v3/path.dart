@@ -14,33 +14,46 @@ class APIPath extends APIObject {
 
   // todo (joeconwaystk): alternative servers not yet implemented
 
-  void decode(JSONObject json) {
+  void decode(JSONObject object) {
     // todo (joeconwaystk): Hasn't been common enough to use time on implementing yet.
-    if (json.containsKey(r"$ref")) {
+    if (object.containsKey(r"$ref")) {
       return;
     }
 
-    summary = json.decode("summary");
-    description = json.decode("description");
-    parameters = json.decodeObjects("parameters", () => new APIParameter());
+    super.decode(object);
 
-    final methodNames = ["get", "put", "post", "delete", "options", "head", "patch", "trace"];
+    summary = object.decode("summary");
+    description = object.decode("description");
+    parameters = object.decodeObjects("parameters", () => new APIParameter());
+
+    final methodNames = [
+      "get",
+      "put",
+      "post",
+      "delete",
+      "options",
+      "head",
+      "patch",
+      "trace"
+    ];
     methodNames.forEach((methodName) {
-      if (!json.containsKey(methodName)) {
+      if (!object.containsKey(methodName)) {
         return;
       }
-      operations[methodName] = json.decode(methodName, inflate: () => new APIOperation());
+      operations[methodName] =
+          object.decode(methodName, inflate: () => new APIOperation());
     });
-
   }
 
-  void encode(JSONObject json) {
-    json.encode("summary", summary);
-    json.encode("description", description);
-    json.encodeObjects("parameters", parameters);
+  void encode(JSONObject object) {
+    super.encode(object);
+
+    object.encode("summary", summary);
+    object.encode("description", description);
+    object.encodeObjects("parameters", parameters);
 
     operations.forEach((opName, op) {
-      json.encodeObject(opName, op);
+      object.encodeObject(opName, op);
     });
   }
 }

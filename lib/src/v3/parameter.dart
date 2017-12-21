@@ -1,7 +1,5 @@
 import 'package:open_api/src/json_object.dart';
 import 'package:open_api/src/v3/schema.dart';
-import 'package:open_api/src/v3/property.dart';
-import 'package:open_api/src/v3/types.dart';
 import 'package:open_api/src/util.dart';
 
 /// Represents a parameter location in the OpenAPI specification.
@@ -10,10 +8,14 @@ enum APIParameterLocation { query, header, path, cookie }
 class APIParameterLocationCodec {
   static APIParameterLocation decode(String location) {
     switch (location) {
-      case "query": return APIParameterLocation.query;
-      case "header": return APIParameterLocation.header;
-      case "path": return APIParameterLocation.path;
-      case "cookie": return APIParameterLocation.cookie;
+      case "query":
+        return APIParameterLocation.query;
+      case "header":
+        return APIParameterLocation.header;
+      case "path":
+        return APIParameterLocation.path;
+      case "cookie":
+        return APIParameterLocation.cookie;
     }
 
     return null;
@@ -40,46 +42,67 @@ class APIParameter extends APIObject {
 
   String name;
   String description;
-  bool isRequired = false;
-  bool isDeprecated = false;
+  bool get isRequired =>
+      (location == APIParameterLocation.path ? true : (_required ?? false));
+  set isRequired(bool f) {
+    _required = f;
+  }
+
+  bool _required;
+
+  bool get isDeprecated => _deprecated ?? false;
+  set isDeprecated(bool f) {
+    _deprecated = f;
+  }
+
+  bool _deprecated;
   APIParameterLocation location;
   APISchemaObject schema;
 
   // Valid if location is query, e.g. /?bool
-  bool allowEmptyValue;
+  bool get allowEmptyValue => _allowEmptyValue ?? false;
+  set allowEmptyValue(bool f) {
+    _allowEmptyValue = f;
+  }
+
+  bool _allowEmptyValue;
 
   // Currently missing:
   // style, explode, allowReserved, example, examples, content
 
-  void decode(JSONObject json) {
-    name = json.decode("name");
-    description = json.decode("description");
-    location = APIParameterLocationCodec.decode(json.decode("in"));
-    if (location == APIParameterLocation.path) {
-      isRequired = true;
-    } else {
-      isRequired = json.decode("required") ?? false;
-    }
+  void decode(JSONObject object) {
+    super.decode(object);
 
-    isDeprecated = json.decode("deprecated") ?? false;
-    if (location == APIParameterLocation.query) {
-      allowEmptyValue = json.decode("allowEmptyValue") ?? false;
-    }
+    name = object.decode("name");
+    description = object.decode("description");
+    location = APIParameterLocationCodec.decode(object.decode("in"));
+    _required = object.decode("required");
 
-    schema = json.decode("schema", inflate: () => new APISchemaObject());
+    _deprecated = object.decode("deprecated");
+    _allowEmptyValue = object.decode("allowEmptyValue");
+
+    schema = object.decode("schema", inflate: () => new APISchemaObject());
   }
 
-  void encode(JSONObject json) {
-    json.encode("name", name);
-    json.encode("description", description);
-    json.encode("in", APIParameterLocationCodec.encode(location));
-    json.encode("required", isRequired);
-    json.encode("deprecated", isDeprecated);
+  void encode(JSONObject object) {
+    super.encode(object);
 
-    if (location == APIParameterLocation.query) {
-      json.encode("allowEmptyValue", allowEmptyValue);
+    object.encode("name", name);
+    object.encode("description", description);
+    object.encode("in", APIParameterLocationCodec.encode(location));
+
+    if (location == APIParameterLocation.path) {
+      object.encode("required", true);
+    } else {
+      object.encode("required", _required);
     }
 
-    json.encodeObject("schema", schema);
+    object.encode("deprecated", _deprecated);
+
+    if (location == APIParameterLocation.query) {
+      object.encode("allowEmptyValue", _allowEmptyValue);
+    }
+
+    object.encodeObject("schema", schema);
   }
 }

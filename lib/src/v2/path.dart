@@ -10,22 +10,26 @@ class APIPath extends APIObject {
   List<APIParameter> parameters = [];
   Map<String, APIOperation> operations = {};
 
-  void decode(JSONObject json) {
-    json.keys.forEach((k) {
+  void decode(JSONObject object) {
+    super.decode(object);
+
+    object.keys.forEach((k) {
       if (k == r"$ref") {
         // todo: reference
       } else if (k == "parameters") {
-        parameters = json.decodeObjects(k, () => new APIParameter());
+        parameters = object.decodeObjects(k, () => new APIParameter());
       } else {
-        operations[k] = json.decode(k, inflate: () => new APIOperation());
+        operations[k] = object.decode(k, inflate: () => new APIOperation());
       }
     });
   }
 
-  void encode(JSONObject json) {
-    json.encodeObjects("parameters", parameters);
+  void encode(JSONObject object) {
+    super.encode(object);
+
+    object.encodeObjects("parameters", parameters);
     operations.forEach((opName, op) {
-      json.encodeObject(opName, op);
+      object.encodeObject(opName, op);
     });
   }
 }

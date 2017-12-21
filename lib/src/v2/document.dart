@@ -60,6 +60,8 @@ class APIDocument extends APIObject with JSONObjectCache {
   }
 
   void decode(JSONObject object) {
+    super.decode(object);
+
     version = object.decode("swagger");
     host = object.decode("host");
     basePath = object.decode("basePath");
@@ -74,11 +76,15 @@ class APIDocument extends APIObject with JSONObjectCache {
     paths = object.decodeObjectMap("paths", () => new APIPath());
     responses = object.decodeObjectMap("responses", () => new APIResponse());
     parameters = object.decodeObjectMap("parameters", () => new APIParameter());
-    definitions = object.decodeObjectMap("definitions", () => new APISchemaObject());
-    securityDefinitions = object.decodeObjectMap("securityDefinitions", () => new APISecurityScheme());
+    definitions =
+        object.decodeObjectMap("definitions", () => new APISchemaObject());
+    securityDefinitions = object.decodeObjectMap(
+        "securityDefinitions", () => new APISecurityScheme());
   }
 
   void encode(JSONObject object) {
+    super.encode(object);
+
     object.encode("swagger", version);
     object.encode("host", host);
     object.encode("basePath", basePath);
@@ -95,4 +101,3 @@ class APIDocument extends APIObject with JSONObjectCache {
     object.encodeObjectMap("definitions", definitions);
   }
 }
-

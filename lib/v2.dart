@@ -16,4 +16,3 @@ export 'package:open_api/src/v2/response.dart';
 export 'package:open_api/src/v2/schema.dart';
 export 'package:open_api/src/v2/security.dart';
 export 'package:open_api/src/v2/types.dart';
-

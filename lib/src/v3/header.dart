@@ -1,27 +1,9 @@
-import 'package:open_api/src/v3/types.dart';
-import 'package:open_api/src/json_object.dart';
-import 'package:open_api/src/v3/property.dart';
+import 'package:open_api/src/v3/parameter.dart';
 
 /// Represents a header in the OpenAPI specification.
-class APIHeader extends APIProperty {
-  APIHeader();
+class APIHeader extends APIParameter {
+  APIHeader() : super();
 
-  String description;
-  APIProperty items;
-
-  void decode(JSONObject json) {
-    super.decode(json);
-    description = json.decode("description");
-    if (type == APIType.array) {
-      items = json.decode("items", inflate: () => new APIProperty());
-    }
-  }
-
-  void encode(JSONObject json) {
-    super.encode(json);
-    json.encode("description", description);
-    if (type == APIType.array) {
-      json.encodeObject("items", items);
-    }
-  }
+  final String name = null;
+  final APIParameterLocation location = APIParameterLocation.header;
 }

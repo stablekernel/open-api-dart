@@ -12,6 +12,8 @@ abstract class JSONObjectCache {
 }
 
 class JSONObject extends Object with MapMixin<String, dynamic> {
+  JSONObject._empty();
+
   JSONObject(Map<String, dynamic> map, this.cache) {
     _map = map;
 
@@ -29,20 +31,24 @@ class JSONObject extends Object with MapMixin<String, dynamic> {
   APIObject _representation;
   JSONObjectCache cache;
 
-  operator []= (String key, dynamic value) {
+  operator []=(String key, dynamic value) {
     _map[key] = value;
   }
-  dynamic operator [] (Object key) {
+
+  dynamic operator [](Object key) {
     return _getValue(key);
   }
+
   Iterable<String> get keys {
     if (_referenceURI != null) {
       var ref = cache.resolve(_referenceURI);
       return [ref.keys, _map.keys].expand((k) => k);
+
     }
 
     return _map.keys;
   }
+
   void clear() => _map.clear();
   dynamic remove(Object key) => _map.remove(key);
 
@@ -77,17 +83,39 @@ class JSONObject extends Object with MapMixin<String, dynamic> {
     return values._representation;
   }
 
-  T decode<T extends APIObject>(String key, {T inflate()}) {
+  T decode<T>(String key, {T inflate()}) {
     var v = _getValue(key);
     if (v == null) {
       return null;
     }
 
-    if (inflate != null && v is JSONObject) {
+    if (v is JSONObject && inflate != null) {
       return _decodedObject(v, inflate);
     }
 
     return v;
+  }
+
+  dynamic decodeRaw(String key) {
+    var v = _getValue(key);
+    if (v == null) {
+      return null;
+    }
+
+    if (v is JSONObject) {
+      return v._asDartMap();
+    }
+
+    return v;
+  }
+
+  Uri decodeUri(String key) {
+    final v = _getValue(key);
+    if (v == null) {
+      return null;
+    }
+
+    return Uri.parse(v);
   }
 
   List<T> decodeObjects<T extends APIObject>(String key, T inflate()) {
@@ -117,9 +145,7 @@ class JSONObject extends Object with MapMixin<String, dynamic> {
       // The decoded spec may have overriding keys that are sibling to a $ref key.
       // References to these keys are not kept by the associated APIObject, and therefore
       // aren't emitted here.
-      return {
-        r"$ref": object.referenceURI
-      };
+      return {r"$ref": object.referenceURI};
     }
 
     var json = new JSONObject({}, cache);
@@ -133,6 +159,15 @@ class JSONObject extends Object with MapMixin<String, dynamic> {
     }
 
     _map[key] = value;
+  }
+
+  void encodeUri(String key, Uri value) {
+    final stringRepresentation = value?.toString();
+    if (stringRepresentation == null) {
+      return;
+    }
+
+    _map[key] = stringRepresentation;
   }
 
   void encodeObject(String key, APIObject value) {
@@ -164,13 +199,30 @@ class JSONObject extends Object with MapMixin<String, dynamic> {
     _map[key] = object.asMap();
   }
 
-  Map<String, dynamic> asMap() {
-    var m = <String, dynamic>{};
-    m.addAll(_map);
-    if (_referenceURI != null) {
-      m[r"$ref"] = _referenceURI;
-    }
+  Map<String, dynamic> _asDartMap() {
+    final m = <String, dynamic>{};
+    _map.forEach((k, v) {
+      if (v is JSONObject) {
+        m[k] = v._asDartMap();
+      } else if (v is List) {
+        m[k] = v.map((i) {
+          if (i is JSONObject) {
+            return i._asDartMap();
+          }
+          return i;
+        }).toList();
+      } else {
+        m[k] = v;
+      }
+    });
     return m;
   }
 
+  Map<String, dynamic> asMap() {
+    final m = <String, dynamic>{};
+
+    m.addAll(_map);
+
+    return m;
+  }
 }

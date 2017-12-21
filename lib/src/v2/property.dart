@@ -3,20 +3,26 @@ import 'package:open_api/src/v2/types.dart';
 import 'package:open_api/src/json_object.dart';
 
 enum APISchemaRepresentation {
-  primitive, array, object, structure, unknownOrInvalid
+  primitive,
+  array,
+  object,
+  structure,
+  unknownOrInvalid
 }
 
-enum APICollectionFormat {
-  csv, ssv, tsv, pipes
-}
+enum APICollectionFormat { csv, ssv, tsv, pipes }
 
 class APICollectionFormatCodec {
   static APICollectionFormat decode(String location) {
     switch (location) {
-      case "csv": return APICollectionFormat.csv;
-      case "ssv": return APICollectionFormat.ssv;
-      case "tsv": return APICollectionFormat.tsv;
-      case "pipes": return APICollectionFormat.pipes;
+      case "csv":
+        return APICollectionFormat.csv;
+      case "ssv":
+        return APICollectionFormat.ssv;
+      case "tsv":
+        return APICollectionFormat.tsv;
+      case "pipes":
+        return APICollectionFormat.pipes;
     }
 
     return null;
@@ -36,10 +42,10 @@ class APICollectionFormatCodec {
     return null;
   }
 }
+
 class APIProperty extends APIObject {
   APIType type;
   String format;
-
 
   APICollectionFormat collectionFormat;
   dynamic defaultValue;
@@ -66,41 +72,47 @@ class APIProperty extends APIObject {
     return APISchemaRepresentation.primitive;
   }
 
-  void decode(JSONObject json) {
-    type = APITypeCodec.decode(json.decode("type"));
-    format = json.decode("format");
-    collectionFormat = APICollectionFormatCodec.decode(json.decode("collectionFormat"));
-    defaultValue = json.decode("default");
-    maximum = json.decode("maximum");
-    exclusiveMaximum = json.decode("exclusiveMaximum");
-    minimum = json.decode("minimum");
-    exclusiveMinimum = json.decode("exclusiveMinimum");
-    maxLength = json.decode("maxLength");
-    minLength = json.decode("minLength");
-    pattern = json.decode("pattern");
-    maxItems = json.decode("maxItems");
-    minItems = json.decode("minItems");
-    uniqueItems = json.decode("uniqueItems");
-    multipleOf = json.decode("multipleOf");
-    enumerated = json.decode("enum");
+  void decode(JSONObject object) {
+    super.decode(object);
+
+    type = APITypeCodec.decode(object.decode("type"));
+    format = object.decode("format");
+    collectionFormat =
+        APICollectionFormatCodec.decode(object.decode("collectionFormat"));
+    defaultValue = object.decode("default");
+    maximum = object.decode("maximum");
+    exclusiveMaximum = object.decode("exclusiveMaximum");
+    minimum = object.decode("minimum");
+    exclusiveMinimum = object.decode("exclusiveMinimum");
+    maxLength = object.decode("maxLength");
+    minLength = object.decode("minLength");
+    pattern = object.decode("pattern");
+    maxItems = object.decode("maxItems");
+    minItems = object.decode("minItems");
+    uniqueItems = object.decode("uniqueItems");
+    multipleOf = object.decode("multipleOf");
+    enumerated = object.decode("enum");
   }
 
-  void encode(JSONObject json) {
-    json.encode("type", APITypeCodec.encode(type));
-    json.encode("format", format);
-    json.encode("collectionFormat", APICollectionFormatCodec.encode(collectionFormat));
-    json.encode("default", defaultValue);
-    json.encode("maximum", maximum );
-    json.encode("exclusiveMaximum", exclusiveMaximum);
-    json.encode("minimum", minimum);
-    json.encode("exclusiveMinimum", exclusiveMinimum);
-    json.encode("maxLength", maxLength);
-    json.encode("minLength", minLength);
-    json.encode("pattern", pattern);
-    json.encode("maxItems", maxItems);
-    json.encode("minItems", minItems);
-    json.encode("uniqueItems", uniqueItems);
-    json.encode("multipleOf", multipleOf);
-    json.encode("enum", enumerated);
+  void encode(JSONObject object) {
+    super.encode(object);
+
+    object.encode("type", APITypeCodec.encode(type));
+    object.encode("format", format);
+    object.encode(
+        "collectionFormat", APICollectionFormatCodec.encode(collectionFormat));
+    object.encode("default", defaultValue);
+    object.encode("maximum", maximum);
+    object.encode("exclusiveMaximum", exclusiveMaximum);
+    object.encode("minimum", minimum);
+    object.encode("exclusiveMinimum", exclusiveMinimum);
+    object.encode("maxLength", maxLength);
+    object.encode("minLength", minLength);
+    object.encode("pattern", pattern);
+    object.encode("maxItems", maxItems);
+    object.encode("minItems", minItems);
+    object.encode("uniqueItems", uniqueItems);
+    object.encode("multipleOf", multipleOf);
+    object.encode("enum", enumerated);
   }
 }

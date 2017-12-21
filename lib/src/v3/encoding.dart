@@ -9,13 +9,17 @@ class APIEncoding extends APIObject {
   // Currently missing:
   // style, explode, allowReserved
 
-  void decode(JSONObject json) {
-    contentType = json.decode("contentType");
-    headers = json.decodeObjectMap("headers", () => new APIHeader());
+  void decode(JSONObject object) {
+    super.decode(object);
+
+    contentType = object.decode("contentType");
+    headers = object.decodeObjectMap("headers", () => new APIHeader());
   }
 
-  void encode(JSONObject json) {
-    json.encode("contentType", contentType);
-    json.encodeObjectMap("headers", headers);
+  void encode(JSONObject object) {
+    super.encode(object);
+
+    object.encode("contentType", contentType);
+    object.encodeObjectMap("headers", headers);
   }
 }

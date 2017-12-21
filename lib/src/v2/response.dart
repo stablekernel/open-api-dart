@@ -11,15 +11,19 @@ class APIResponse extends APIObject {
   APISchemaObject schema;
   Map<String, APIHeader> headers = {};
 
-  void decode(JSONObject json) {
-    description = json.decode("description");
-    schema = json.decode("schema", inflate: () => new APISchemaObject());
-    headers = json.decodeObjectMap("headers", () => new APIHeader());
+  void decode(JSONObject object) {
+    super.decode(object);
+
+    description = object.decode("description");
+    schema = object.decode("schema", inflate: () => new APISchemaObject());
+    headers = object.decodeObjectMap("headers", () => new APIHeader());
   }
 
-  void encode(JSONObject json) {
-    json.encodeObjectMap("headers", headers);
-    json.encodeObject("schema", schema);
-    json.encode("description", description);
+  void encode(JSONObject object) {
+    super.encode(object);
+
+    object.encodeObjectMap("headers", headers);
+    object.encodeObject("schema", schema);
+    object.encode("description", description);
   }
 }

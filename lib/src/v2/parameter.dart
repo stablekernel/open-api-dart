@@ -9,11 +9,16 @@ enum APIParameterLocation { query, header, path, formData, body }
 class APIParameterLocationCodec {
   static APIParameterLocation decode(String location) {
     switch (location) {
-      case "query": return APIParameterLocation.query;
-      case "header": return APIParameterLocation.header;
-      case "path": return APIParameterLocation.path;
-      case "formData": return APIParameterLocation.formData;
-      case "body": return APIParameterLocation.body;
+      case "query":
+        return APIParameterLocation.query;
+      case "header":
+        return APIParameterLocation.header;
+      case "path":
+        return APIParameterLocation.path;
+      case "formData":
+        return APIParameterLocation.formData;
+      case "body":
+        return APIParameterLocation.body;
     }
 
     return null;

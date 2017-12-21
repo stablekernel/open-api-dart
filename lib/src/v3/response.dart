@@ -7,22 +7,26 @@ import 'package:open_api/src/v3/media_type.dart';
 class APIResponse extends APIObject {
   APIResponse();
 
-  String description = "";
+  String description;
   Map<String, APIHeader> headers = {};
   Map<String, APIMediaType> content;
 
   // Currently missing:
   // links
 
-  void decode(JSONObject json) {
-    description = json.decode("description");
-    content = json.decodeObjectMap("content", () => new APIMediaType());
-    headers = json.decodeObjectMap("headers", () => new APIHeader());
+  void decode(JSONObject object) {
+    super.decode(object);
+
+    description = object.decode("description");
+    content = object.decodeObjectMap("content", () => new APIMediaType());
+    headers = object.decodeObjectMap("headers", () => new APIHeader());
   }
 
-  void encode(JSONObject json) {
-    json.encode("description", description);
-    json.encodeObjectMap("headers", headers);
-    json.encodeObjectMap("content", content);
+  void encode(JSONObject object) {
+    super.encode(object);
+
+    object.encode("description", description);
+    object.encodeObjectMap("headers", headers);
+    object.encodeObjectMap("content", content);
   }
 }

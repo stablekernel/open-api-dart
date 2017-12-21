@@ -6,7 +6,6 @@ import 'package:open_api/src/v3/metadata.dart';
 
 import 'package:open_api/src/v3/path.dart';
 
-import 'package:open_api/src/v3/security.dart';
 import 'package:open_api/src/v3/components.dart';
 import 'package:open_api/src/v3/server.dart';
 
@@ -53,16 +52,21 @@ class APIDocument extends APIObject with JSONObjectCache {
   }
 
   void decode(JSONObject object) {
+    super.decode(object);
+
     version = object.decode("openapi");
     info = object.decode("info", inflate: () => new APIInfo());
     servers = object.decodeObjects("servers", () => new APIServerDescription());
     paths = object.decodeObjectMap("paths", () => new APIPath());
-    components = object.decode("components", inflate: () => new APIComponents());
+    components =
+        object.decode("components", inflate: () => new APIComponents());
     security = object.decode("security");
     tags = object.decodeObjects("tags", () => new APITag());
   }
 
   void encode(JSONObject object) {
+    super.encode(object);
+
     object.encode("openapi", version);
     object.encodeObject("info", info);
     object.encodeObjects("servers", servers);
@@ -72,4 +76,3 @@ class APIDocument extends APIObject with JSONObjectCache {
     object.encodeObjects("tags", tags);
   }
 }
-

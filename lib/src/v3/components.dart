@@ -13,26 +13,32 @@ class APIComponents extends APIObject {
   Map<String, APIParameter> parameters = {};
   //Map<String, APIExample> examples = {};
 
-  Map<String, APIRequestBody> requestBodies= {};
+  Map<String, APIRequestBody> requestBodies = {};
   Map<String, APIHeader> headers = {};
   Map<String, APISecurityScheme> securitySchemes = {};
   //Map<String, APILink> links = {};
   //Map<String, APICallback> callbacks = {};
 
   void decode(JSONObject object) {
+    super.decode(object);
+
     schemas = object.decodeObjectMap("schemas", () => new APISchemaObject());
     responses = object.decodeObjectMap("responses", () => new APIResponse());
     parameters = object.decodeObjectMap("parameters", () => new APIParameter());
 //    examples = object.decodeObjectMap("examples", () => new APIExample());
-    requestBodies = object.decodeObjectMap("requestBodies", () => new APIRequestBody());
+    requestBodies =
+        object.decodeObjectMap("requestBodies", () => new APIRequestBody());
     headers = object.decodeObjectMap("headers", () => new APIHeader());
 
-    securitySchemes = object.decodeObjectMap("securitySchemes", () => new APISecurityScheme());
+    securitySchemes = object.decodeObjectMap(
+        "securitySchemes", () => new APISecurityScheme());
 //    links = object.decodeObjectMap("links", () => new APILink());
 //    callbacks = object.decodeObjectMap("callbacks", () => new APICallback());
   }
 
   void encode(JSONObject object) {
+    super.encode(object);
+
     object.encodeObjectMap("schemas", schemas);
     object.encodeObjectMap("responses", responses);
     object.encodeObjectMap("parameters", parameters);
