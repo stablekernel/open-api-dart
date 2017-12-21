@@ -3,8 +3,14 @@ import 'package:open_api/src/v3/schema.dart';
 import 'package:open_api/src/v3/encoding.dart';
 import 'package:open_api/src/util.dart';
 
+/// Each [APIMediaType] provides schema and examples for the media type identified by its key.
 class APIMediaType extends APIObject {
+  /// The schema defining the type used for the request body.
   APISchemaObject schema;
+
+  /// A map between a property name and its encoding information.
+  ///
+  /// The key, being the property name, MUST exist in the schema as a property. The encoding object SHALL only apply to requestBody objects when the media type is multipart or application/x-www-form-urlencoded.
   Map<String, APIEncoding> encoding = {};
 
   void decode(JSONObject object) {

@@ -19,7 +19,6 @@ void main() {
     });
 
     test("Emits same document in asMap()", () {
-      final m = doc.asMap();
       expect(doc.asMap(), original);
     });
 
@@ -31,16 +30,16 @@ void main() {
       expect(doc.info.title, "Stripe API");
       expect(doc.info.version, "2017-08-15");
       expect(doc.info.description, "The Stripe REST API. Please see https://stripe.com/docs/api for more details.");
-      expect(doc.info.termsOfServiceURL, "https://stripe.com/us/terms/");
+      expect(doc.info.termsOfServiceURL.toString(), "https://stripe.com/us/terms/");
       expect(doc.info.contact.email, "dev-platform@stripe.com");
       expect(doc.info.contact.name, "Stripe Dev Platform Team");
-      expect(doc.info.contact.url, "https://stripe.com");
+      expect(doc.info.contact.url.toString(), "https://stripe.com");
       expect(doc.info.license, isNull);
     });
 
     test("Has servers", () {
       expect(doc.servers.length, 1);
-      expect(doc.servers.first.url, "https://api.stripe.com/");
+      expect(doc.servers.first.url.toString(), "https://api.stripe.com/");
       expect(doc.servers.first.description, isNull);
       expect(doc.servers.first.variables, isNull);
     });

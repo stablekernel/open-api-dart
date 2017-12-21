@@ -6,22 +6,147 @@ import 'package:open_api/src/v3/types.dart';
 class APISchemaObject extends APIObject {
   APISchemaObject();
 
-  /* JSON Schema */
+  /// A title for the object.
   String title;
+
+  /// The value of "maximum" MUST be a number, representing an upper limit
+  /// for a numeric instance.
+  ///
+  /// If the instance is a number, then this keyword validates if
+  /// "exclusiveMaximum" is true and instance is less than the provided
+  /// value, or else if the instance is less than or exactly equal to the
+  /// provided value.
   num maximum;
+
+  ///  The value of "exclusiveMaximum" MUST be a boolean, representing
+  ///  whether the limit in "maximum" is exclusive or not.
+  ///
+  ///  An undefined value is the same as false.
+  ///
+  ///  If "exclusiveMaximum" is true, then a numeric instance SHOULD NOT be
+  ///  equal to the value specified in "maximum".  If "exclusiveMaximum" is
+  ///  false (or not specified), then a numeric instance MAY be equal to the
+  ///  value of "maximum".
   bool exclusiveMaximum;
+
+  /// The value of "minimum" MUST be a number, representing a lower limit
+  /// for a numeric instance.
+
+  /// If the instance is a number, then this keyword validates if
+  /// "exclusiveMinimum" is true and instance is greater than the provided
+  /// value, or else if the instance is greater than or exactly equal to
+  /// the provided value.
   num minimum;
+
+  /// The value of "exclusiveMinimum" MUST be a boolean, representing
+  /// whether the limit in "minimum" is exclusive or not.  An undefined
+  /// value is the same as false.
+
+  /// If "exclusiveMinimum" is true, then a numeric instance SHOULD NOT be
+  /// equal to the value specified in "minimum".  If "exclusiveMinimum" is
+  /// false (or not specified), then a numeric instance MAY be equal to the
+  /// value of "minimum".
   bool exclusiveMinimum;
+
+  /// The value of this keyword MUST be a non-negative integer.
+  ///
+  /// The value of this keyword MUST be an integer.  This integer MUST be
+  /// greater than, or equal to, 0.
+  ///
+  /// A string instance is valid against this keyword if its length is less
+  /// than, or equal to, the value of this keyword.
+  ///
+  /// The length of a string instance is defined as the number of its
+  /// characters as defined by RFC 7159 [RFC7159].
   int maxLength;
+
+  /// A string instance is valid against this keyword if its length is
+  /// greater than, or equal to, the value of this keyword.
+  ///
+  /// The length of a string instance is defined as the number of its
+  /// characters as defined by RFC 7159 [RFC7159].
+  ///
+  /// The value of this keyword MUST be an integer.  This integer MUST be
+  /// greater than, or equal to, 0.
+  ///
+  /// "minLength", if absent, may be considered as being present with
+  /// integer value 0.
   int minLength;
+
+  /// The value of this keyword MUST be a string.  This string SHOULD be a
+  /// valid regular expression, according to the ECMA 262 regular
+  /// expression dialect.
+  ///
+  /// A string instance is considered valid if the regular expression
+  /// matches the instance successfully.  Recall: regular expressions are
+  /// not implicitly anchored.
   String pattern;
+
+  /// The value of this keyword MUST be an integer.  This integer MUST be
+  /// greater than, or equal to, 0.
+  ///
+  /// An array instance is valid against "maxItems" if its size is less
+  /// than, or equal to, the value of this keyword.
   int maxItems;
+
+  /// The value of this keyword MUST be an integer.  This integer MUST be
+  /// greater than, or equal to, 0.
+  ///
+  /// An array instance is valid against "minItems" if its size is greater
+  /// than, or equal to, the value of this keyword.
+  ///
+  /// If this keyword is not present, it may be considered present with a
+  /// value of 0.
   int minItems;
+
+  /// The value of this keyword MUST be a boolean.
+  ///
+  /// If this keyword has boolean value false, the instance validates
+  /// successfully.  If it has boolean value true, the instance validates
+  /// successfully if all of its elements are unique.
+
+  /// If not present, this keyword may be considered present with boolean
+  /// value false.
   bool uniqueItems;
+
+  /// The value of "multipleOf" MUST be a number, strictly greater than 0.
+
+  /// A numeric instance is only valid if division by this keyword's value
+  /// results in an integer.
   num multipleOf;
+
+  /// The value of this keyword MUST be an integer.  This integer MUST be
+  /// greater than, or equal to, 0.
+  ///
+  /// An object instance is valid against "maxProperties" if its number of
+  /// properties is less than, or equal to, the value of this keyword.
   int maxProperties;
+
+  /// The value of this keyword MUST be an integer.  This integer MUST be
+  /// greater than, or equal to, 0.
+  ///
+  /// An object instance is valid against "minProperties" if its number of
+  /// properties is greater than, or equal to, the value of this keyword.
+  ///
+  /// If this keyword is not present, it may be considered present with a
+  /// value of 0.
   int minProperties;
+
+  /// The value of this keyword MUST be an array.  This array MUST have at
+  /// least one element.  Elements of this array MUST be strings, and MUST
+  /// be unique.
+  ///
+  /// An object instance is valid against this keyword if its property set
+  /// contains all elements in this keyword's array value.
   List<String> required;
+
+  /// The value of this keyword MUST be an array.  This array SHOULD have
+  /// at least one element.  Elements in the array SHOULD be unique.
+  ///
+  /// Elements in the array MAY be of any type, including null.
+  ///
+  /// An instance validates successfully against this keyword if its value
+  /// is equal to one of the elements in this keyword's array value.
   List<dynamic> enumerated;
 
   /* Modified JSON Schema for OpenAPI */
@@ -41,22 +166,27 @@ class APISchemaObject extends APIObject {
   dynamic defaultValue;
 
   bool get isNullable => _nullable ?? false;
+
   set isNullable(bool n) {
     _nullable = n;
   }
 
   // APIDiscriminator discriminator;
+
   bool get isReadOnly => _readOnly ?? false;
+
   set isReadOnly(bool n) {
     _readOnly = n;
   }
 
   bool get isWriteOnly => _writeOnly ?? false;
+
   set isWriteOnly(bool n) {
     _writeOnly = n;
   }
 
   bool get isDeprecated => _deprecated ?? false;
+
   set isDeprecated(bool n) {
     _deprecated = n;
   }
@@ -95,10 +225,8 @@ class APISchemaObject extends APIObject {
     not = object.decode("not", inflate: () => new APISchemaObject());
 
     items = object.decode("items", inflate: () => new APISchemaObject());
-    properties =
-        object.decodeObjectMap("properties", () => new APISchemaObject());
-    additionalProperties = object.decode("additionalProperties",
-        inflate: () => new APISchemaObject());
+    properties = object.decodeObjectMap("properties", () => new APISchemaObject());
+    additionalProperties = object.decode("additionalProperties", inflate: () => new APISchemaObject());
 
     description = object.decode("description");
     format = object.decode("format");
