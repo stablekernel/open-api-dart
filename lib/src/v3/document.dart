@@ -2,11 +2,10 @@ import 'dart:convert';
 
 import 'package:open_api/src/json_object.dart';
 import 'package:open_api/src/util.dart';
-import 'package:open_api/src/v3/metadata.dart';
-
-import 'package:open_api/src/v3/path.dart';
-
 import 'package:open_api/src/v3/components.dart';
+import 'package:open_api/src/v3/metadata.dart';
+import 'package:open_api/src/v3/path.dart';
+import 'package:open_api/src/v3/security.dart';
 import 'package:open_api/src/v3/server.dart';
 
 /// This is the root document object of the OpenAPI document.
@@ -56,7 +55,7 @@ class APIDocument extends APIObject with JSONObjectCache {
   /// A declaration of which security mechanisms can be used across the API.
   ///
   /// The list of values includes alternative security requirement objects that can be used. Only one of the security requirement objects need to be satisfied to authorize a request. Individual operations can override this definition.
-  List<Map<String, List<String>>> security = [];
+  List<APISecurityRequirement> security = [];
 
   /// A list of tags used by the specification with additional metadata.
   ///

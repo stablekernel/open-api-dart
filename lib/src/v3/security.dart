@@ -1,6 +1,9 @@
 import 'package:open_api/src/json_object.dart';
 import 'package:open_api/src/util.dart';
 import 'package:open_api/src/v3/parameter.dart';
+import 'package:open_api/src/v3/components.dart';
+import 'package:open_api/src/v3/document.dart';
+import 'package:open_api/src/v3/operation.dart';
 
 enum APISecuritySchemeType { apiKey, http, oauth2, openID }
 
@@ -225,5 +228,36 @@ class APISecuritySchemeOAuth2Flow extends APIObject {
     refreshURL = object.decodeUri("refreshUrl");
 
     scopes = object.decode("scopes");
+  }
+}
+
+
+/// Lists the required security schemes to execute an operation.
+///
+/// The name used for each property MUST correspond to a security scheme declared in [APIComponents.securitySchemes].
+
+/// [APISecurityRequirement] that contain multiple schemes require that all schemes MUST be satisfied for a request to be authorized. This enables support for scenarios where multiple query parameters or HTTP headers are required to convey security information.
+
+/// When a list of [APISecurityRequirement] is defined on the [APIDocument] or [APIOperation], only one of [APISecurityRequirement] in the list needs to be satisfied to authorize the request.
+class APISecurityRequirement extends APIObject {
+  /// Each name MUST correspond to a security scheme which is declared in [APIComponents.securitySchemes].
+  ///
+  /// If the security scheme is of type [APISecuritySchemeType.oauth2] or [APISecuritySchemeType.openID], then the value is a list of scope names required for the execution. For other security scheme types, the array MUST be empty.
+  Map<String, List<String>> requirements = {};
+
+  void encode(JSONObject object) {
+    super.encode(object);
+
+    requirements.forEach((key, value) {
+      object.encode(key, value);
+    });
+  }
+
+  void decode(JSONObject object) {
+    super.decode(object);
+
+    object.keys.forEach((key) {
+      requirements[key] = object.decode(key);
+    });
   }
 }

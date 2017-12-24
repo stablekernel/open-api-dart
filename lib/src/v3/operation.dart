@@ -3,6 +3,7 @@ import 'package:open_api/src/v3/callback.dart';
 import 'package:open_api/src/v3/parameter.dart';
 import 'package:open_api/src/v3/response.dart';
 import 'package:open_api/src/v3/request_body.dart';
+import 'package:open_api/src/v3/security.dart';
 import 'package:open_api/src/util.dart';
 
 /// Describes a single API operation on a path.
@@ -35,7 +36,7 @@ class APIOperation extends APIObject {
   /// A declaration of which security mechanisms can be used for this operation.
   ///
   /// The list of values includes alternative security requirement objects that can be used. Only one of the security requirement objects need to be satisfied to authorize a request. This definition overrides any declared top-level security. To remove a top-level security declaration, an empty array can be used.
-  List<Map<String, List<String>>> security = [];
+  List<APISecurityRequirement> security = [];
 
   /// The request body applicable for this operation.
   ///
@@ -75,7 +76,7 @@ class APIOperation extends APIObject {
     responses = object.decodeObjectMap("responses", () => new APIResponse());
     callbacks = object.decodeObjectMap("callbacks", () => new APICallback());
     _deprecated = object.decode("deprecated");
-    security = object.decode("security");
+    security = object.decodeObjects("security", () => new APISecurityRequirement());
   }
 
   void encode(JSONObject object) {
@@ -94,6 +95,6 @@ class APIOperation extends APIObject {
     object.encodeObjectMap("responses", responses);
     object.encodeObjectMap("callbacks", callbacks);
     object.encode("deprecated", _deprecated);
-    object.encode("security", security);
+    object.encodeObjects("security", security);
   }
 }
