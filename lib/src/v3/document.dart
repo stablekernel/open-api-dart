@@ -37,12 +37,12 @@ class APIDocument extends APIObject with JSONObjectCache {
   /// Provides metadata about the API.
   ///
   /// REQUIRED. The metadata MAY be used by tooling as required.
-  APIInfo info = new APIInfo();
+  APIInfo info;
 
   /// An array of [APIServerDescription], which provide connectivity information to a target server.
   ///
   /// If the servers property is not provided, or is an empty array, the default value would be a [APIServerDescription] with a url value of /.
-  List<APIServerDescription> servers = [];
+  List<APIServerDescription> servers;
 
   /// The available paths and operations for the API.
   ///
@@ -50,17 +50,17 @@ class APIDocument extends APIObject with JSONObjectCache {
   Map<String, APIPath> paths = {};
 
   /// An element to hold various schemas for the specification.
-  APIComponents components = new APIComponents();
+  APIComponents components;
 
   /// A declaration of which security mechanisms can be used across the API.
   ///
   /// The list of values includes alternative security requirement objects that can be used. Only one of the security requirement objects need to be satisfied to authorize a request. Individual operations can override this definition.
-  List<APISecurityRequirement> security = [];
+  List<APISecurityRequirement> security;
 
   /// A list of tags used by the specification with additional metadata.
   ///
   /// The order of the tags can be used to reflect on their order by the parsing tools. Not all tags that are used by the Operation Object must be declared. The tags that are not declared MAY be organized randomly or based on the tools' logic. Each tag name in the list MUST be unique.
-  List<APITag> tags = [];
+  List<APITag> tags;
 
   JSONObject get root => _root;
   JSONObject _root;

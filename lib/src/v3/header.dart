@@ -1,3 +1,4 @@
+import 'package:open_api/src/json_object.dart';
 import 'package:open_api/src/v3/parameter.dart';
 
 /// [APIHeader] follows the structure of the [APIParameter] with the following changes:
@@ -6,8 +7,16 @@ import 'package:open_api/src/v3/parameter.dart';
 /// in MUST NOT be specified, it is implicitly in header.
 /// All traits that are affected by the location MUST be applicable to a location of header (for example, style).
 class APIHeader extends APIParameter {
-  APIHeader() : super();
+  APIHeader() : super() {
+    name = null;
+    location = APIParameterLocation.header;
+  }
 
-  final String name = null;
-  final APIParameterLocation location = APIParameterLocation.header;
+  @override
+  void encode(JSONObject object) {
+    name = "temporary";
+    super.encode(object);
+    object.remove("name");
+    name = null;
+  }
 }

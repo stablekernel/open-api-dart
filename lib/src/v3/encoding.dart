@@ -13,7 +13,7 @@ class APIEncoding extends APIObject {
   /// A map allowing additional information to be provided as headers, for example Content-Disposition.
   ///
   /// Content-Type is described separately and SHALL be ignored in this section. This property SHALL be ignored if the request body media type is not a multipart.
-  Map<String, APIHeader> headers = {};
+  Map<String, APIHeader> headers;
 
   /// Determines whether the parameter value SHOULD allow reserved characters, as defined by RFC3986 :/?#[]@!$&'()*+,;= to be included without percent-encoding.
   ///

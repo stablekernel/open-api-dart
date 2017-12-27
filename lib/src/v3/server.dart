@@ -16,7 +16,7 @@ class APIServerDescription extends APIObject {
   /// A map between a variable name and its value.
   ///
   /// The value is used for substitution in the server's URL template.
-  Map<String, APIServerVariable> variables = {};
+  Map<String, APIServerVariable> variables;
 
   void decode(JSONObject object) {
     super.decode(object);

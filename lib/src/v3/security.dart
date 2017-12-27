@@ -89,7 +89,7 @@ class APISecurityScheme extends APIObject {
   /// Fixed keys are implicit, password, clientCredentials and authorizationCode.
   ///
   /// For oauth2 only. REQUIRED if so.
-  Map<String, APISecuritySchemeOAuth2Flow> flows = {};
+  Map<String, APISecuritySchemeOAuth2Flow> flows;
 
   /// OpenId Connect URL to discover OAuth2 configuration values.
   ///
@@ -243,7 +243,7 @@ class APISecurityRequirement extends APIObject {
   /// Each name MUST correspond to a security scheme which is declared in [APIComponents.securitySchemes].
   ///
   /// If the security scheme is of type [APISecuritySchemeType.oauth2] or [APISecuritySchemeType.openID], then the value is a list of scope names required for the execution. For other security scheme types, the array MUST be empty.
-  Map<String, List<String>> requirements = {};
+  Map<String, List<String>> requirements;
 
   void encode(JSONObject object) {
     super.encode(object);

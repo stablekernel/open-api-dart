@@ -67,6 +67,11 @@ class APIParameterLocationCodec {
 class APIParameter extends APIObject {
   APIParameter();
 
+  APIParameter.header(this.name, {this.schema}) : location = APIParameterLocation.header;
+  APIParameter.query(this.name, {this.schema}) : location = APIParameterLocation.query;
+  APIParameter.path(this.name) : location = APIParameterLocation.path, schema = new APISchemaObject.string(), _required = true;
+  APIParameter.cookie(this.name, {this.schema}) : location = APIParameterLocation.cookie;
+
   /// The name of the parameter.
   ///
   /// REQUIRED. Parameter names are case sensitive.
@@ -149,7 +154,7 @@ class APIParameter extends APIObject {
   /// A map containing the representations for the parameter.
   ///
   /// The key is the media type and the value describes it. The map MUST only contain one entry.
-  Map<String, APIMediaType> content = {};
+  Map<String, APIMediaType> content;
 
   // Currently missing:
   // example, examples

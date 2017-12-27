@@ -6,6 +6,22 @@ import 'package:open_api/src/v3/types.dart';
 class APISchemaObject extends APIObject {
   APISchemaObject();
 
+  APISchemaObject.string({this.format}) : type = APIType.string;
+  APISchemaObject.number() : type = APIType.number;
+  APISchemaObject.integer() : type = APIType.integer;
+  APISchemaObject.boolean() : type = APIType.boolean;
+  APISchemaObject.array({APIType ofType, APISchemaObject ofSchema}) : type = APIType.array {
+    if (ofType != null) {
+      items = new APISchemaObject()..type = ofType;
+    } else if (ofSchema != null) {
+      items = ofSchema;
+    } else {
+      throw new APIException("Invalid 'APISchemaObject.array' with neither 'ofType' or 'ofSchema' specified.");
+    }
+  }
+  APISchemaObject.object(this.properties): type = APIType.object;
+
+
   /// A title for the object.
   String title;
 

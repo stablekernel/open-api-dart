@@ -11,7 +11,7 @@ class APIInfo extends APIObject {
   /// The title of the application.
   ///
   /// REQUIRED.
-  String title = "Default";
+  String title;
 
   /// A short description of the application.
   ///
@@ -21,7 +21,7 @@ class APIInfo extends APIObject {
   /// The version of the OpenAPI document (which is distinct from the OpenAPI Specification version or the API implementation version).
   ///
   /// REQUIRED.
-  String version = "1.0";
+  String version;
 
   /// A URL to the Terms of Service for the API.
   ///
@@ -29,10 +29,10 @@ class APIInfo extends APIObject {
   Uri termsOfServiceURL;
 
   /// The contact information for the exposed API.
-  APIContact contact = new APIContact();
+  APIContact contact;
 
   /// The license information for the exposed API.
-  APILicense license = new APILicense();
+  APILicense license;
 
   void decode(JSONObject object) {
     super.decode(object);

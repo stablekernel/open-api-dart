@@ -15,7 +15,7 @@ class APIResponse extends APIObject {
   /// Maps a header name to its definition.
   ///
   /// RFC7230 states header names are case insensitive. If a response header is defined with the name "Content-Type", it SHALL be ignored.
-  Map<String, APIHeader> headers = {};
+  Map<String, APIHeader> headers;
 
   /// A map containing descriptions of potential response payloads.
   ///
