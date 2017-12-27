@@ -1,4 +1,4 @@
-enum APIType { string, number, integer, boolean, array, file, object }
+enum APIType { string, number, integer, boolean, array, object }
 
 class APITypeCodec {
   static APIType decode(String type) {
@@ -13,8 +13,6 @@ class APITypeCodec {
         return APIType.boolean;
       case "array":
         return APIType.array;
-      case "file":
-        return APIType.file;
       case "object":
         return APIType.object;
     }
@@ -33,8 +31,6 @@ class APITypeCodec {
         return "boolean";
       case APIType.array:
         return "array";
-      case APIType.file:
-        return "file";
       case APIType.object:
         return "object";
     }

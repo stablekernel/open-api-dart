@@ -20,7 +20,7 @@ class APISchemaObject extends APIObject {
     }
   }
   APISchemaObject.object(this.properties): type = APIType.object;
-
+  APISchemaObject.file({bool isBase64Encoded: false}) : type = APIType.string, format = isBase64Encoded ? "byte" : "binary";
 
   /// A title for the object.
   String title;
