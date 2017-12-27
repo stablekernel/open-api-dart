@@ -37,6 +37,38 @@ class APIComponents extends APIObject {
   /// An object to hold reusable [APICallback].
   Map<String, APICallback> callbacks = {};
 
+  T resolve<T extends APIObject>(T refObject) {
+    if (refObject.referenceURI == null) {
+      throw new APIException("APIObject is not a reference to a component.");
+    }
+
+    final segments = Uri.parse(Uri.parse(refObject.referenceURI).fragment).pathSegments;
+    if (segments.length != 3) {
+      throw new APIException("Invalid reference URI: must be of form #/components/<type>/<name>");
+    }
+
+    if (segments.first != "components") {
+      throw new APIException("Invalid reference URI: does not begin with #/components/");
+    }
+
+    var namedMap = null;
+    switch (segments[1]) {
+      case "schemas": namedMap = schemas; break;
+      case "responses": namedMap = responses; break;
+      case "parameters": namedMap = parameters; break;
+      case "requestBodies": namedMap = requestBodies; break;
+      case "headers": namedMap = headers; break;
+      case "securitySchemes": namedMap = securitySchemes; break;
+      case "callbacks": namedMap = callbacks; break;
+    }
+
+    if (namedMap == null) {
+      throw new APIException("Invalid reference URI: component type '${segments[1]}' does not exist");
+    }
+
+    return namedMap[segments.last];
+  }
+
   void decode(JSONObject object) {
     super.decode(object);
 

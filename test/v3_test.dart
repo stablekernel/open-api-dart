@@ -4,6 +4,48 @@ import 'dart:io';
 import 'dart:convert';
 
 void main() {
+
+  group("Resolution", () {
+    test("Can resolve object against registry", () {
+      final components = new APIComponents();
+      components.schemas["foo"] = new APISchemaObject.string();
+
+      final ref = new APISchemaObject()..referenceURI = "#/components/schemas/foo" ;
+      final orig = components.resolve(ref);
+      expect(orig.type, APIType.string);
+      expect(ref.type, isNull);
+    });
+
+    test("Invalid ref uri format throws error", () {
+      final components = new APIComponents();
+      try {
+        components.resolve(new APISchemaObject()..referenceURI = "/components/schemas/foo");
+        expect(true, false);
+      } on APIException catch (e) {
+        expect(e.message, contains("Invalid reference URI"));
+      }
+
+      try {
+        components.resolve(new APISchemaObject()..referenceURI = "#/components/schemas");
+        expect(true, false);
+      } on APIException catch (e) {
+        expect(e.message, contains("Invalid reference URI"));
+      }
+
+      try {
+        components.resolve(new APISchemaObject()..referenceURI = "/components/foobar/foo");
+        expect(true, false);
+      } on APIException catch (e) {
+        expect(e.message, contains("Invalid reference URI"));
+      }
+    });
+
+    test("Nonexisting component returns null", () {
+      final components = new APIComponents();
+      expect(components.resolve(new APISchemaObject()..referenceURI = "#/components/schemas/foo"), isNull);
+    });
+  });
+
   group("Stripe spec", () {
     APIDocument doc;
     Map<String, dynamic> original;
