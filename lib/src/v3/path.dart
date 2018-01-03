@@ -27,6 +27,19 @@ class APIPath extends APIObject {
   /// Keys are lowercased HTTP methods, e.g. get, put, delete, post, etc.
   Map<String, APIOperation> operations = {};
 
+  /// Returns true if this path has path parameters [parameterNames].
+  ///
+  /// Returns true if [parameters] contains path parameters with names that match [parameterNames] and
+  /// both lists have the same number of elements.
+  bool hasPathParameters(List<String> parameterNames) {
+    final pathParams = parameters.where((p) => p.location == APIParameterLocation.path).map((p) => p.name).toList();
+    if (pathParams.length != parameterNames.length) {
+      return false;
+    }
+
+    return parameterNames.every((check) => pathParams.contains(check));
+  }
+
   // todo (joeconwaystk): alternative servers not yet implemented
 
   void decode(JSONObject object) {
@@ -41,22 +54,12 @@ class APIPath extends APIObject {
     description = object.decode("description");
     parameters = object.decodeObjects("parameters", () => new APIParameter());
 
-    final methodNames = [
-      "get",
-      "put",
-      "post",
-      "delete",
-      "options",
-      "head",
-      "patch",
-      "trace"
-    ];
+    final methodNames = ["get", "put", "post", "delete", "options", "head", "patch", "trace"];
     methodNames.forEach((methodName) {
       if (!object.containsKey(methodName)) {
         return;
       }
-      operations[methodName] =
-          object.decode(methodName, inflate: () => new APIOperation());
+      operations[methodName] = object.decode(methodName, inflate: () => new APIOperation());
     });
   }
 
