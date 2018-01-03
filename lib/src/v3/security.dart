@@ -101,7 +101,7 @@ class APISecurityScheme extends APIObject {
   void decode(JSONObject object) {
     super.decode(object);
 
-    type = object.decode("type");
+    type = APISecuritySchemeTypeCodec.decode(object.decode("type"));
     description = object.decode("description");
 
     switch (type) {
@@ -137,7 +137,7 @@ class APISecurityScheme extends APIObject {
       throw new APIException("APISecurityScheme must have non-null values for: 'type'.");
     }
 
-    object.encode("type", type);
+    object.encode("type", APISecuritySchemeTypeCodec.encode(type));
     object.encode("description", description);
 
     switch (type) {
