@@ -43,7 +43,7 @@ class APISecuritySchemeTypeCodec {
 class APISecurityScheme extends APIObject {
   APISecurityScheme();
 
-  APISecurityScheme.http() : type = APISecuritySchemeType.http;
+  APISecurityScheme.http(this.scheme) : type = APISecuritySchemeType.http;
 
   APISecurityScheme.apiKey(this.name, this.location) : type = APISecuritySchemeType.apiKey;
 
