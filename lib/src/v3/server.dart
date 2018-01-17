@@ -3,6 +3,8 @@ import 'package:open_api/src/util.dart';
 
 /// An object representing a Server.
 class APIServerDescription extends APIObject {
+  APIServerDescription.empty();
+  APIServerDescription(this.url, {this.description, this.variables});
   /// A URL to the target host.
   ///
   /// REQUIRED. This URL supports Server Variables and MAY be relative, to indicate that the host location is relative to the location where the OpenAPI document is being served. Variable substitutions will be made when a variable is named in {brackets}.
@@ -24,7 +26,7 @@ class APIServerDescription extends APIObject {
     url = object.decodeUri("url");
     description = object.decode("description");
     variables =
-        object.decodeObjectMap("variables", () => new APIServerVariable());
+        object.decodeObjectMap("variables", () => new APIServerVariable.empty());
   }
 
   void encode(JSONObject object) {
@@ -42,6 +44,9 @@ class APIServerDescription extends APIObject {
 
 /// An object representing a Server Variable for server URL template substitution.
 class APIServerVariable extends APIObject {
+  APIServerVariable.empty();
+  APIServerVariable(this.defaultValue, {this.availableValues, this.description});
+
   /// An enumeration of string values to be used if the substitution options are from a limited set.
   List<String> availableValues;
 

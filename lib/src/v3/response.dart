@@ -5,7 +5,8 @@ import 'package:open_api/src/v3/media_type.dart';
 
 /// Describes a single response from an API Operation, including design-time, static links to operations based on the response.
 class APIResponse extends APIObject {
-  APIResponse();
+  APIResponse.empty();
+  APIResponse(this.description, {this.content, this.headers});
 
   /// A short description of the response.
   ///

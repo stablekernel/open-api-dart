@@ -5,7 +5,7 @@ import 'package:open_api/src/util.dart';
 
 /// Each [APIMediaType] provides schema and examples for the media type identified by its key.
 class APIMediaType extends APIObject {
-  APIMediaType({this.schema});
+  APIMediaType({this.schema, this.encoding});
 
   /// The schema defining the type used for the request body.
   APISchemaObject schema;

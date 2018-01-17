@@ -8,7 +8,11 @@ import 'package:open_api/src/util.dart';
 
 /// Describes a single API operation on a path.
 class APIOperation extends APIObject {
-  APIOperation();
+  APIOperation.empty();
+
+  APIOperation(this.id, this.responses, {this.tags, this.summary, this.description, this.parameters, this.security, this.requestBody, this.callbacks, bool deprecated}) {
+    isDeprecated = deprecated;
+  }
 
   /// A list of tags for API documentation control.
   ///
@@ -71,12 +75,12 @@ class APIOperation extends APIObject {
     summary = object.decode("summary");
     description = object.decode("description");
     id = object.decode("operationId");
-    parameters = object.decodeObjects("parameters", () => new APIParameter());
-    requestBody = object.decode("requestBody", inflate: () => new APIRequestBody());
-    responses = object.decodeObjectMap("responses", () => new APIResponse());
+    parameters = object.decodeObjects("parameters", () => new APIParameter.empty());
+    requestBody = object.decode("requestBody", inflate: () => new APIRequestBody.empty());
+    responses = object.decodeObjectMap("responses", () => new APIResponse.empty());
     callbacks = object.decodeObjectMap("callbacks", () => new APICallback());
     _deprecated = object.decode("deprecated");
-    security = object.decodeObjects("security", () => new APISecurityRequirement());
+    security = object.decodeObjects("security", () => new APISecurityRequirement.empty());
   }
 
   void encode(JSONObject object) {

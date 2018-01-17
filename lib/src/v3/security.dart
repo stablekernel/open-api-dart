@@ -113,7 +113,7 @@ class APISecurityScheme extends APIObject {
         break;
       case APISecuritySchemeType.oauth2:
         {
-          flows = object.decodeObjectMap("flows", () => new APISecuritySchemeOAuth2Flow());
+          flows = object.decodeObjectMap("flows", () => new APISecuritySchemeOAuth2Flow.empty());
         }
         break;
       case APISecuritySchemeType.http:
@@ -185,6 +185,9 @@ class APISecurityScheme extends APIObject {
 
 /// Allows configuration of the supported OAuth Flows.
 class APISecuritySchemeOAuth2Flow extends APIObject {
+  APISecuritySchemeOAuth2Flow.empty();
+  APISecuritySchemeOAuth2Flow(this.authorizationURL, this.tokenURL, this.scopes, {this.refreshURL});
+
   /// The authorization URL to be used for this flow.
   ///
   /// REQUIRED. This MUST be in the form of a URL.
@@ -240,6 +243,9 @@ class APISecuritySchemeOAuth2Flow extends APIObject {
 
 /// When a list of [APISecurityRequirement] is defined on the [APIDocument] or [APIOperation], only one of [APISecurityRequirement] in the list needs to be satisfied to authorize the request.
 class APISecurityRequirement extends APIObject {
+  APISecurityRequirement.empty();
+  APISecurityRequirement(this.requirements);
+
   /// Each name MUST correspond to a security scheme which is declared in [APIComponents.securitySchemes].
   ///
   /// If the security scheme is of type [APISecuritySchemeType.oauth2] or [APISecuritySchemeType.openID], then the value is a list of scope names required for the execution. For other security scheme types, the array MUST be empty.

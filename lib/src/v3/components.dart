@@ -12,6 +12,8 @@ import 'package:open_api/src/v3/request_body.dart';
 ///
 /// All objects defined within the components object will have no effect on the API unless they are explicitly referenced from properties outside the components object.
 class APIComponents extends APIObject {
+  APIComponents({this.schemas, this.responses, this.parameters, this.requestBodies, this.headers, this.securitySchemes, this.callbacks});
+
   /// An object to hold reusable [APISchemaObject].
   Map<String, APISchemaObject> schemas = {};
 
@@ -73,11 +75,11 @@ class APIComponents extends APIObject {
     super.decode(object);
 
     schemas = object.decodeObjectMap("schemas", () => new APISchemaObject());
-    responses = object.decodeObjectMap("responses", () => new APIResponse());
-    parameters = object.decodeObjectMap("parameters", () => new APIParameter());
+    responses = object.decodeObjectMap("responses", () => new APIResponse.empty());
+    parameters = object.decodeObjectMap("parameters", () => new APIParameter.empty());
 //    examples = object.decodeObjectMap("examples", () => new APIExample());
     requestBodies =
-        object.decodeObjectMap("requestBodies", () => new APIRequestBody());
+        object.decodeObjectMap("requestBodies", () => new APIRequestBody.empty());
     headers = object.decodeObjectMap("headers", () => new APIHeader());
 
     securitySchemes = object.decodeObjectMap(

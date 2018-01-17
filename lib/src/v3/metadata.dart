@@ -5,8 +5,10 @@ import 'package:open_api/src/util.dart';
 ///
 /// The metadata MAY be used by the clients if needed, and MAY be presented in editing or documentation generation tools for convenience.
 class APIInfo extends APIObject {
+  APIInfo.empty();
+
   /// Creates empty metadata for specification.
-  APIInfo();
+  APIInfo(this.title, this.version, {this.description, this.termsOfServiceURL, this.license, this.contact});
 
   /// The title of the application.
   ///
@@ -41,7 +43,7 @@ class APIInfo extends APIObject {
     description = object.decode("description");
     termsOfServiceURL = object.decodeUri("termsOfService");
     contact = object.decode("contact", inflate: () => new APIContact());
-    license = object.decode("license", inflate: () => new APILicense());
+    license = object.decode("license", inflate: () => new APILicense.empty());
     version = object.decode("version");
   }
 
@@ -63,7 +65,7 @@ class APIInfo extends APIObject {
 
 /// Contact information for the exposed API.
 class APIContact extends APIObject {
-  APIContact();
+  APIContact({this.name, this.url, this.email});
 
   /// The identifying name of the contact person/organization.
   String name;
@@ -97,7 +99,8 @@ class APIContact extends APIObject {
 
 /// License information for the exposed API.
 class APILicense extends APIObject {
-  APILicense();
+  APILicense.empty();
+  APILicense(this.name, {this.url});
 
   /// The license name used for the API.
   ///
@@ -132,7 +135,9 @@ class APILicense extends APIObject {
 ///
 /// It is not mandatory to have a [APITag] per tag defined in the [APIOperation] instances.
 class APITag extends APIObject {
-  APITag();
+  APITag.empty();
+
+  APITag(this.name, {this.description});
 
   /// The name of the tag.
   ///

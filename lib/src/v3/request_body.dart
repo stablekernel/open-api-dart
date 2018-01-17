@@ -4,6 +4,12 @@ import 'package:open_api/src/v3/media_type.dart';
 
 /// Describes a single request body.
 class APIRequestBody extends APIObject {
+  APIRequestBody.empty();
+
+  APIRequestBody(this.content, {this.description, bool required}) {
+    this.isRequired = required;
+  }
+
   /// A brief description of the request body.
   ///
   /// This could contain examples of use. CommonMark syntax MAY be used for rich text representation.

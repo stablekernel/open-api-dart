@@ -65,12 +65,83 @@ class APIParameterLocationCodec {
 ///
 /// A unique parameter is defined by a combination of a [name] and [location].
 class APIParameter extends APIObject {
-  APIParameter();
+  APIParameter.empty();
 
-  APIParameter.header(this.name, {this.schema}) : location = APIParameterLocation.header;
-  APIParameter.query(this.name, {this.schema}) : location = APIParameterLocation.query;
-  APIParameter.path(this.name) : location = APIParameterLocation.path, schema = new APISchemaObject.string(), _required = true;
-  APIParameter.cookie(this.name, {this.schema}) : location = APIParameterLocation.cookie;
+  APIParameter(this.name, this.location,
+      {this.description,
+      this.schema,
+      this.content,
+      this.style,
+      bool required,
+      bool deprecated,
+      bool allowEmptyValue,
+      bool explode,
+      bool allowReserved}) {
+    this.isRequired = required;
+    this.isDeprecated = deprecated;
+    this.allowEmptyValue = allowEmptyValue;
+    this.allowReserved = allowReserved;
+    this.explode = explode;
+  }
+
+  APIParameter.header(this.name,
+      {this.description,
+      this.schema,
+      this.content,
+      this.style,
+      bool required,
+      bool deprecated,
+      bool allowEmptyValue,
+      bool explode,
+      bool allowReserved}) {
+    this.isRequired = required;
+    this.isDeprecated = deprecated;
+    this.allowEmptyValue = allowEmptyValue;
+    this.allowReserved = allowReserved;
+    this.explode = explode;
+    this.location = APIParameterLocation.header;
+  }
+
+  APIParameter.query(this.name,
+      {this.description,
+      this.schema,
+      this.content,
+      this.style,
+      bool required,
+      bool deprecated,
+      bool allowEmptyValue,
+      bool explode,
+      bool allowReserved}) {
+    this.isRequired = required;
+    this.isDeprecated = deprecated;
+    this.allowEmptyValue = allowEmptyValue;
+    this.allowReserved = allowReserved;
+    this.explode = explode;
+    this.location = APIParameterLocation.query;
+  }
+
+  APIParameter.path(this.name)
+      : location = APIParameterLocation.path,
+        schema = new APISchemaObject.string(),
+        _required = true;
+
+  APIParameter.cookie(this.name,
+      {this.description,
+      this.schema,
+      this.content,
+      this.style,
+      bool required,
+      bool deprecated,
+      bool allowEmptyValue,
+      bool explode,
+      bool allowReserved}) {
+    this.isRequired = required;
+    this.isDeprecated = deprecated;
+    this.allowEmptyValue = allowEmptyValue;
+    this.allowReserved = allowReserved;
+    this.explode = explode;
+    this.location = APIParameterLocation.cookie;
+  }
 
   /// The name of the parameter.
   ///

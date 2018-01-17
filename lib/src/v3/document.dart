@@ -79,13 +79,13 @@ class APIDocument extends APIObject with JSONObjectCache {
     super.decode(object);
 
     version = object.decode("openapi");
-    info = object.decode("info", inflate: () => new APIInfo());
-    servers = object.decodeObjects("servers", () => new APIServerDescription());
+    info = object.decode("info", inflate: () => new APIInfo.empty());
+    servers = object.decodeObjects("servers", () => new APIServerDescription.empty());
     paths = object.decodeObjectMap("paths", () => new APIPath());
     components =
         object.decode("components", inflate: () => new APIComponents());
     security = object.decode("security");
-    tags = object.decodeObjects("tags", () => new APITag());
+    tags = object.decodeObjects("tags", () => new APITag.empty());
   }
 
   void encode(JSONObject object) {

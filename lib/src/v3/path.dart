@@ -7,7 +7,7 @@ import 'package:open_api/src/v3/parameter.dart';
 ///
 /// An [APIPath] MAY be empty, due to ACL constraints. The path itself is still exposed to the documentation viewer but they will not know which operations and parameters are available.
 class APIPath extends APIObject {
-  APIPath();
+  APIPath({this.summary, this.description, this.parameters, this.operations});
 
   /// An optional, string summary, intended to apply to all operations in this path.
   String summary;
@@ -52,14 +52,14 @@ class APIPath extends APIObject {
 
     summary = object.decode("summary");
     description = object.decode("description");
-    parameters = object.decodeObjects("parameters", () => new APIParameter());
+    parameters = object.decodeObjects("parameters", () => new APIParameter.empty());
 
     final methodNames = ["get", "put", "post", "delete", "options", "head", "patch", "trace"];
     methodNames.forEach((methodName) {
       if (!object.containsKey(methodName)) {
         return;
       }
-      operations[methodName] = object.decode(methodName, inflate: () => new APIOperation());
+      operations[methodName] = object.decode(methodName, inflate: () => new APIOperation.empty());
     });
   }
 
