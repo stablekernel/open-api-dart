@@ -1,6 +1,7 @@
 import 'package:open_api/src/json_object.dart';
 import 'package:open_api/src/util.dart';
 import 'package:open_api/src/v3/media_type.dart';
+import 'package:open_api/src/v3/schema.dart';
 
 /// Describes a single request body.
 class APIRequestBody extends APIObject {
@@ -8,6 +9,14 @@ class APIRequestBody extends APIObject {
 
   APIRequestBody(this.content, {this.description, bool required}) {
     this.isRequired = required;
+  }
+
+  APIRequestBody.schema(APISchemaObject schema, {Iterable<String> contentTypes : const ["application/json"], this.description, bool required}) {
+    this.isRequired = required;
+    this.content = contentTypes.fold({}, (prev, elem) {
+      prev[elem] = new APIMediaType(schema: schema);
+      return prev;
+    });
   }
 
   /// A brief description of the request body.

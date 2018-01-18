@@ -2,11 +2,18 @@ import 'package:open_api/src/json_object.dart';
 import 'package:open_api/src/util.dart';
 import 'package:open_api/src/v3/header.dart';
 import 'package:open_api/src/v3/media_type.dart';
+import 'package:open_api/src/v3/schema.dart';
 
 /// Describes a single response from an API Operation, including design-time, static links to operations based on the response.
 class APIResponse extends APIObject {
   APIResponse.empty();
   APIResponse(this.description, {this.content, this.headers});
+  APIResponse.schema(this.description, APISchemaObject schema, {Iterable<String> contentTypes: const ["application/json"], this.headers}) {
+    content = contentTypes.fold({}, (prev, elem) {
+      prev[elem] = new APIMediaType(schema: schema);
+      return prev;
+    });
+  }
 
   /// A short description of the response.
   ///
