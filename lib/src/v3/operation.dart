@@ -10,7 +10,15 @@ import 'package:open_api/src/util.dart';
 class APIOperation extends APIObject {
   APIOperation.empty();
 
-  APIOperation(this.id, this.responses, {this.tags, this.summary, this.description, this.parameters, this.security, this.requestBody, this.callbacks, bool deprecated}) {
+  APIOperation(this.id, this.responses,
+      {this.tags,
+      this.summary,
+      this.description,
+      this.parameters,
+      this.security,
+      this.requestBody,
+      this.callbacks,
+      bool deprecated}) {
     isDeprecated = deprecated;
   }
 
@@ -67,6 +75,8 @@ class APIOperation extends APIObject {
   }
 
   bool _deprecated = false;
+
+  APIParameter parameterNamed(String name) => parameters?.firstWhere((p) => p.name == name, orElse: () => null);
 
   void decode(JSONObject object) {
     super.decode(object);
