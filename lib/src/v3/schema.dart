@@ -5,6 +5,7 @@ import 'package:open_api/src/v3/types.dart';
 /// Represents a schema object in the OpenAPI specification.
 class APISchemaObject extends APIObject {
   APISchemaObject();
+  APISchemaObject.empty();
 
   APISchemaObject.string({this.format}) : type = APIType.string;
   APISchemaObject.number() : type = APIType.number;

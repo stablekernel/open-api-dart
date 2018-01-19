@@ -66,6 +66,7 @@ class APIInfo extends APIObject {
 /// Contact information for the exposed API.
 class APIContact extends APIObject {
   APIContact({this.name, this.url, this.email});
+  APIContact.empty();
 
   /// The identifying name of the contact person/organization.
   String name;

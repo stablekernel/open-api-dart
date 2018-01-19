@@ -9,6 +9,9 @@ class APIEncoding extends APIObject {
     this.allowReserved = allowReserved;
     this.explode = explode;
   }
+
+  APIEncoding.empty();
+
   /// The Content-Type for encoding a specific property.
   ///
   /// Default value depends on the property type: for string with format being binary – application/octet-stream; for other primitive types – text/plain; for object - application/json; for array – the default is defined based on the inner type. The value can be a specific media type (e.g. application/json), a wildcard media type (e.g. image/*), or a comma-separated list of the two types.

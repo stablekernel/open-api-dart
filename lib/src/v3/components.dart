@@ -14,6 +14,8 @@ import 'package:open_api/src/v3/request_body.dart';
 class APIComponents extends APIObject {
   APIComponents();
 
+  APIComponents.empty();
+
   /// An object to hold reusable [APISchemaObject].
   Map<String, APISchemaObject> schemas = {};
 

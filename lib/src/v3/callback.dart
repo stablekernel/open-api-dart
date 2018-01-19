@@ -7,6 +7,7 @@ import 'package:open_api/src/util.dart';
 /// Each value in the map is a [APIPath] that describes a set of requests that may be initiated by the API provider and the expected responses. The key value used to identify the callback object is an expression, evaluated at runtime, that identifies a URL to use for the callback operation.
 class APICallback extends APIObject {
   APICallback({this.paths});
+  APICallback.empty();
 
   /// Callback paths.
   ///

@@ -9,6 +9,7 @@ import 'package:open_api/src/v3/schema.dart';
 /// All traits that are affected by the location MUST be applicable to a location of header (for example, style).
 class APIHeader extends APIParameter {
   APIHeader({APISchemaObject schema}) : super.header(null, schema: schema);
+  APIHeader.empty() : super.header(null);
 
   @override
   void encode(JSONObject object) {

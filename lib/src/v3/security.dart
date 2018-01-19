@@ -42,6 +42,7 @@ class APISecuritySchemeTypeCodec {
 /// Supported schemes are HTTP authentication, an API key (either as a header or as a query parameter), OAuth2's common flows (implicit, password, application and access code) as defined in RFC6749, and OpenID Connect Discovery.
 class APISecurityScheme extends APIObject {
   APISecurityScheme();
+  APISecurityScheme.empty();
 
   APISecurityScheme.http(this.scheme) : type = APISecuritySchemeType.http;
 
