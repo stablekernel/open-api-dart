@@ -76,7 +76,17 @@ class APIOperation extends APIObject {
 
   bool _deprecated = false;
 
+  /// Returns the parameter named [name] or null if it doesn't exist.
   APIParameter parameterNamed(String name) => parameters?.firstWhere((p) => p.name == name, orElse: () => null);
+
+  /// Adds [parameter] to [parameters].
+  ///
+  /// If [parameters] is null, invoking this method will set it to a list containing [parameter].
+  /// Otherwise, [parameter] is added to [parameters].
+  void addParameter(APIParameter parameter) {
+    parameters ??= [];
+    parameters.add(parameter);
+  }
 
   void decode(JSONObject object) {
     super.decode(object);
