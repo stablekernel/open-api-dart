@@ -1,8 +1,8 @@
 import 'dart:collection';
 import 'package:open_api/src/util.dart';
 
-abstract class JSONObjectCache {
-  JSONObject get root;
+class JSONDecodingContext {
+  JSONObject root;
 
   JSONObject resolve(Uri ref) {
     return ref.pathSegments.fold(root._map, (objectPtr, pathSegment) {
@@ -14,7 +14,7 @@ abstract class JSONObjectCache {
 class JSONObject extends Object with MapMixin<String, dynamic> {
   JSONObject._empty();
 
-  JSONObject(Map<String, dynamic> map, this.cache) {
+  JSONObject(Map<String, dynamic> map, this.decodingContext) {
     _map = map;
 
     if (map.containsKey(r"$ref")) {
@@ -29,7 +29,7 @@ class JSONObject extends Object with MapMixin<String, dynamic> {
   Uri _referenceURI;
 
   APIObject _representation;
-  JSONObjectCache cache;
+  JSONDecodingContext decodingContext;
 
   operator []=(String key, dynamic value) {
     _map[key] = value;
@@ -41,9 +41,8 @@ class JSONObject extends Object with MapMixin<String, dynamic> {
 
   Iterable<String> get keys {
     if (_referenceURI != null) {
-      var ref = cache.resolve(_referenceURI);
+      var ref = decodingContext.resolve(_referenceURI);
       return [ref.keys, _map.keys].expand((k) => k);
-
     }
 
     return _map.keys;
@@ -58,7 +57,7 @@ class JSONObject extends Object with MapMixin<String, dynamic> {
     }
 
     if (_referenceURI != null) {
-      var m = cache.resolve(_referenceURI);
+      var m = decodingContext.resolve(_referenceURI);
       var v = m._getValue(key);
       if (v != null) {
         return v;
@@ -148,7 +147,7 @@ class JSONObject extends Object with MapMixin<String, dynamic> {
       return {r"$ref": object.referenceURI};
     }
 
-    var json = new JSONObject({}, cache);
+    var json = new JSONObject({}, decodingContext);
     object.encode(json);
     return json.asMap();
   }
@@ -191,7 +190,7 @@ class JSONObject extends Object with MapMixin<String, dynamic> {
       return;
     }
 
-    var object = new JSONObject({}, cache);
+    var object = new JSONObject({}, decodingContext);
     value.forEach((k, v) {
       object.encodeObject(k, v);
     });

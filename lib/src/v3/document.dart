@@ -9,24 +9,24 @@ import 'package:open_api/src/v3/security.dart';
 import 'package:open_api/src/v3/server.dart';
 
 /// This is the root document object of the OpenAPI document.
-class APIDocument extends APIObject with JSONObjectCache {
+class APIDocument extends APIObject {
   /// Creates an empty specification.
   APIDocument();
 
   /// Creates a specification from JSON encoded string.
   APIDocument.fromJSON(String jsonString) {
-    _root = JSON.decode(jsonString, reviver: (k, v) {
+    final ctx = new JSONDecodingContext();
+    final root = JSON.decode(jsonString, reviver: (k, v) {
       if (v is Map) {
-        return new JSONObject(v, this);
+        return new JSONObject(v, ctx);
       }
 
       return v;
     });
 
-    decode(_root);
+    ctx.root = root;
 
-    // Can release this once we're done, since it is just a duplicate structure to the one rooted by this instance.
-    _root = null;
+    decode(root);
   }
 
   /// This string MUST be the semantic version number of the OpenAPI Specification version that the OpenAPI document uses.
@@ -62,17 +62,14 @@ class APIDocument extends APIObject with JSONObjectCache {
   /// The order of the tags can be used to reflect on their order by the parsing tools. Not all tags that are used by the Operation Object must be declared. The tags that are not declared MAY be organized randomly or based on the tools' logic. Each tag name in the list MUST be unique.
   List<APITag> tags;
 
-  JSONObject get root => _root;
-  JSONObject _root;
-
   Map<String, dynamic> asMap() {
-    _root = new JSONObject({}, this);
+    final ctx = new JSONDecodingContext();
+    final root = new JSONObject({}, ctx);
+    ctx.root = root;
 
-    encode(_root);
+    encode(root);
 
-    var m = _root;
-    _root = null;
-    return m.asMap();
+    return root.asMap();
   }
 
   void decode(JSONObject object) {

@@ -9,7 +9,7 @@ import 'dart:convert';
 import 'package:open_api/src/v2/schema.dart';
 
 /// Represents an OpenAPI 2.0 specification.
-class APIDocument extends APIObject with JSONObjectCache {
+class APIDocument extends APIObject with JSONDecodingContext {
   /// Creates an empty specification.
   APIDocument();
 
