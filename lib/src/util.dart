@@ -10,6 +10,12 @@ class APIException implements Exception {
 }
 
 abstract class APIObject {
+  APIObject();
+
+  factory APIObject.reference(String referenceURI) {
+    return new _APIReferenceObject(referenceURI);
+  }
+
   String referenceURI;
   Map<String, dynamic> extensions = {};
 
@@ -32,5 +38,11 @@ abstract class APIObject {
     extensions.forEach((key, value) {
       object.encode(key, value);
     });
+  }
+}
+
+class _APIReferenceObject extends APIObject {
+  _APIReferenceObject(String referenceURI) {
+    this.referenceURI = referenceURI;
   }
 }
