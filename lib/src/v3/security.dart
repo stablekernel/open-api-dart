@@ -187,7 +187,10 @@ class APISecurityScheme extends APIObject {
 /// Allows configuration of the supported OAuth Flows.
 class APISecuritySchemeOAuth2Flow extends APIObject {
   APISecuritySchemeOAuth2Flow.empty();
-  APISecuritySchemeOAuth2Flow(this.authorizationURL, this.tokenURL, this.scopes, {this.refreshURL});
+  APISecuritySchemeOAuth2Flow.code(this.authorizationURL, this.tokenURL, this.refreshURL, this.scopes);
+  APISecuritySchemeOAuth2Flow.implicit(this.authorizationURL, this.refreshURL, this.scopes);
+  APISecuritySchemeOAuth2Flow.password(this.tokenURL, this.refreshURL, this.scopes);
+  APISecuritySchemeOAuth2Flow.client(this.tokenURL, this.refreshURL, this.scopes);
 
   /// The authorization URL to be used for this flow.
   ///
@@ -220,11 +223,6 @@ class APISecuritySchemeOAuth2Flow extends APIObject {
 
   void decode(JSONObject object) {
     super.decode(object);
-
-    if (authorizationURL == null || tokenURL == null || scopes == null) {
-      throw new APIException(
-          "APISecuritySchemeOAuth2Flow must have non-null values for: 'authorizationURL', 'tokenURL', 'scopes'.");
-    }
 
     authorizationURL = object.decodeUri("authorizationUrl");
 

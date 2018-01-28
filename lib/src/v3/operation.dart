@@ -58,7 +58,7 @@ class APIOperation extends APIObject {
   /// The list of possible responses as they are returned from executing this operation.
   ///
   /// REQUIRED.
-  Map<String, APIResponse> responses = {};
+  Map<String, APIResponse> responses;
 
   /// A map of possible out-of band callbacks related to the parent operation.
   ///
@@ -86,6 +86,16 @@ class APIOperation extends APIObject {
   void addParameter(APIParameter parameter) {
     parameters ??= [];
     parameters.add(parameter);
+  }
+
+  /// Adds [requirement] to [security].
+  ///
+  /// If [security] is null, invoking this method will set it to a list containing [requirement].
+  /// Otherwise, [requirement] is added to [security].
+  void addSecurityRequirement(APISecurityRequirement requirement) {
+    security ??= [];
+
+    security.add(requirement);
   }
 
   void decode(JSONObject object) {

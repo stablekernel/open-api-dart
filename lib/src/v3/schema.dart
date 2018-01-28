@@ -11,6 +11,15 @@ class APISchemaObject extends APIObject {
   APISchemaObject.number() : type = APIType.number;
   APISchemaObject.integer() : type = APIType.integer;
   APISchemaObject.boolean() : type = APIType.boolean;
+  APISchemaObject.map({APIType ofType, APISchemaObject ofSchema}) : type = APIType.object {
+    if (ofType != null) {
+      additionalProperties = new APISchemaObject()..type = ofType;
+    } else if (ofSchema != null) {
+      additionalProperties = ofSchema;
+    } else {
+      throw new APIException("Invalid 'APISchemaObject.map' with neither 'ofType' or 'ofSchema' specified.");
+    }
+  }
   APISchemaObject.array({APIType ofType, APISchemaObject ofSchema}) : type = APIType.array {
     if (ofType != null) {
       items = new APISchemaObject()..type = ofType;

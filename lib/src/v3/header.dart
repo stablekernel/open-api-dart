@@ -16,6 +16,7 @@ class APIHeader extends APIParameter {
     name = "temporary";
     super.encode(object);
     object.remove("name");
+    object.remove("in");
     name = null;
   }
 }

@@ -26,7 +26,7 @@ class APIPath extends APIObject {
   /// Definitions of operations on this path.
   ///
   /// Keys are lowercased HTTP methods, e.g. get, put, delete, post, etc.
-  Map<String, APIOperation> operations = {};
+  Map<String, APIOperation> operations;
 
   /// Returns true if this path has path parameters [parameterNames].
   ///
@@ -60,6 +60,7 @@ class APIPath extends APIObject {
       if (!object.containsKey(methodName)) {
         return;
       }
+      operations ??= {};
       operations[methodName] = object.decode(methodName, inflate: () => new APIOperation.empty());
     });
   }

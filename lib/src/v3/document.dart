@@ -47,7 +47,7 @@ class APIDocument extends APIObject with JSONObjectCache {
   /// The available paths and operations for the API.
   ///
   /// REQUIRED.
-  Map<String, APIPath> paths = {};
+  Map<String, APIPath> paths;
 
   /// An element to hold various schemas for the specification.
   APIComponents components;
