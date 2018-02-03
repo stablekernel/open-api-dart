@@ -11,13 +11,15 @@ class APISchemaObject extends APIObject {
   APISchemaObject.number() : type = APIType.number;
   APISchemaObject.integer() : type = APIType.integer;
   APISchemaObject.boolean() : type = APIType.boolean;
-  APISchemaObject.map({APIType ofType, APISchemaObject ofSchema}) : type = APIType.object {
+  APISchemaObject.map({APIType ofType, APISchemaObject ofSchema, bool any: false}) : type = APIType.object {
     if (ofType != null) {
       additionalProperties = new APISchemaObject()..type = ofType;
     } else if (ofSchema != null) {
       additionalProperties = ofSchema;
+    } else if (any) {
+
     } else {
-      throw new APIException("Invalid 'APISchemaObject.map' with neither 'ofType' or 'ofSchema' specified.");
+      throw new APIException("Invalid 'APISchemaObject.map' with neither 'ofType', 'any' or 'ofSchema' specified.");
     }
   }
   APISchemaObject.array({APIType ofType, APISchemaObject ofSchema}) : type = APIType.array {
@@ -31,6 +33,8 @@ class APISchemaObject extends APIObject {
   }
   APISchemaObject.object(this.properties): type = APIType.object;
   APISchemaObject.file({bool isBase64Encoded: false}) : type = APIType.string, format = isBase64Encoded ? "byte" : "binary";
+
+  APISchemaObject.freeForm() : type = APIType.object, isFreeForm = true;
 
   /// A title for the object.
   String title;
@@ -190,6 +194,7 @@ class APISchemaObject extends APIObject {
   String description;
   String format;
   dynamic defaultValue;
+  bool isFreeForm = false;
 
   bool get isNullable => _nullable ?? false;
 
@@ -252,7 +257,15 @@ class APISchemaObject extends APIObject {
 
     items = object.decode("items", inflate: () => new APISchemaObject());
     properties = object.decodeObjectMap("properties", () => new APISchemaObject());
-    additionalProperties = object.decode("additionalProperties", inflate: () => new APISchemaObject());
+
+    final addlProps = object["additionalProperties"];
+    if (addlProps is bool) {
+      isFreeForm = true;
+    } else if (addlProps is JSONObject && addlProps.isEmpty) {
+      isFreeForm = true;
+    } else {
+      additionalProperties = object.decode("additionalProperties", inflate: () => new APISchemaObject());
+    }
 
     description = object.decode("description");
     format = object.decode("format");
@@ -293,7 +306,11 @@ class APISchemaObject extends APIObject {
     object.encodeObject("not", not);
 
     object.encodeObject("items", items);
-    object.encodeObject("additionalProperties", additionalProperties);
+    if (isFreeForm) {
+      object.encode("additionalProperties", {});
+    } else {
+      object.encodeObject("additionalProperties", additionalProperties);
+    }
     object.encodeObjectMap("properties", properties);
 
     object.encode("description", description);

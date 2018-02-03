@@ -4,7 +4,6 @@ import 'dart:io';
 import 'dart:convert';
 
 void main() {
-
   group("Resolution", () {
     test("Can resolve object against registry", () {
       final components = new APIComponents();
@@ -139,6 +138,49 @@ void main() {
     test("Security requirement", () {
       expect(doc.security, isNull);
     });
+  });
+
+  group("Schema", () {
+    test("Can read/emit schema object with additionalProperties=true", () {
+      final doc = new APIDocument.fromJSON(JSON.encode({
+        "openapi": "3.0.0",
+        "info": {"title":"x", "version":"1"},
+        "paths": {},
+        "components": {
+          "schemas": {
+            "freeform": {
+              "type": "object",
+              "additionalProperties": true
+            }
+          }
+        }
+      }));
+
+      expect(doc.components.schemas["freeform"].isFreeForm, true);
+
+      expect(doc.asMap()["components"]["schemas"]["freeform"]["type"], "object");
+      expect(doc.asMap()["components"]["schemas"]["freeform"]["additionalProperties"], {});
+    });
+
+    test("Can read/emit schema object with additionalProperties={}", () {
+      final doc = new APIDocument.fromJSON(JSON.encode({
+        "openapi": "3.0.0",
+        "info": {"title":"x", "version":"1"},
+        "paths": {},
+        "components": {
+          "schemas": {
+            "freeform": {
+              "type": "object",
+              "additionalProperties": {}
+            }
+          }
+        }
+      }));
+      expect(doc.components.schemas["freeform"].isFreeForm, true);
+      expect(doc.asMap()["components"]["schemas"]["freeform"]["type"], "object");
+      expect(doc.asMap()["components"]["schemas"]["freeform"]["additionalProperties"], {});
+    });
+
   });
 
   group("Callbacks", () {
