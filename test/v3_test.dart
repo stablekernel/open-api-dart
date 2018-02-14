@@ -185,4 +185,72 @@ void main() {
 
   group("Callbacks", () {
   });
+
+  group("'add' methods", () {
+    test("'addHeader'", () {
+      var resp = new APIResponse("Response");
+
+      // when null
+      resp.addHeader("x", new APIHeader(schema: new APISchemaObject.string(format: "initial")));
+      expect(resp.headers["x"].schema.format, "initial");
+
+      // add more than one
+      resp.addHeader("y", new APIHeader(schema: new APISchemaObject.string(format: "second")));
+      expect(resp.headers["x"].schema.format, "initial");
+      expect(resp.headers["y"].schema.format, "second");
+
+      // cannot replace
+      resp.addHeader("y", new APIHeader(schema: new APISchemaObject.string(format: "third")));
+      expect(resp.headers["x"].schema.format, "initial");
+      expect(resp.headers["y"].schema.format, "second");
+    });
+
+    test("'addContent'", () {
+      var resp = new APIResponse("Response");
+
+      // when null
+      resp.addContent("x/a", new APISchemaObject.string(format: "initial"));
+      expect(resp.content["x/a"].schema.format, "initial");
+
+      // add more than one
+      resp.addContent("y/a", new APISchemaObject.string(format: "second"));
+      expect(resp.content["x/a"].schema.format, "initial");
+      expect(resp.content["y/a"].schema.format, "second");
+
+      // joins schema in oneOf if key exists
+      resp.addContent("y/a", new APISchemaObject.string(format: "third"));
+      expect(resp.content["x/a"].schema.format, "initial");
+
+      expect(resp.content["y/a"].schema.oneOf.first.format, "second");
+      expect(resp.content["y/a"].schema.oneOf.last.format, "third");
+    });
+
+    test("'addResponse'", () {
+      var op = new APIOperation("op", null);
+
+      // when null
+      op.addResponse(200, new APIResponse.schema("OK", new APISchemaObject.string(format: "initial")));
+      expect(op.responses["200"].content["application/json"].schema.format, "initial");
+
+      // add more than one
+      op.addResponse(400, new APIResponse.schema("KINDABAD", new APISchemaObject.string(format: "second"), headers: {
+        "initial": new APIHeader(schema: new APISchemaObject.string(format: "initial"))
+      }));
+      expect(op.responses["200"].content["application/json"].schema.format, "initial");
+      expect(op.responses["400"].content["application/json"].schema.format, "second");
+
+      // join responses when key exists
+      op.addResponse(400, new APIResponse.schema("REALBAD", new APISchemaObject.string(format: "third"), headers: {
+        "second": new APIHeader(schema: new APISchemaObject.string(format: "initial"))
+      }));
+      expect(op.responses["200"].content["application/json"].schema.format, "initial");
+
+      final r400 = op.responses["400"];
+      expect(r400.description, contains("KINDABAD"));
+      expect(r400.description, contains("REALBAD"));
+      expect(r400.content["application/json"].schema.oneOf, isNotNull);
+      expect(r400.headers["initial"], isNotNull);
+      expect(r400.headers["second"], isNotNull);
+    });
+  });
 }

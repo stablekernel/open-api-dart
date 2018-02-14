@@ -33,6 +33,44 @@ class APIResponse extends APIObject {
   // Currently missing:
   // links
 
+  /// Adds a [header] to [headers] for [name].
+  ///
+  /// If [headers] is null, it is created. If the key does not exist in [headers], [header] is added for the key.
+  /// If the key exists, [header] is not added. (To replace a header, access [headers] directly.)
+  void addHeader(String name, APIHeader header) {
+    headers ??= {};
+    if (!headers.containsKey(name)) {
+      headers[name] = header;
+    }
+  }
+
+  /// Adds a [bodyObject] to [content] for a content-type.
+  ///
+  /// [contentType] must take the form 'primaryType/subType', e.g. 'application/json'. Do not include charsets.
+  ///
+  /// If [content] is null, it is created. If [contentType] does not exist in [content], [bodyObject] is added for [contentType].
+  /// If [contentType] exists, the [bodyObject] is added the list of possible schemas that were previously added.
+  void addContent(String contentType, APISchemaObject bodyObject) {
+    content ??= {};
+
+    final key = contentType;
+    final existingContent = content[key];
+    if (existingContent == null) {
+      content[key] = new APIMediaType(schema: bodyObject);
+      return;
+    }
+
+    final schema = existingContent.schema;
+    if (schema.oneOf != null) {
+      schema.oneOf.add(bodyObject);
+    } else {
+      final container = new APISchemaObject()..oneOf = [
+        schema, bodyObject
+      ];
+      existingContent.schema = container;
+    }
+  }
+
   void decode(JSONObject object) {
     super.decode(object);
 

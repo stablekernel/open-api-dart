@@ -98,6 +98,33 @@ class APIOperation extends APIObject {
     security.add(requirement);
   }
 
+  /// Adds [response] to [responses], merging schemas if necessary.
+  ///
+  /// [response] will be added to [responses] for the key [statusCode].
+  ///
+  /// If a response already exists for this [statusCode], [response]'s content
+  /// and headers are added to the list of possible content and headers for the existing response. Descriptions
+  /// of each response are joined together. All headers are marked as optional..
+  void addResponse(int statusCode, APIResponse response) {
+    responses ??= {};
+
+    final key = "$statusCode";
+
+    final existingResponse = responses[key];
+    if (existingResponse == null) {
+      responses[key] = response;
+      return;
+    }
+
+    existingResponse.description = "${existingResponse.description ?? ""}\n${response.description}";
+    response.headers.forEach((name, header) {
+      existingResponse.addHeader(name, header);
+    });
+    response.content.forEach((contentType, mediaType) {
+      existingResponse.addContent(contentType, mediaType.schema);
+    });
+  }
+
   void decode(JSONObject object) {
     super.decode(object);
 

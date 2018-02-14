@@ -1,5 +1,10 @@
 # Changelog
 
+## 1.0.2
+
+- Adds `APIResponse.addHeader` and `APIResponse.addContent`.
+- Adds `APIOperation.addResponse`.
+
 ## 1.0.1 
 
 - Adds `APISchemaObject.isFreeForm` and related support for free-form schema objects.
