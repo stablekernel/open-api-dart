@@ -5,6 +5,7 @@ import 'package:open_api/src/v3/response.dart';
 import 'package:open_api/src/v3/request_body.dart';
 import 'package:open_api/src/v3/security.dart';
 import 'package:open_api/src/util.dart';
+import 'package:cast/cast.dart' as cast;
 
 /// Describes a single API operation on a path.
 class APIOperation extends APIObject {
@@ -128,12 +129,16 @@ class APIOperation extends APIObject {
   void decode(JSONObject object) {
     super.decode(object);
 
+    object.setSchema({
+      "tags": cast.List(cast.String)
+    });
+
     tags = object.decode("tags");
     summary = object.decode("summary");
     description = object.decode("description");
     id = object.decode("operationId");
     parameters = object.decodeObjects("parameters", () => new APIParameter.empty());
-    requestBody = object.decode("requestBody", inflate: () => new APIRequestBody.empty());
+    requestBody = object.decodeObject("requestBody", () => new APIRequestBody.empty());
     responses = object.decodeObjectMap("responses", () => new APIResponse.empty());
     callbacks = object.decodeObjectMap("callbacks", () => new APICallback());
     _deprecated = object.decode("deprecated");
@@ -144,7 +149,7 @@ class APIOperation extends APIObject {
     super.encode(object);
 
     if (responses == null) {
-      throw new APIException("APIOperation must have non-null values for: 'responses'.");
+      throw new ArgumentError("Invalid specification. APIOperation must have non-null values for: 'responses'.");
     }
 
     object.encode("tags", tags);

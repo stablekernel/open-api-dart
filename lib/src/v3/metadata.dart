@@ -42,8 +42,8 @@ class APIInfo extends APIObject {
     title = object.decode("title");
     description = object.decode("description");
     termsOfServiceURL = object.decodeUri("termsOfService");
-    contact = object.decode("contact", inflate: () => new APIContact());
-    license = object.decode("license", inflate: () => new APILicense.empty());
+    contact = object.decodeObject("contact", () => new APIContact());
+    license = object.decodeObject("license", () => new APILicense.empty());
     version = object.decode("version");
   }
 
@@ -51,7 +51,7 @@ class APIInfo extends APIObject {
     super.encode(object);
 
     if (title == null || version == null) {
-      throw new APIException("APIInfo must have non-null values for: 'title', 'version'.");
+      throw new ArgumentError("APIInfo must have non-null values for: 'title', 'version'.");
     }
 
     object.encode("title", title);
@@ -124,7 +124,7 @@ class APILicense extends APIObject {
     super.encode(object);
 
     if (name == null) {
-      throw new APIException("APILicense must have non-null values for: 'name'.");
+      throw new ArgumentError("APILicense must have non-null values for: 'name'.");
     }
 
     object.encode("name", name);
@@ -161,7 +161,7 @@ class APITag extends APIObject {
     super.encode(object);
 
     if (name == null) {
-      throw new APIException("APITag must have non-null values for: 'name'.");
+      throw new ArgumentError("APITag must have non-null values for: 'name'.");
     }
     object.encode("name", name);
     object.encode("description", description);

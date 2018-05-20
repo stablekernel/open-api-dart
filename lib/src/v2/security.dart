@@ -1,6 +1,7 @@
 import 'package:open_api/src/v2/parameter.dart';
 import 'package:open_api/src/util.dart';
 import 'package:open_api/src/json_object.dart';
+import 'package:cast/cast.dart' as cast;
 
 /// Represents a OAuth 2.0 security scheme flow in the OpenAPI specification.
 enum APISecuritySchemeFlow {
@@ -77,6 +78,10 @@ class APISecurityScheme extends APIObject {
   void decode(JSONObject object) {
     super.decode(object);
 
+    object.setSchema({
+      "scopes": cast.Map(cast.String, cast.String)
+    });
+
     type = object.decode("type");
     description = object.decode("description");
 
@@ -84,7 +89,7 @@ class APISecurityScheme extends APIObject {
       oauthFlow = APISecuritySchemeFlowCodec.decode(object.decode("flow"));
       authorizationURL = object.decode("authorizationUrl");
       tokenURL = object.decode("tokenUrl");
-      scopes = object.decode("scopes");
+      scopes = new Map<String, String>.from(object.decode("scopes"));
     } else if (type == "apiKey") {
       apiKeyName = object.decode("name");
       apiKeyLocation = APIParameterLocationCodec.decode(object.decode("in"));

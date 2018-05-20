@@ -1,5 +1,6 @@
 import 'package:open_api/src/json_object.dart';
 import 'package:open_api/src/util.dart';
+import 'package:cast/cast.dart' as cast;
 
 /// Represents a metadata for an API in the OpenAPI specification.
 class APIInfo extends APIObject {
@@ -19,8 +20,8 @@ class APIInfo extends APIObject {
     title = object.decode("title");
     description = object.decode("description");
     termsOfServiceURL = object.decode("termsOfService");
-    contact = object.decode("contact", inflate: () => new APIContact());
-    license = object.decode("license", inflate: () => new APILicense());
+    contact = object.decodeObject("contact", () => new APIContact());
+    license = object.decodeObject("license", () => new APILicense());
     version = object.decode("version");
   }
 

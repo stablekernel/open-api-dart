@@ -52,7 +52,7 @@ class APIRequestBody extends APIObject {
     super.encode(object);
 
     if (content == null) {
-      throw new APIException("APIRequestBody must have non-null values for: 'content'.");
+      throw new ArgumentError("APIRequestBody must have non-null values for: 'content'.");
     }
 
     object.encode("description", description);

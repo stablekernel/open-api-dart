@@ -83,7 +83,7 @@ class APIResponse extends APIObject {
     super.encode(object);
 
     if (description == null) {
-      throw new APIException("APIResponse must have non-null values for: 'description'.");
+      throw new ArgumentError("APIResponse must have non-null values for: 'description'.");
     }
 
 

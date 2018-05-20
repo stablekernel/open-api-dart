@@ -44,11 +44,11 @@ class APIComponents extends APIObject {
   APIObject resolveUri(String uri) {
     final segments = Uri.parse(Uri.parse(uri).fragment).pathSegments;
     if (segments.length != 3) {
-      throw new APIException("Invalid reference URI: must be of form #/components/<type>/<name>");
+      throw new ArgumentError("Invalid reference URI: must be of form #/components/<type>/<name>");
     }
 
     if (segments.first != "components") {
-      throw new APIException("Invalid reference URI: does not begin with #/components/");
+      throw new ArgumentError("Invalid reference URI: does not begin with #/components/");
     }
 
     var namedMap = null;
@@ -63,7 +63,7 @@ class APIComponents extends APIObject {
     }
 
     if (namedMap == null) {
-      throw new APIException("Invalid reference URI: component type '${segments[1]}' does not exist");
+      throw new ArgumentError("Invalid reference URI: component type '${segments[1]}' does not exist");
     }
 
     return namedMap[segments.last];
@@ -71,10 +71,10 @@ class APIComponents extends APIObject {
 
   T resolve<T extends APIObject>(T refObject) {
     if (refObject.referenceURI == null) {
-      throw new APIException("APIObject is not a reference to a component.");
+      throw new ArgumentError("APIObject is not a reference to a component.");
     }
 
-    return resolveUri(refObject.referenceURI);
+    return resolveUri(refObject.referenceURI.toString());
   }
 
   void decode(JSONObject object) {

@@ -19,7 +19,7 @@ class APIMediaType extends APIObject {
   void decode(JSONObject object) {
     super.decode(object);
 
-    schema = object.decode("schema", inflate: () => new APISchemaObject());
+    schema = object.decodeObject("schema", () => new APISchemaObject());
     encoding = object.decodeObjectMap("encoding", () => new APIEncoding());
   }
 

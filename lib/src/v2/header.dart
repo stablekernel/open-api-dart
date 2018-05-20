@@ -13,7 +13,7 @@ class APIHeader extends APIProperty {
     super.decode(json);
     description = json.decode("description");
     if (type == APIType.array) {
-      items = json.decode("items", inflate: () => new APIProperty());
+      items = json.decodeObject("items", () => new APIProperty());
     }
   }
 

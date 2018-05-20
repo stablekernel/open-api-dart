@@ -68,12 +68,12 @@ class APIParameter extends APIProperty {
     }
 
     if (location == APIParameterLocation.body) {
-      schema = json.decode("schema", inflate: () => new APISchemaObject());
+      schema = json.decodeObject("schema", () => new APISchemaObject());
     } else {
       super.decode(json);
       allowEmptyValue = json.decode("allowEmptyValue") ?? false;
       if (type == APIType.array) {
-        items = json.decode("items", inflate: () => new APIProperty());
+        items = json.decodeObject("items", () => new APIProperty());
       }
     }
   }

@@ -44,11 +44,6 @@ class APIPath extends APIObject {
   // todo (joeconwaystk): alternative servers not yet implemented
 
   void decode(JSONObject object) {
-    // todo (joeconwaystk): Hasn't been common enough to use time on implementing yet.
-    if (object.containsKey(r"$ref")) {
-      return;
-    }
-
     super.decode(object);
 
     summary = object.decode("summary");
@@ -61,7 +56,7 @@ class APIPath extends APIObject {
         return;
       }
       operations ??= {};
-      operations[methodName] = object.decode(methodName, inflate: () => new APIOperation.empty());
+      operations[methodName] = object.decodeObject(methodName, () => new APIOperation.empty());
     });
   }
 

@@ -3,6 +3,8 @@ import 'package:open_api/src/v2/parameter.dart';
 import 'package:open_api/src/v2/response.dart';
 import 'package:open_api/src/util.dart';
 
+import 'package:cast/cast.dart' as cast;
+
 /// Represents a HTTP operation (a path/method pair) in the OpenAPI specification.
 class APIOperation extends APIObject {
   APIOperation();
@@ -22,6 +24,14 @@ class APIOperation extends APIObject {
 
   void decode(JSONObject object) {
     super.decode(object);
+
+    object.setSchema({
+      "tags": cast.List(cast.String),
+      "consumes": cast.List(cast.String),
+      "produces": cast.List(cast.String),
+      "schemes": cast.List(cast.String),
+      "security": cast.List(cast.Map(cast.String, cast.List(cast.String))),
+    });
 
     tags = object.decode("tags");
     summary = object.decode("summary");

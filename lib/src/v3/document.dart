@@ -13,20 +13,9 @@ class APIDocument extends APIObject {
   /// Creates an empty specification.
   APIDocument();
 
-  /// Creates a specification from JSON encoded string.
-  APIDocument.fromJSON(String jsonString) {
-    final ctx = new JSONDecodingContext();
-    final root = JSON.decode(jsonString, reviver: (k, v) {
-      if (v is Map) {
-        return new JSONObject(v, ctx);
-      }
-
-      return v;
-    });
-
-    ctx.root = root;
-
-    decode(root);
+  /// Creates a specification from decoded JSON or YAML document object.
+  APIDocument.fromMap(Map<String, dynamic> map) {
+    decode(new JSONObject(map));
   }
 
   /// This string MUST be the semantic version number of the OpenAPI Specification version that the OpenAPI document uses.
@@ -63,24 +52,22 @@ class APIDocument extends APIObject {
   List<APITag> tags;
 
   Map<String, dynamic> asMap() {
-    final ctx = new JSONDecodingContext();
-    final root = new JSONObject({}, ctx);
-    ctx.root = root;
+    final container = new JSONObject({});
 
-    encode(root);
+    encode(container);
 
-    return root.asMap();
+    return container;
   }
 
   void decode(JSONObject object) {
     super.decode(object);
 
     version = object.decode("openapi");
-    info = object.decode("info", inflate: () => new APIInfo.empty());
+    info = object.decodeObject("info", () => new APIInfo.empty());
     servers = object.decodeObjects("servers", () => new APIServerDescription.empty());
     paths = object.decodeObjectMap("paths", () => new APIPath());
     components =
-        object.decode("components", inflate: () => new APIComponents());
+        object.decodeObject("components", () => new APIComponents());
     security = object.decode("security");
     tags = object.decodeObjects("tags", () => new APITag.empty());
   }
@@ -89,7 +76,7 @@ class APIDocument extends APIObject {
     super.encode(object);
 
     if (version == null || info == null || paths == null) {
-      throw new APIException("APIDocument must have non-null values for: 'version', 'info', 'paths'.");
+      throw new ArgumentError("APIDocument must have non-null values for: 'version', 'info', 'paths'.");
     }
     
     object.encode("openapi", version);

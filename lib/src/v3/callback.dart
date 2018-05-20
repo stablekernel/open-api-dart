@@ -18,13 +18,16 @@ class APICallback extends APIObject {
     super.decode(object);
 
     paths = {};
-    object.forEach((key, JSONObject value) {
+    object.forEach((key, dynamic value) {
+      if (value is! JSONObject) {
+        throw new ArgumentError("Invalid specification. Callback contains non-object value.");
+      }
       paths[key] = value.decode(key, inflate: () => new APIPath());
     });
   }
 
   void encode(JSONObject object) {
     super.encode(object);
-    throw new Exception("not yet impemented");
+    throw new StateError("APICallback.encode: not yet implemented.");
   }
 }

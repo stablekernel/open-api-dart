@@ -241,7 +241,7 @@ class APIParameter extends APIObject {
     _deprecated = object.decode("deprecated");
     _allowEmptyValue = object.decode("allowEmptyValue");
 
-    schema = object.decode("schema", inflate: () => new APISchemaObject());
+    schema = object.decodeObject("schema", () => new APISchemaObject());
     style = object.decode("style");
     _explode = object.decode("explode");
     _allowReserved = object.decode("allowReserved");
@@ -252,7 +252,7 @@ class APIParameter extends APIObject {
     super.encode(object);
 
     if (name == null || location == null) {
-      throw new APIException("APIParameter must have non-null values for: 'name', 'location'.");
+      throw new ArgumentError("APIParameter must have non-null values for: 'name', 'location'.");
     }
 
     object.encode("name", name);

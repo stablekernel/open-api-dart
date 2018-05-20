@@ -15,7 +15,7 @@ class APIResponse extends APIObject {
     super.decode(object);
 
     description = object.decode("description");
-    schema = object.decode("schema", inflate: () => new APISchemaObject());
+    schema = object.decodeObject("schema", () => new APISchemaObject());
     headers = object.decodeObjectMap("headers", () => new APIHeader());
   }
 

@@ -1,6 +1,7 @@
 import 'package:open_api/src/json_object.dart';
 import 'package:open_api/src/util.dart';
 import 'package:open_api/src/v3/types.dart';
+import 'package:cast/cast.dart' as cast;
 
 /// Represents a schema object in the OpenAPI specification.
 class APISchemaObject extends APIObject {
@@ -19,7 +20,7 @@ class APISchemaObject extends APIObject {
     } else if (any) {
 
     } else {
-      throw new APIException("Invalid 'APISchemaObject.map' with neither 'ofType', 'any' or 'ofSchema' specified.");
+      throw new ArgumentError("Invalid 'APISchemaObject.map' with neither 'ofType', 'any' or 'ofSchema' specified.");
     }
   }
   APISchemaObject.array({APIType ofType, APISchemaObject ofSchema}) : type = APIType.array {
@@ -28,7 +29,7 @@ class APISchemaObject extends APIObject {
     } else if (ofSchema != null) {
       items = ofSchema;
     } else {
-      throw new APIException("Invalid 'APISchemaObject.array' with neither 'ofType' or 'ofSchema' specified.");
+      throw new ArgumentError("Invalid 'APISchemaObject.array' with neither 'ofType' or 'ofSchema' specified.");
     }
   }
   APISchemaObject.object(this.properties): type = APIType.object;
@@ -229,6 +230,9 @@ class APISchemaObject extends APIObject {
 
   void decode(JSONObject object) {
     super.decode(object);
+    object.setSchema({
+      "required": cast.List(cast.String)
+    });
 
     title = object.decode("title");
     maximum = object.decode("maximum");
@@ -253,9 +257,9 @@ class APISchemaObject extends APIObject {
     allOf = object.decodeObjects("allOf", () => new APISchemaObject());
     anyOf = object.decodeObjects("anyOf", () => new APISchemaObject());
     oneOf = object.decodeObjects("oneOf", () => new APISchemaObject());
-    not = object.decode("not", inflate: () => new APISchemaObject());
+    not = object.decodeObject("not", () => new APISchemaObject());
 
-    items = object.decode("items", inflate: () => new APISchemaObject());
+    items = object.decodeObject("items", () => new APISchemaObject());
     properties = object.decodeObjectMap("properties", () => new APISchemaObject());
 
     final addlProps = object["additionalProperties"];
@@ -264,7 +268,7 @@ class APISchemaObject extends APIObject {
     } else if (addlProps is JSONObject && addlProps.isEmpty) {
       isFreeForm = true;
     } else {
-      additionalProperties = object.decode("additionalProperties", inflate: () => new APISchemaObject());
+      additionalProperties = object.decodeObject("additionalProperties", () => new APISchemaObject());
     }
 
     description = object.decode("description");

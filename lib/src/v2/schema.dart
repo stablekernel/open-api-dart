@@ -1,5 +1,6 @@
 import 'package:open_api/src/json_object.dart';
 import 'package:open_api/src/v2/property.dart';
+import 'package:cast/cast.dart' as cast;
 
 /// Represents a schema object in the OpenAPI specification.
 class APISchemaObject extends APIProperty {
@@ -32,15 +33,18 @@ class APISchemaObject extends APIProperty {
   void decode(JSONObject json) {
     super.decode(json);
 
+    json.setSchema({
+      "required": cast.List(cast.String)
+    });
+
     title = json.decode("title");
     description = json.decode("description");
     required = json.decode("required");
     example = json.decode("example");
     readOnly = json.decode("readOnly") ?? false;
 
-    items = json.decode("items", inflate: () => new APISchemaObject());
-    additionalProperties = json.decode("additionalProperties",
-        inflate: () => new APISchemaObject());
+    items = json.decodeObject("items", () => new APISchemaObject());
+    additionalProperties = json.decodeObject("additionalProperties", () => new APISchemaObject());
     properties =
         json.decodeObjectMap("properties", () => new APISchemaObject());
   }

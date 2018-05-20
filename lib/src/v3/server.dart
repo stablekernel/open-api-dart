@@ -33,7 +33,7 @@ class APIServerDescription extends APIObject {
     super.encode(object);
 
     if (url == null) {
-      throw new APIException("APIServerDescription must have non-null values for: 'url'.");
+      throw new ArgumentError("APIServerDescription must have non-null values for: 'url'.");
     }
 
     object.encodeUri("url", url);
@@ -63,7 +63,7 @@ class APIServerVariable extends APIObject {
   void decode(JSONObject object) {
     super.decode(object);
 
-    availableValues = object.decode("enum");
+    availableValues = new List<String>.from(object.decode("enum"));
     defaultValue = object.decode("default");
     description = object.decode("description");
   }
@@ -72,7 +72,7 @@ class APIServerVariable extends APIObject {
     super.encode(object);
 
     if (defaultValue == null) {
-      throw new APIException("APIServerVariable must have non-null values for: 'defaultValue'.");
+      throw new ArgumentError("APIServerVariable must have non-null values for: 'defaultValue'.");
     }
 
     object.encode("enum", availableValues);

@@ -8,7 +8,7 @@ pubspec.lock
 # Directory created by dartdoc
 doc/api/
 .DS_Store
-
+.dart_tool/
 .idea/
 *.iml
 test/specs/kubernetes.json

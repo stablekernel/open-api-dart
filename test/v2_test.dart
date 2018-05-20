@@ -18,7 +18,7 @@ void main() {
       var file = new File("test/specs/kubernetes.json");
       var contents = file.readAsStringSync();
       original = JSON.decode(contents);
-      doc = new APIDocument.fromJSON(contents);
+      doc = new APIDocument.fromMap(original);
     });
 
     test("Has all metadata", () {

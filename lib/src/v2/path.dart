@@ -19,7 +19,7 @@ class APIPath extends APIObject {
       } else if (k == "parameters") {
         parameters = object.decodeObjects(k, () => new APIParameter());
       } else {
-        operations[k] = object.decode(k, inflate: () => new APIOperation());
+        operations[k] = object.decodeObject(k, () => new APIOperation());
       }
     });
   }
