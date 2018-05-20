@@ -7,6 +7,15 @@ import 'package:open_api/src/v2/response.dart';
 class APIOperation extends APIObject {
   APIOperation();
 
+  @override
+  Map<String, cast.Cast> get castMap => {
+        "tags": cast.List(cast.String),
+        "consumes": cast.List(cast.String),
+        "produces": cast.List(cast.String),
+        "schemes": cast.List(cast.String),
+        "security": cast.List(cast.Map(cast.String, cast.List(cast.String))),
+      };
+
   String summary = "";
   String description = "";
   String id;
@@ -22,14 +31,6 @@ class APIOperation extends APIObject {
 
   void decode(KeyedArchive object) {
     super.decode(object);
-
-    object.castValues({
-      "tags": cast.List(cast.String),
-      "consumes": cast.List(cast.String),
-      "produces": cast.List(cast.String),
-      "schemes": cast.List(cast.String),
-      "security": cast.List(cast.Map(cast.String, cast.List(cast.String))),
-    });
 
     tags = object.decode("tags");
     summary = object.decode("summary");

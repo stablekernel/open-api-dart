@@ -30,12 +30,11 @@ class APISchemaObject extends APIProperty {
     return super.representation;
   }
 
+  @override
+  Map<String, cast.Cast> get castMap => {"required": cast.List(cast.String)};
+
   void decode(KeyedArchive json) {
     super.decode(json);
-
-    json.castValues({
-      "required": cast.List(cast.String)
-    });
 
     title = json.decode("title");
     description = json.decode("description");

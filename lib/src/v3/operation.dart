@@ -125,12 +125,12 @@ class APIOperation extends APIObject {
     });
   }
 
+
+  @override
+  Map<String, cast.Cast> get castMap => {"tags": cast.List(cast.String)};
+
   void decode(KeyedArchive object) {
     super.decode(object);
-
-    object.castValues({
-      "tags": cast.List(cast.String)
-    });
 
     tags = object.decode("tags");
     summary = object.decode("summary");

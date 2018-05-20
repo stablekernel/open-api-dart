@@ -42,15 +42,16 @@ class APIDocument extends APIObject {
     return container;
   }
 
+  @override
+  Map<String, cast.Cast> get castMap => {
+        "schemes": cast.List(cast.String),
+        "consumes": cast.List(cast.String),
+        "produces": cast.List(cast.String),
+        "security": cast.List(cast.Map(cast.String, cast.List(cast.String)))
+      };
+
   void decode(KeyedArchive object) {
     super.decode(object);
-
-    object.castValues({
-      "schemes": cast.List(cast.String),
-      "consumes": cast.List(cast.String),
-      "produces": cast.List(cast.String),
-      "security": cast.List(cast.Map(cast.String, cast.List(cast.String)))
-    });
 
     version = object["swagger"];
     host = object["host"];

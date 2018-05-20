@@ -227,11 +227,11 @@ class APISchemaObject extends APIObject {
   bool _writeOnly;
   bool _deprecated;
 
+  @override
+  Map<String, cast.Cast> get castMap => {"required": cast.List(cast.String)};
+
   void decode(KeyedArchive object) {
     super.decode(object);
-    object.castValues({
-      "required": cast.List(cast.String)
-    });
 
     title = object.decode("title");
     maximum = object.decode("maximum");
