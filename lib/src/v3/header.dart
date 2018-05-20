@@ -1,4 +1,4 @@
-import 'package:open_api/src/json_object.dart';
+import 'package:codable/codable.dart';
 import 'package:open_api/src/v3/parameter.dart';
 import 'package:open_api/src/v3/schema.dart';
 
@@ -12,7 +12,7 @@ class APIHeader extends APIParameter {
   APIHeader.empty() : super.header(null);
 
   @override
-  void encode(JSONObject object) {
+  void encode(KeyedArchive object) {
     name = "temporary";
     super.encode(object);
     object.remove("name");

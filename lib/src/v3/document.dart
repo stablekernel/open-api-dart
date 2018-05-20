@@ -1,7 +1,4 @@
-import 'dart:convert';
-
-import 'package:open_api/src/json_object.dart';
-import 'package:open_api/src/util.dart';
+import 'package:open_api/src/object.dart';
 import 'package:open_api/src/v3/components.dart';
 import 'package:open_api/src/v3/metadata.dart';
 import 'package:open_api/src/v3/path.dart';
@@ -15,7 +12,7 @@ class APIDocument extends APIObject {
 
   /// Creates a specification from decoded JSON or YAML document object.
   APIDocument.fromMap(Map<String, dynamic> map) {
-    decode(new JSONObject(map));
+    decode(KeyedArchive.unarchive(map));
   }
 
   /// This string MUST be the semantic version number of the OpenAPI Specification version that the OpenAPI document uses.
@@ -52,14 +49,14 @@ class APIDocument extends APIObject {
   List<APITag> tags;
 
   Map<String, dynamic> asMap() {
-    final container = new JSONObject({});
+    final container = new KeyedArchive({});
 
     encode(container);
 
     return container;
   }
 
-  void decode(JSONObject object) {
+  void decode(KeyedArchive object) {
     super.decode(object);
 
     version = object.decode("openapi");
@@ -72,7 +69,7 @@ class APIDocument extends APIObject {
     tags = object.decodeObjects("tags", () => new APITag.empty());
   }
 
-  void encode(JSONObject object) {
+  void encode(KeyedArchive object) {
     super.encode(object);
 
     if (version == null || info == null || paths == null) {

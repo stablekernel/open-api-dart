@@ -1,9 +1,8 @@
-import 'package:open_api/src/json_object.dart';
-import 'package:open_api/src/util.dart';
-import 'package:open_api/src/v3/parameter.dart';
+import 'package:open_api/src/object.dart';
 import 'package:open_api/src/v3/components.dart';
 import 'package:open_api/src/v3/document.dart';
 import 'package:open_api/src/v3/operation.dart';
+import 'package:open_api/src/v3/parameter.dart';
 
 enum APISecuritySchemeType { apiKey, http, oauth2, openID }
 
@@ -99,7 +98,7 @@ class APISecurityScheme extends APIObject {
   /// For openID only. REQUIRED if so.
   Uri connectURL;
 
-  void decode(JSONObject object) {
+  void decode(KeyedArchive object) {
     super.decode(object);
 
     type = APISecuritySchemeTypeCodec.decode(object.decode("type"));
@@ -131,7 +130,7 @@ class APISecurityScheme extends APIObject {
     }
   }
 
-  void encode(JSONObject object) {
+  void encode(KeyedArchive object) {
     super.encode(object);
 
     if (type == null) {
@@ -212,7 +211,7 @@ class APISecuritySchemeOAuth2Flow extends APIObject {
   /// REQUIRED. A map between the scope name and a short description for it.
   Map<String, String> scopes;
 
-  void encode(JSONObject object) {
+  void encode(KeyedArchive object) {
     super.encode(object);
 
     object.encodeUri("authorizationUrl", authorizationURL);
@@ -221,7 +220,7 @@ class APISecuritySchemeOAuth2Flow extends APIObject {
     object.encode("scopes", scopes);
   }
 
-  void decode(JSONObject object) {
+  void decode(KeyedArchive object) {
     super.decode(object);
 
     authorizationURL = object.decodeUri("authorizationUrl");
@@ -249,7 +248,7 @@ class APISecurityRequirement extends APIObject {
   /// If the security scheme is of type [APISecuritySchemeType.oauth2] or [APISecuritySchemeType.openID], then the value is a list of scope names required for the execution. For other security scheme types, the array MUST be empty.
   Map<String, List<String>> requirements;
 
-  void encode(JSONObject object) {
+  void encode(KeyedArchive object) {
     super.encode(object);
 
     requirements.forEach((key, value) {
@@ -257,7 +256,7 @@ class APISecurityRequirement extends APIObject {
     });
   }
 
-  void decode(JSONObject object) {
+  void decode(KeyedArchive object) {
     super.decode(object);
 
     object.keys.forEach((key) {

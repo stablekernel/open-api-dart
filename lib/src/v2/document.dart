@@ -1,13 +1,11 @@
-import 'package:open_api/src/v2/path.dart';
-import 'package:open_api/src/v2/security.dart';
-import 'package:open_api/src/v2/metadata.dart';
-import 'package:open_api/src/util.dart';
-import 'package:open_api/src/v2/parameter.dart';
-import 'package:open_api/src/v2/response.dart';
-import 'package:open_api/src/json_object.dart';
-import 'dart:convert';
-import 'package:open_api/src/v2/schema.dart';
 import 'package:cast/cast.dart' as cast;
+import 'package:open_api/src/object.dart';
+import 'package:open_api/src/v2/metadata.dart';
+import 'package:open_api/src/v2/parameter.dart';
+import 'package:open_api/src/v2/path.dart';
+import 'package:open_api/src/v2/response.dart';
+import 'package:open_api/src/v2/schema.dart';
+import 'package:open_api/src/v2/security.dart';
 
 /// Represents an OpenAPI 2.0 specification.
 class APIDocument extends APIObject {
@@ -16,7 +14,7 @@ class APIDocument extends APIObject {
 
   /// Creates a specification from decoded JSON or YAML document object.
   APIDocument.fromMap(Map<String, dynamic> map) {
-    decode(new JSONObject(map));
+    decode(KeyedArchive.unarchive(map));
   }
 
   String version = "2.0";
@@ -37,17 +35,17 @@ class APIDocument extends APIObject {
   Map<String, APISecurityScheme> securityDefinitions = {};
 
   Map<String, dynamic> asMap() {
-    final container = new JSONObject({});
+    final container = new KeyedArchive({});
 
     encode(container);
 
     return container;
   }
 
-  void decode(JSONObject object) {
+  void decode(KeyedArchive object) {
     super.decode(object);
 
-    object.setSchema({
+    object.castValues({
       "schemes": cast.List(cast.String),
       "consumes": cast.List(cast.String),
       "produces": cast.List(cast.String),
@@ -71,7 +69,7 @@ class APIDocument extends APIObject {
     securityDefinitions = object.decodeObjectMap("securityDefinitions", () => new APISecurityScheme());
   }
 
-  void encode(JSONObject object) {
+  void encode(KeyedArchive object) {
     super.encode(object);
 
     object.encode("swagger", version);

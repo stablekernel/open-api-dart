@@ -1,5 +1,4 @@
-import 'package:open_api/src/json_object.dart';
-import 'package:open_api/src/util.dart';
+import 'package:open_api/src/object.dart';
 import 'package:open_api/src/v3/media_type.dart';
 import 'package:open_api/src/v3/schema.dart';
 
@@ -40,7 +39,7 @@ class APIRequestBody extends APIObject {
 
   bool _required;
 
-  void decode(JSONObject object) {
+  void decode(KeyedArchive object) {
     super.decode(object);
 
     description = object.decode("description");
@@ -48,7 +47,7 @@ class APIRequestBody extends APIObject {
     content = object.decodeObjectMap("content", () => new APIMediaType());
   }
 
-  void encode(JSONObject object) {
+  void encode(KeyedArchive object) {
     super.encode(object);
 
     if (content == null) {

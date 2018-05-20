@@ -1,11 +1,10 @@
-import 'package:open_api/src/json_object.dart';
+import 'package:cast/cast.dart' as cast;
+import 'package:open_api/src/object.dart';
 import 'package:open_api/src/v3/callback.dart';
 import 'package:open_api/src/v3/parameter.dart';
-import 'package:open_api/src/v3/response.dart';
 import 'package:open_api/src/v3/request_body.dart';
+import 'package:open_api/src/v3/response.dart';
 import 'package:open_api/src/v3/security.dart';
-import 'package:open_api/src/util.dart';
-import 'package:cast/cast.dart' as cast;
 
 /// Describes a single API operation on a path.
 class APIOperation extends APIObject {
@@ -126,10 +125,10 @@ class APIOperation extends APIObject {
     });
   }
 
-  void decode(JSONObject object) {
+  void decode(KeyedArchive object) {
     super.decode(object);
 
-    object.setSchema({
+    object.castValues({
       "tags": cast.List(cast.String)
     });
 
@@ -145,7 +144,7 @@ class APIOperation extends APIObject {
     security = object.decodeObjects("security", () => new APISecurityRequirement.empty());
   }
 
-  void encode(JSONObject object) {
+  void encode(KeyedArchive object) {
     super.encode(object);
 
     if (responses == null) {

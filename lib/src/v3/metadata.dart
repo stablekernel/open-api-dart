@@ -1,5 +1,4 @@
-import 'package:open_api/src/json_object.dart';
-import 'package:open_api/src/util.dart';
+import 'package:open_api/src/object.dart';
 
 /// The object provides metadata about the API.
 ///
@@ -36,7 +35,7 @@ class APIInfo extends APIObject {
   /// The license information for the exposed API.
   APILicense license;
 
-  void decode(JSONObject object) {
+  void decode(KeyedArchive object) {
     super.decode(object);
 
     title = object.decode("title");
@@ -47,7 +46,7 @@ class APIInfo extends APIObject {
     version = object.decode("version");
   }
 
-  void encode(JSONObject object) {
+  void encode(KeyedArchive object) {
     super.encode(object);
 
     if (title == null || version == null) {
@@ -81,7 +80,7 @@ class APIContact extends APIObject {
   /// MUST be in the format of an email address.
   String email;
 
-  void decode(JSONObject object) {
+  void decode(KeyedArchive object) {
     super.decode(object);
 
     name = object.decode("name");
@@ -89,7 +88,7 @@ class APIContact extends APIObject {
     email = object.decode("email");
   }
 
-  void encode(JSONObject object) {
+  void encode(KeyedArchive object) {
     super.encode(object);
 
     object.encode("name", name);
@@ -113,14 +112,14 @@ class APILicense extends APIObject {
   /// MUST be in the format of a URL.
   Uri url;
 
-  void decode(JSONObject object) {
+  void decode(KeyedArchive object) {
     super.decode(object);
 
     name = object.decode("name");
     url = object.decodeUri("url");
   }
 
-  void encode(JSONObject object) {
+  void encode(KeyedArchive object) {
     super.encode(object);
 
     if (name == null) {
@@ -150,14 +149,14 @@ class APITag extends APIObject {
   /// CommonMark syntax MAY be used for rich text representation.
   String description;
 
-  void decode(JSONObject object) {
+  void decode(KeyedArchive object) {
     super.decode(object);
 
     name = object.decode("name");
     description = object.decode("description");
   }
 
-  void encode(JSONObject object) {
+  void encode(KeyedArchive object) {
     super.encode(object);
 
     if (name == null) {

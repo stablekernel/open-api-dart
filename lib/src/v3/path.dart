@@ -1,5 +1,4 @@
-import 'package:open_api/src/json_object.dart';
-import 'package:open_api/src/util.dart';
+import 'package:open_api/src/object.dart';
 import 'package:open_api/src/v3/operation.dart';
 import 'package:open_api/src/v3/parameter.dart';
 
@@ -43,7 +42,7 @@ class APIPath extends APIObject {
 
   // todo (joeconwaystk): alternative servers not yet implemented
 
-  void decode(JSONObject object) {
+  void decode(KeyedArchive object) {
     super.decode(object);
 
     summary = object.decode("summary");
@@ -60,7 +59,7 @@ class APIPath extends APIObject {
     });
   }
 
-  void encode(JSONObject object) {
+  void encode(KeyedArchive object) {
     super.encode(object);
 
     object.encode("summary", summary);

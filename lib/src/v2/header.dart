@@ -1,6 +1,6 @@
-import 'package:open_api/src/v2/types.dart';
-import 'package:open_api/src/json_object.dart';
+import 'package:codable/codable.dart';
 import 'package:open_api/src/v2/property.dart';
+import 'package:open_api/src/v2/types.dart';
 
 /// Represents a header in the OpenAPI specification.
 class APIHeader extends APIProperty {
@@ -9,7 +9,7 @@ class APIHeader extends APIProperty {
   String description;
   APIProperty items;
 
-  void decode(JSONObject json) {
+  void decode(KeyedArchive json) {
     super.decode(json);
     description = json.decode("description");
     if (type == APIType.array) {
@@ -17,7 +17,7 @@ class APIHeader extends APIProperty {
     }
   }
 
-  void encode(JSONObject json) {
+  void encode(KeyedArchive json) {
     super.encode(json);
     json.encode("description", description);
     if (type == APIType.array) {

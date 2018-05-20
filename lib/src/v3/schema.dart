@@ -1,7 +1,6 @@
-import 'package:open_api/src/json_object.dart';
-import 'package:open_api/src/util.dart';
-import 'package:open_api/src/v3/types.dart';
 import 'package:cast/cast.dart' as cast;
+import 'package:open_api/src/object.dart';
+import 'package:open_api/src/v3/types.dart';
 
 /// Represents a schema object in the OpenAPI specification.
 class APISchemaObject extends APIObject {
@@ -228,9 +227,9 @@ class APISchemaObject extends APIObject {
   bool _writeOnly;
   bool _deprecated;
 
-  void decode(JSONObject object) {
+  void decode(KeyedArchive object) {
     super.decode(object);
-    object.setSchema({
+    object.castValues({
       "required": cast.List(cast.String)
     });
 
@@ -265,7 +264,7 @@ class APISchemaObject extends APIObject {
     final addlProps = object["additionalProperties"];
     if (addlProps is bool) {
       isFreeForm = true;
-    } else if (addlProps is JSONObject && addlProps.isEmpty) {
+    } else if (addlProps is KeyedArchive && addlProps.isEmpty) {
       isFreeForm = true;
     } else {
       additionalProperties = object.decodeObject("additionalProperties", () => new APISchemaObject());
@@ -281,7 +280,7 @@ class APISchemaObject extends APIObject {
     _deprecated = object.decode("deprecated");
   }
 
-  void encode(JSONObject object) {
+  void encode(KeyedArchive object) {
     super.encode(object);
 
     object.encode("title", title);

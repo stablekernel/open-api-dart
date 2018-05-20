@@ -1,5 +1,4 @@
-import 'package:open_api/src/json_object.dart';
-import 'package:open_api/src/util.dart';
+import 'package:open_api/src/object.dart';
 
 /// An object representing a Server.
 class APIServerDescription extends APIObject {
@@ -20,7 +19,7 @@ class APIServerDescription extends APIObject {
   /// The value is used for substitution in the server's URL template.
   Map<String, APIServerVariable> variables;
 
-  void decode(JSONObject object) {
+  void decode(KeyedArchive object) {
     super.decode(object);
 
     url = object.decodeUri("url");
@@ -29,7 +28,7 @@ class APIServerDescription extends APIObject {
         object.decodeObjectMap("variables", () => new APIServerVariable.empty());
   }
 
-  void encode(JSONObject object) {
+  void encode(KeyedArchive object) {
     super.encode(object);
 
     if (url == null) {
@@ -60,7 +59,7 @@ class APIServerVariable extends APIObject {
   /// CommonMark syntax MAY be used for rich text representation.
   String description;
 
-  void decode(JSONObject object) {
+  void decode(KeyedArchive object) {
     super.decode(object);
 
     availableValues = new List<String>.from(object.decode("enum"));
@@ -68,7 +67,7 @@ class APIServerVariable extends APIObject {
     description = object.decode("description");
   }
 
-  void encode(JSONObject object) {
+  void encode(KeyedArchive object) {
     super.encode(object);
 
     if (defaultValue == null) {

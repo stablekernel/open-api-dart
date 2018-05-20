@@ -1,12 +1,11 @@
-import 'package:open_api/src/json_object.dart';
-import 'package:open_api/src/util.dart';
+import 'package:open_api/src/object.dart';
 import 'package:open_api/src/v3/callback.dart';
 import 'package:open_api/src/v3/header.dart';
 import 'package:open_api/src/v3/parameter.dart';
+import 'package:open_api/src/v3/request_body.dart';
 import 'package:open_api/src/v3/response.dart';
 import 'package:open_api/src/v3/schema.dart';
 import 'package:open_api/src/v3/security.dart';
-import 'package:open_api/src/v3/request_body.dart';
 
 /// Holds a set of reusable objects for different aspects of the OAS.
 ///
@@ -77,7 +76,7 @@ class APIComponents extends APIObject {
     return resolveUri(refObject.referenceURI.toString());
   }
 
-  void decode(JSONObject object) {
+  void decode(KeyedArchive object) {
     super.decode(object);
 
     schemas = object.decodeObjectMap("schemas", () => new APISchemaObject());
@@ -94,7 +93,7 @@ class APIComponents extends APIObject {
     callbacks = object.decodeObjectMap("callbacks", () => new APICallback());
   }
 
-  void encode(JSONObject object) {
+  void encode(KeyedArchive object) {
     super.encode(object);
 
     object.encodeObjectMap("schemas", schemas);
