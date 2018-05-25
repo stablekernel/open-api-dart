@@ -2,6 +2,17 @@ import 'package:codable/cast.dart' as cast;
 import 'package:open_api/src/object.dart';
 import 'package:open_api/src/v3/types.dart';
 
+enum APISchemaAdditionalPropertyPolicy {
+  /// When [APISchemaObject] prevents properties other than those defined by [APISchemaObject.properties] from being included
+  disallowed,
+
+  /// When [APISchemaObject] allows any additional properties
+  freeForm,
+
+  /// When [APISchemaObject.additionalPropertySchema] contains a schema object
+  restricted
+}
+
 /// Represents a schema object in the OpenAPI specification.
 class APISchemaObject extends APIObject {
   APISchemaObject();
@@ -13,9 +24,9 @@ class APISchemaObject extends APIObject {
   APISchemaObject.boolean() : type = APIType.boolean;
   APISchemaObject.map({APIType ofType, APISchemaObject ofSchema, bool any: false}) : type = APIType.object {
     if (ofType != null) {
-      additionalProperties = new APISchemaObject()..type = ofType;
+      additionalPropertySchema = new APISchemaObject()..type = ofType;
     } else if (ofSchema != null) {
-      additionalProperties = ofSchema;
+      additionalPropertySchema = ofSchema;
     } else if (any) {
 
     } else {
@@ -34,7 +45,7 @@ class APISchemaObject extends APIObject {
   APISchemaObject.object(this.properties): type = APIType.object;
   APISchemaObject.file({bool isBase64Encoded: false}) : type = APIType.string, format = isBase64Encoded ? "byte" : "binary";
 
-  APISchemaObject.freeForm() : type = APIType.object, isFreeForm = true;
+  APISchemaObject.freeForm() : type = APIType.object, additionalPropertyPolicy = APISchemaAdditionalPropertyPolicy.freeForm;
 
   /// A title for the object.
   String title;
@@ -189,12 +200,12 @@ class APISchemaObject extends APIObject {
 
   APISchemaObject items;
   Map<String, APISchemaObject> properties;
-  APISchemaObject additionalProperties;
+  APISchemaObject additionalPropertySchema;
+  APISchemaAdditionalPropertyPolicy additionalPropertyPolicy;
 
   String description;
   String format;
   dynamic defaultValue;
-  bool isFreeForm = false;
 
   bool get isNullable => _nullable ?? false;
 
@@ -263,11 +274,16 @@ class APISchemaObject extends APIObject {
 
     final addlProps = object["additionalProperties"];
     if (addlProps is bool) {
-      isFreeForm = true;
+      if (addlProps) {
+        additionalPropertyPolicy = APISchemaAdditionalPropertyPolicy.freeForm;
+      } else {
+        additionalPropertyPolicy = APISchemaAdditionalPropertyPolicy.disallowed;
+      }
     } else if (addlProps is KeyedArchive && addlProps.isEmpty) {
-      isFreeForm = true;
+      additionalPropertyPolicy = APISchemaAdditionalPropertyPolicy.freeForm;
     } else {
-      additionalProperties = object.decodeObject("additionalProperties", () => new APISchemaObject());
+      additionalPropertyPolicy = APISchemaAdditionalPropertyPolicy.restricted;
+      additionalPropertySchema = object.decodeObject("additionalProperties", () => new APISchemaObject());
     }
 
     description = object.decode("description");
@@ -309,10 +325,14 @@ class APISchemaObject extends APIObject {
     object.encodeObject("not", not);
 
     object.encodeObject("items", items);
-    if (isFreeForm) {
-      object.encode("additionalProperties", {});
-    } else {
-      object.encodeObject("additionalProperties", additionalProperties);
+    if (additionalPropertyPolicy != null || additionalPropertySchema != null) {
+      if (additionalPropertyPolicy == APISchemaAdditionalPropertyPolicy.disallowed) {
+        object.encode("additionalProperties", false);
+      } else if (additionalPropertyPolicy == APISchemaAdditionalPropertyPolicy.freeForm) {
+        object.encode("additionalProperties", true);
+      } else {
+        object.encodeObject("additionalProperties", additionalPropertySchema);
+      }
     }
     object.encodeObjectMap("properties", properties);
 

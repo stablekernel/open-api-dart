@@ -5,6 +5,9 @@ import 'package:open_api/src/v3/parameter.dart';
 import 'package:open_api/src/v3/request_body.dart';
 import 'package:open_api/src/v3/response.dart';
 import 'package:open_api/src/v3/security.dart';
+import 'package:open_api/src/v3/path.dart';
+import 'package:open_api/src/v3/document.dart';
+import 'package:open_api/src/v3/server.dart';
 
 /// Describes a single API operation on a path.
 class APIOperation extends APIObject {
@@ -64,6 +67,11 @@ class APIOperation extends APIObject {
   ///
   /// The key is a unique identifier for the [APICallback]. Each value in the map is a [APICallback] that describes a request that may be initiated by the API provider and the expected responses. The key value used to identify the callback object is an expression, evaluated at runtime, that identifies a URL to use for the callback operation.
   Map<String, APICallback> callbacks;
+
+  /// An alternative server array to service this operation.
+  ///
+  /// If an alternative server object is specified at the [APIPath] or [APIDocument] level, it will be overridden by this value.
+  List<APIServerDescription> servers;
 
   /// Declares this operation to be deprecated.
   ///
@@ -142,6 +150,7 @@ class APIOperation extends APIObject {
     callbacks = object.decodeObjectMap("callbacks", () => new APICallback());
     _deprecated = object.decode("deprecated");
     security = object.decodeObjects("security", () => new APISecurityRequirement.empty());
+    servers = object.decodeObjects("servers", () => APIServerDescription.empty());
   }
 
   void encode(KeyedArchive object) {
@@ -161,5 +170,6 @@ class APIOperation extends APIObject {
     object.encodeObjectMap("callbacks", callbacks);
     object.encode("deprecated", _deprecated);
     object.encodeObjects("security", security);
+    object.encodeObjects("servers", servers);
   }
 }

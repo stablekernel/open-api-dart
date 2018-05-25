@@ -101,7 +101,7 @@ void main() {
         final getParams = getOp.parameters;
         final getResponses = getOp.responses;
         expect(getOp.description, contains("10 most recent reversals"));
-        expect(getOp.id, "RetrieveTransferReversal");
+        expect(getOp.id, "TransferReversalRetrieve");
         expect(getParams.length, 3);
         expect(getParams[0].location, APIParameterLocation.query);
         expect(getParams[0].description, "Specifies which fields in the response should be expanded.");
@@ -126,8 +126,6 @@ void main() {
 
         final resolvedElement = getResponses["200"].content["application/json"].schema.properties["balance_transaction"].anyOf;
         expect(resolvedElement.last.properties["amount"].type, APIType.integer);
-
-
       });
     });
 
@@ -156,10 +154,10 @@ void main() {
         }
       });
 
-      expect(doc.components.schemas["freeform"].isFreeForm, true);
+      expect(doc.components.schemas["freeform"].additionalPropertyPolicy, APISchemaAdditionalPropertyPolicy.freeForm);
 
       expect(doc.asMap()["components"]["schemas"]["freeform"]["type"], "object");
-      expect(doc.asMap()["components"]["schemas"]["freeform"]["additionalProperties"], {});
+      expect(doc.asMap()["components"]["schemas"]["freeform"]["additionalProperties"], true);
     });
 
     test("Can read/emit schema object with additionalProperties={}", () {
@@ -176,9 +174,9 @@ void main() {
           }
         }
       });
-      expect(doc.components.schemas["freeform"].isFreeForm, true);
+      expect(doc.components.schemas["freeform"].additionalPropertyPolicy, APISchemaAdditionalPropertyPolicy.freeForm);
       expect(doc.asMap()["components"]["schemas"]["freeform"]["type"], "object");
-      expect(doc.asMap()["components"]["schemas"]["freeform"]["additionalProperties"], {});
+      expect(doc.asMap()["components"]["schemas"]["freeform"]["additionalProperties"], true);
     });
 
   });
