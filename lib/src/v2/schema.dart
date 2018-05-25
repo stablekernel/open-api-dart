@@ -1,4 +1,4 @@
-import 'package:cast/cast.dart' as cast;
+import 'package:codable/cast.dart' as cast;
 import 'package:codable/codable.dart';
 import 'package:open_api/src/v2/property.dart';
 

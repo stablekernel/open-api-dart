@@ -1,6 +1,6 @@
 name: open_api
 description: Data structures for OpenAPI (Swagger) specification. Reads and writes JSON specifications.
-version: 2.0.0-dev
+version: 2.0.0-beta
 homepage: https://github.com/stablekernel/open-api-dart
 author: stable|kernel <jobs@stablekernel.com>
 
@@ -9,9 +9,7 @@ environment:
 
 dependencies:
   meta: ^1.1.4
-  codable:
-    git:
-      url: https://github.com/stablekernel/dart-codable.git
+  codable: ^1.0.0-beta
 
 dev_dependencies:
   test: ^0.12.0

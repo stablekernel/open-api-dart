@@ -124,7 +124,7 @@ class APISecurityScheme extends APIObject {
         break;
       case APISecuritySchemeType.openID:
         {
-          connectURL = object.decodeUri("openIdConnectUrl");
+          connectURL = object.decode("openIdConnectUrl");
         }
         break;
     }
@@ -176,7 +176,7 @@ class APISecurityScheme extends APIObject {
           if (connectURL == null) {
             throw new ArgumentError("APISecurityScheme with 'openID' type must have non-null values for: 'connectURL'.");
           }
-          object.encodeUri("openIdConnectUrl", connectURL);
+          object.encode("openIdConnectUrl", connectURL);
         }
         break;
     }
@@ -214,19 +214,19 @@ class APISecuritySchemeOAuth2Flow extends APIObject {
   void encode(KeyedArchive object) {
     super.encode(object);
 
-    object.encodeUri("authorizationUrl", authorizationURL);
-    object.encodeUri("tokenUrl", tokenURL);
-    object.encodeUri("refreshUrl", refreshURL);
+    object.encode("authorizationUrl", authorizationURL);
+    object.encode("tokenUrl", tokenURL);
+    object.encode("refreshUrl", refreshURL);
     object.encode("scopes", scopes);
   }
 
   void decode(KeyedArchive object) {
     super.decode(object);
 
-    authorizationURL = object.decodeUri("authorizationUrl");
+    authorizationURL = object.decode("authorizationUrl");
 
-    tokenURL = object.decodeUri("tokenUrl");
-    refreshURL = object.decodeUri("refreshUrl");
+    tokenURL = object.decode("tokenUrl");
+    refreshURL = object.decode("refreshUrl");
 
     scopes = new Map<String, String>.from(object.decode("scopes"));
   }

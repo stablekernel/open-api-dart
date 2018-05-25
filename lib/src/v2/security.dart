@@ -1,4 +1,4 @@
-import 'package:cast/cast.dart' as cast;
+import 'package:codable/cast.dart' as cast;
 import 'package:open_api/src/object.dart';
 import 'package:open_api/src/v2/parameter.dart';
 
@@ -69,7 +69,8 @@ class APISecurityScheme extends APIObject {
   }
 
   @override
-  Map<String, cast.Cast> get castMap => {"scopes": cast.Map(cast.String, cast.String)};
+  Map<String, cast.Cast> get castMap =>
+    {"scopes": cast.Map(cast.String, cast.String)};
 
   void decode(KeyedArchive object) {
     super.decode(object);

@@ -1,0 +1,21 @@
+language: dart
+dart:
+  - dev
+
+before_script:
+  - mkdir test/specs
+  - curl https://github.com/kubernetes/kubernetes/blob/master/api/openapi-spec/swagger.json -o test/specs/kubernetes.json
+  - curl https://raw.githubusercontent.com/stripe/openapi/master/openapi/spec3.json -o test/spec/stripe.json
+
+jobs:
+  include:
+  - stage: test
+    env: DART_VM_OPTIONS=--preview-dart-2
+    script: pub get && pub run test -j1
+
+stages:
+- test
+
+branches:
+  only:
+  - master

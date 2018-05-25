@@ -22,7 +22,7 @@ class APIServerDescription extends APIObject {
   void decode(KeyedArchive object) {
     super.decode(object);
 
-    url = object.decodeUri("url");
+    url = object.decode("url");
     description = object.decode("description");
     variables =
         object.decodeObjectMap("variables", () => new APIServerVariable.empty());
@@ -35,7 +35,7 @@ class APIServerDescription extends APIObject {
       throw new ArgumentError("APIServerDescription must have non-null values for: 'url'.");
     }
 
-    object.encodeUri("url", url);
+    object.encode("url", url);
     object.encode("description", description);
     object.encodeObjectMap("variables", variables);
   }

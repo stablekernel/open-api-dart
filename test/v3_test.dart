@@ -55,7 +55,7 @@ void main() {
       // to this path, from this path: https://raw.githubusercontent.com/stripe/openapi/master/openapi/spec3.json
       var file = new File("test/specs/stripe.json");
       var contents = file.readAsStringSync();
-      original = JSON.decode(contents);
+      original = json.decode(contents);
       doc = new APIDocument.fromMap(original);
     });
 

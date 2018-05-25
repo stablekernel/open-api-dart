@@ -40,7 +40,7 @@ class APIInfo extends APIObject {
 
     title = object.decode("title");
     description = object.decode("description");
-    termsOfServiceURL = object.decodeUri("termsOfService");
+    termsOfServiceURL = object.decode("termsOfService");
     contact = object.decodeObject("contact", () => new APIContact());
     license = object.decodeObject("license", () => new APILicense.empty());
     version = object.decode("version");
@@ -56,7 +56,7 @@ class APIInfo extends APIObject {
     object.encode("title", title);
     object.encode("description", description);
     object.encode("version", version);
-    object.encodeUri("termsOfService", termsOfServiceURL);
+    object.encode("termsOfService", termsOfServiceURL);
     object.encodeObject("contact", contact);
     object.encodeObject("license", license);
   }
@@ -84,7 +84,7 @@ class APIContact extends APIObject {
     super.decode(object);
 
     name = object.decode("name");
-    url = object.decodeUri("url");
+    url = object.decode("url");
     email = object.decode("email");
   }
 
@@ -92,7 +92,7 @@ class APIContact extends APIObject {
     super.encode(object);
 
     object.encode("name", name);
-    object.encodeUri("url", url);
+    object.encode("url", url);
     object.encode("email", email);
   }
 }
@@ -116,7 +116,7 @@ class APILicense extends APIObject {
     super.decode(object);
 
     name = object.decode("name");
-    url = object.decodeUri("url");
+    url = object.decode("url");
   }
 
   void encode(KeyedArchive object) {
@@ -127,7 +127,7 @@ class APILicense extends APIObject {
     }
 
     object.encode("name", name);
-    object.encodeUri("url", url);
+    object.encode("url", url);
   }
 }
 
