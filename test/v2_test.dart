@@ -24,7 +24,7 @@ void main() {
     test("Has all metadata", () {
       expect(doc.version, "2.0");
       expect(doc.info.title, "Kubernetes");
-      expect(doc.info.version, "v1.9.0");
+      expect(doc.info.version, isNotNull);
       expect(doc.host, isNull);
       expect(doc.basePath, isNull);
       expect(doc.tags, isNull);
