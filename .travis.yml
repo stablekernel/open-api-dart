@@ -5,7 +5,7 @@ dart:
 before_script:
   - mkdir test/specs
   - curl https://github.com/kubernetes/kubernetes/blob/master/api/openapi-spec/swagger.json -o test/specs/kubernetes.json
-  - curl https://raw.githubusercontent.com/stripe/openapi/master/openapi/spec3.json -o test/spec/stripe.json
+  - curl https://raw.githubusercontent.com/stripe/openapi/master/openapi/spec3.json -o test/specs/stripe.json
 
 jobs:
   include:
