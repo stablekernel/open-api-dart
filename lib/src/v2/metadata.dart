@@ -1,5 +1,4 @@
-import 'package:open_api/src/json_object.dart';
-import 'package:open_api/src/util.dart';
+import 'package:open_api/src/object.dart';
 
 /// Represents a metadata for an API in the OpenAPI specification.
 class APIInfo extends APIObject {
@@ -13,18 +12,18 @@ class APIInfo extends APIObject {
   APIContact contact = new APIContact();
   APILicense license = new APILicense();
 
-  void decode(JSONObject object) {
+  void decode(KeyedArchive object) {
     super.decode(object);
 
     title = object.decode("title");
     description = object.decode("description");
     termsOfServiceURL = object.decode("termsOfService");
-    contact = object.decode("contact", inflate: () => new APIContact());
-    license = object.decode("license", inflate: () => new APILicense());
+    contact = object.decodeObject("contact", () => new APIContact());
+    license = object.decodeObject("license", () => new APILicense());
     version = object.decode("version");
   }
 
-  void encode(JSONObject object) {
+  void encode(KeyedArchive object) {
     super.encode(object);
 
     object.encode("title", title);
@@ -40,7 +39,7 @@ class APIInfo extends APIObject {
 class APIContact extends APIObject {
   APIContact();
 
-  void decode(JSONObject object) {
+  void decode(KeyedArchive object) {
     super.decode(object);
 
     name = object.decode("name");
@@ -52,7 +51,7 @@ class APIContact extends APIObject {
   String url = "http://localhost";
   String email = "default";
 
-  void encode(JSONObject object) {
+  void encode(KeyedArchive object) {
     super.encode(object);
 
     object.encode("name", name);
@@ -65,7 +64,7 @@ class APIContact extends APIObject {
 class APILicense extends APIObject {
   APILicense();
 
-  void decode(JSONObject object) {
+  void decode(KeyedArchive object) {
     super.decode(object);
 
     name = object.decode("name");
@@ -75,7 +74,7 @@ class APILicense extends APIObject {
   String name = "default";
   String url = "http://localhost";
 
-  void encode(JSONObject object) {
+  void encode(KeyedArchive object) {
     super.encode(object);
 
     object.encode("name", name);
@@ -86,7 +85,7 @@ class APILicense extends APIObject {
 class APITag extends APIObject {
   APITag();
 
-  void decode(JSONObject object) {
+  void decode(KeyedArchive object) {
     super.decode(object);
 
     name = object.decode("name");
@@ -96,7 +95,7 @@ class APITag extends APIObject {
   String name;
   String description;
 
-  void encode(JSONObject object) {
+  void encode(KeyedArchive object) {
     super.encode(object);
 
     object.encode("name", name);

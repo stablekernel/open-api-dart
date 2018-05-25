@@ -1,5 +1,4 @@
-import 'package:open_api/src/json_object.dart';
-import 'package:open_api/src/util.dart';
+import 'package:open_api/src/object.dart';
 import 'package:open_api/src/v3/header.dart';
 import 'package:open_api/src/v3/media_type.dart';
 import 'package:open_api/src/v3/schema.dart';
@@ -71,7 +70,7 @@ class APIResponse extends APIObject {
     }
   }
 
-  void decode(JSONObject object) {
+  void decode(KeyedArchive object) {
     super.decode(object);
 
     description = object.decode("description");
@@ -79,11 +78,11 @@ class APIResponse extends APIObject {
     headers = object.decodeObjectMap("headers", () => new APIHeader());
   }
 
-  void encode(JSONObject object) {
+  void encode(KeyedArchive object) {
     super.encode(object);
 
     if (description == null) {
-      throw new APIException("APIResponse must have non-null values for: 'description'.");
+      throw new ArgumentError("APIResponse must have non-null values for: 'description'.");
     }
 
 

@@ -1,32 +1,20 @@
-import 'package:open_api/src/v2/path.dart';
-import 'package:open_api/src/v2/security.dart';
+import 'package:codable/cast.dart' as cast;
+import 'package:open_api/src/object.dart';
 import 'package:open_api/src/v2/metadata.dart';
-import 'package:open_api/src/util.dart';
 import 'package:open_api/src/v2/parameter.dart';
+import 'package:open_api/src/v2/path.dart';
 import 'package:open_api/src/v2/response.dart';
-import 'package:open_api/src/json_object.dart';
-import 'dart:convert';
 import 'package:open_api/src/v2/schema.dart';
+import 'package:open_api/src/v2/security.dart';
 
 /// Represents an OpenAPI 2.0 specification.
-class APIDocument extends APIObject with JSONDecodingContext {
+class APIDocument extends APIObject {
   /// Creates an empty specification.
   APIDocument();
 
-  /// Creates a specification from JSON.
-  APIDocument.fromJSON(String jsonString) {
-    _root = JSON.decode(jsonString, reviver: (k, v) {
-      if (v is Map) {
-        return new JSONObject(v, this);
-      }
-
-      return v;
-    });
-
-    decode(_root);
-
-    // Can release this once we're done, since it is just a duplicate structure to the one rooted by this instance.
-    _root = null;
+  /// Creates a specification from decoded JSON or YAML document object.
+  APIDocument.fromMap(Map<String, dynamic> map) {
+    decode(KeyedArchive.unarchive(map));
   }
 
   String version = "2.0";
@@ -46,43 +34,43 @@ class APIDocument extends APIObject with JSONDecodingContext {
   Map<String, APISchemaObject> definitions = {};
   Map<String, APISecurityScheme> securityDefinitions = {};
 
-  JSONObject get root => _root;
-  JSONObject _root;
-
   Map<String, dynamic> asMap() {
-    _root = new JSONObject({}, this);
+    final container = new KeyedArchive({});
 
-    encode(_root);
+    encode(container);
 
-    var m = _root;
-    _root = null;
-    return m.asMap();
+    return container;
   }
 
-  void decode(JSONObject object) {
+  @override
+  Map<String, cast.Cast> get castMap => {
+        "schemes": cast.List(cast.String),
+        "consumes": cast.List(cast.String),
+        "produces": cast.List(cast.String),
+        "security": cast.List(cast.Map(cast.String, cast.List(cast.String)))
+      };
+
+  void decode(KeyedArchive object) {
     super.decode(object);
 
-    version = object.decode("swagger");
-    host = object.decode("host");
-    basePath = object.decode("basePath");
-    schemes = object.decode("schemes");
-    consumes = object.decode("consumes");
-    produces = object.decode("produces");
-    security = object.decode("security");
-    info = object.decode("info", inflate: () => new APIInfo());
+    version = object["swagger"];
+    host = object["host"];
+    basePath = object["basePath"];
+    schemes = object["schemes"];
+    consumes = object["consumes"];
+    produces = object["produces"];
+    security = object["security"];
 
+    info = object.decodeObject("info", () => new APIInfo());
     tags = object.decodeObjects("tags", () => new APITag());
-
     paths = object.decodeObjectMap("paths", () => new APIPath());
     responses = object.decodeObjectMap("responses", () => new APIResponse());
     parameters = object.decodeObjectMap("parameters", () => new APIParameter());
-    definitions =
-        object.decodeObjectMap("definitions", () => new APISchemaObject());
-    securityDefinitions = object.decodeObjectMap(
-        "securityDefinitions", () => new APISecurityScheme());
+    definitions = object.decodeObjectMap("definitions", () => new APISchemaObject());
+    securityDefinitions = object.decodeObjectMap("securityDefinitions", () => new APISecurityScheme());
   }
 
-  void encode(JSONObject object) {
+  void encode(KeyedArchive object) {
     super.encode(object);
 
     object.encode("swagger", version);

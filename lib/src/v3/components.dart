@@ -1,12 +1,11 @@
-import 'package:open_api/src/json_object.dart';
-import 'package:open_api/src/util.dart';
+import 'package:open_api/src/object.dart';
 import 'package:open_api/src/v3/callback.dart';
 import 'package:open_api/src/v3/header.dart';
 import 'package:open_api/src/v3/parameter.dart';
+import 'package:open_api/src/v3/request_body.dart';
 import 'package:open_api/src/v3/response.dart';
 import 'package:open_api/src/v3/schema.dart';
 import 'package:open_api/src/v3/security.dart';
-import 'package:open_api/src/v3/request_body.dart';
 
 /// Holds a set of reusable objects for different aspects of the OAS.
 ///
@@ -44,11 +43,11 @@ class APIComponents extends APIObject {
   APIObject resolveUri(String uri) {
     final segments = Uri.parse(Uri.parse(uri).fragment).pathSegments;
     if (segments.length != 3) {
-      throw new APIException("Invalid reference URI: must be of form #/components/<type>/<name>");
+      throw new ArgumentError("Invalid reference URI: must be of form #/components/<type>/<name>");
     }
 
     if (segments.first != "components") {
-      throw new APIException("Invalid reference URI: does not begin with #/components/");
+      throw new ArgumentError("Invalid reference URI: does not begin with #/components/");
     }
 
     var namedMap = null;
@@ -63,7 +62,7 @@ class APIComponents extends APIObject {
     }
 
     if (namedMap == null) {
-      throw new APIException("Invalid reference URI: component type '${segments[1]}' does not exist");
+      throw new ArgumentError("Invalid reference URI: component type '${segments[1]}' does not exist");
     }
 
     return namedMap[segments.last];
@@ -71,13 +70,13 @@ class APIComponents extends APIObject {
 
   T resolve<T extends APIObject>(T refObject) {
     if (refObject.referenceURI == null) {
-      throw new APIException("APIObject is not a reference to a component.");
+      throw new ArgumentError("APIObject is not a reference to a component.");
     }
 
-    return resolveUri(refObject.referenceURI);
+    return resolveUri(refObject.referenceURI.toString());
   }
 
-  void decode(JSONObject object) {
+  void decode(KeyedArchive object) {
     super.decode(object);
 
     schemas = object.decodeObjectMap("schemas", () => new APISchemaObject());
@@ -94,7 +93,7 @@ class APIComponents extends APIObject {
     callbacks = object.decodeObjectMap("callbacks", () => new APICallback());
   }
 
-  void encode(JSONObject object) {
+  void encode(KeyedArchive object) {
     super.encode(object);
 
     object.encodeObjectMap("schemas", schemas);

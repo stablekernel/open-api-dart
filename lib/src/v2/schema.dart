@@ -1,4 +1,5 @@
-import 'package:open_api/src/json_object.dart';
+import 'package:codable/cast.dart' as cast;
+import 'package:codable/codable.dart';
 import 'package:open_api/src/v2/property.dart';
 
 /// Represents a schema object in the OpenAPI specification.
@@ -29,7 +30,10 @@ class APISchemaObject extends APIProperty {
     return super.representation;
   }
 
-  void decode(JSONObject json) {
+  @override
+  Map<String, cast.Cast> get castMap => {"required": cast.List(cast.String)};
+
+  void decode(KeyedArchive json) {
     super.decode(json);
 
     title = json.decode("title");
@@ -38,14 +42,13 @@ class APISchemaObject extends APIProperty {
     example = json.decode("example");
     readOnly = json.decode("readOnly") ?? false;
 
-    items = json.decode("items", inflate: () => new APISchemaObject());
-    additionalProperties = json.decode("additionalProperties",
-        inflate: () => new APISchemaObject());
+    items = json.decodeObject("items", () => new APISchemaObject());
+    additionalProperties = json.decodeObject("additionalProperties", () => new APISchemaObject());
     properties =
         json.decodeObjectMap("properties", () => new APISchemaObject());
   }
 
-  void encode(JSONObject json) {
+  void encode(KeyedArchive json) {
     super.encode(json);
 
     json.encode("title", title);

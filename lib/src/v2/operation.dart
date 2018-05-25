@@ -1,11 +1,20 @@
-import 'package:open_api/src/json_object.dart';
+import 'package:codable/cast.dart' as cast;
+import 'package:open_api/src/object.dart';
 import 'package:open_api/src/v2/parameter.dart';
 import 'package:open_api/src/v2/response.dart';
-import 'package:open_api/src/util.dart';
 
 /// Represents a HTTP operation (a path/method pair) in the OpenAPI specification.
 class APIOperation extends APIObject {
   APIOperation();
+
+  @override
+  Map<String, cast.Cast> get castMap => {
+        "tags": cast.List(cast.String),
+        "consumes": cast.List(cast.String),
+        "produces": cast.List(cast.String),
+        "schemes": cast.List(cast.String),
+        "security": cast.List(cast.Map(cast.String, cast.List(cast.String))),
+      };
 
   String summary = "";
   String description = "";
@@ -20,7 +29,7 @@ class APIOperation extends APIObject {
   List<Map<String, List<String>>> security = [];
   Map<String, APIResponse> responses = {};
 
-  void decode(JSONObject object) {
+  void decode(KeyedArchive object) {
     super.decode(object);
 
     tags = object.decode("tags");
@@ -36,7 +45,7 @@ class APIOperation extends APIObject {
     security = object.decode("security");
   }
 
-  void encode(JSONObject object) {
+  void encode(KeyedArchive object) {
     super.encode(object);
 
     object.encode("tags", tags);

@@ -1,9 +1,8 @@
-import 'package:open_api/src/json_object.dart';
-import 'package:open_api/src/util.dart';
-import 'package:open_api/src/v3/parameter.dart';
+import 'package:open_api/src/object.dart';
 import 'package:open_api/src/v3/components.dart';
 import 'package:open_api/src/v3/document.dart';
 import 'package:open_api/src/v3/operation.dart';
+import 'package:open_api/src/v3/parameter.dart';
 
 enum APISecuritySchemeType { apiKey, http, oauth2, openID }
 
@@ -99,7 +98,7 @@ class APISecurityScheme extends APIObject {
   /// For openID only. REQUIRED if so.
   Uri connectURL;
 
-  void decode(JSONObject object) {
+  void decode(KeyedArchive object) {
     super.decode(object);
 
     type = APISecuritySchemeTypeCodec.decode(object.decode("type"));
@@ -125,17 +124,17 @@ class APISecurityScheme extends APIObject {
         break;
       case APISecuritySchemeType.openID:
         {
-          connectURL = object.decodeUri("openIdConnectUrl");
+          connectURL = object.decode("openIdConnectUrl");
         }
         break;
     }
   }
 
-  void encode(JSONObject object) {
+  void encode(KeyedArchive object) {
     super.encode(object);
 
     if (type == null) {
-      throw new APIException("APISecurityScheme must have non-null values for: 'type'.");
+      throw new ArgumentError("APISecurityScheme must have non-null values for: 'type'.");
     }
 
     object.encode("type", APISecuritySchemeTypeCodec.encode(type));
@@ -145,7 +144,7 @@ class APISecurityScheme extends APIObject {
       case APISecuritySchemeType.apiKey:
         {
           if (name == null || location == null) {
-            throw new APIException(
+            throw new ArgumentError(
                 "APISecurityScheme with 'apiKey' type must have non-null values for: 'name', 'location'.");
           }
 
@@ -156,7 +155,7 @@ class APISecurityScheme extends APIObject {
       case APISecuritySchemeType.oauth2:
         {
           if (flows == null) {
-            throw new APIException("APISecurityScheme with 'oauth2' type must have non-null values for: 'flows'.");
+            throw new ArgumentError("APISecurityScheme with 'oauth2' type must have non-null values for: 'flows'.");
           }
 
           object.encodeObjectMap("flows", flows);
@@ -165,7 +164,7 @@ class APISecurityScheme extends APIObject {
       case APISecuritySchemeType.http:
         {
           if (scheme == null) {
-            throw new APIException("APISecurityScheme with 'http' type must have non-null values for: 'scheme'.");
+            throw new ArgumentError("APISecurityScheme with 'http' type must have non-null values for: 'scheme'.");
           }
 
           object.encode("scheme", scheme);
@@ -175,9 +174,9 @@ class APISecurityScheme extends APIObject {
       case APISecuritySchemeType.openID:
         {
           if (connectURL == null) {
-            throw new APIException("APISecurityScheme with 'openID' type must have non-null values for: 'connectURL'.");
+            throw new ArgumentError("APISecurityScheme with 'openID' type must have non-null values for: 'connectURL'.");
           }
-          object.encodeUri("openIdConnectUrl", connectURL);
+          object.encode("openIdConnectUrl", connectURL);
         }
         break;
     }
@@ -212,27 +211,26 @@ class APISecuritySchemeOAuth2Flow extends APIObject {
   /// REQUIRED. A map between the scope name and a short description for it.
   Map<String, String> scopes;
 
-  void encode(JSONObject object) {
+  void encode(KeyedArchive object) {
     super.encode(object);
 
-    object.encodeUri("authorizationUrl", authorizationURL);
-    object.encodeUri("tokenUrl", tokenURL);
-    object.encodeUri("refreshUrl", refreshURL);
+    object.encode("authorizationUrl", authorizationURL);
+    object.encode("tokenUrl", tokenURL);
+    object.encode("refreshUrl", refreshURL);
     object.encode("scopes", scopes);
   }
 
-  void decode(JSONObject object) {
+  void decode(KeyedArchive object) {
     super.decode(object);
 
-    authorizationURL = object.decodeUri("authorizationUrl");
+    authorizationURL = object.decode("authorizationUrl");
 
-    tokenURL = object.decodeUri("tokenUrl");
-    refreshURL = object.decodeUri("refreshUrl");
+    tokenURL = object.decode("tokenUrl");
+    refreshURL = object.decode("refreshUrl");
 
-    scopes = object.decode("scopes");
+    scopes = new Map<String, String>.from(object.decode("scopes"));
   }
 }
-
 
 /// Lists the required security schemes to execute an operation.
 ///
@@ -250,7 +248,7 @@ class APISecurityRequirement extends APIObject {
   /// If the security scheme is of type [APISecuritySchemeType.oauth2] or [APISecuritySchemeType.openID], then the value is a list of scope names required for the execution. For other security scheme types, the array MUST be empty.
   Map<String, List<String>> requirements;
 
-  void encode(JSONObject object) {
+  void encode(KeyedArchive object) {
     super.encode(object);
 
     requirements.forEach((key, value) {
@@ -258,11 +256,12 @@ class APISecurityRequirement extends APIObject {
     });
   }
 
-  void decode(JSONObject object) {
+  void decode(KeyedArchive object) {
     super.decode(object);
 
     object.keys.forEach((key) {
-      requirements[key] = object.decode(key);
+      final req = new List<String>.from(object.decode(key));
+      requirements[key] = req;
     });
   }
 }

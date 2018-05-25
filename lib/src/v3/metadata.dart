@@ -1,5 +1,4 @@
-import 'package:open_api/src/json_object.dart';
-import 'package:open_api/src/util.dart';
+import 'package:open_api/src/object.dart';
 
 /// The object provides metadata about the API.
 ///
@@ -36,28 +35,28 @@ class APIInfo extends APIObject {
   /// The license information for the exposed API.
   APILicense license;
 
-  void decode(JSONObject object) {
+  void decode(KeyedArchive object) {
     super.decode(object);
 
     title = object.decode("title");
     description = object.decode("description");
-    termsOfServiceURL = object.decodeUri("termsOfService");
-    contact = object.decode("contact", inflate: () => new APIContact());
-    license = object.decode("license", inflate: () => new APILicense.empty());
+    termsOfServiceURL = object.decode("termsOfService");
+    contact = object.decodeObject("contact", () => new APIContact());
+    license = object.decodeObject("license", () => new APILicense.empty());
     version = object.decode("version");
   }
 
-  void encode(JSONObject object) {
+  void encode(KeyedArchive object) {
     super.encode(object);
 
     if (title == null || version == null) {
-      throw new APIException("APIInfo must have non-null values for: 'title', 'version'.");
+      throw new ArgumentError("APIInfo must have non-null values for: 'title', 'version'.");
     }
 
     object.encode("title", title);
     object.encode("description", description);
     object.encode("version", version);
-    object.encodeUri("termsOfService", termsOfServiceURL);
+    object.encode("termsOfService", termsOfServiceURL);
     object.encodeObject("contact", contact);
     object.encodeObject("license", license);
   }
@@ -81,19 +80,19 @@ class APIContact extends APIObject {
   /// MUST be in the format of an email address.
   String email;
 
-  void decode(JSONObject object) {
+  void decode(KeyedArchive object) {
     super.decode(object);
 
     name = object.decode("name");
-    url = object.decodeUri("url");
+    url = object.decode("url");
     email = object.decode("email");
   }
 
-  void encode(JSONObject object) {
+  void encode(KeyedArchive object) {
     super.encode(object);
 
     object.encode("name", name);
-    object.encodeUri("url", url);
+    object.encode("url", url);
     object.encode("email", email);
   }
 }
@@ -113,22 +112,22 @@ class APILicense extends APIObject {
   /// MUST be in the format of a URL.
   Uri url;
 
-  void decode(JSONObject object) {
+  void decode(KeyedArchive object) {
     super.decode(object);
 
     name = object.decode("name");
-    url = object.decodeUri("url");
+    url = object.decode("url");
   }
 
-  void encode(JSONObject object) {
+  void encode(KeyedArchive object) {
     super.encode(object);
 
     if (name == null) {
-      throw new APIException("APILicense must have non-null values for: 'name'.");
+      throw new ArgumentError("APILicense must have non-null values for: 'name'.");
     }
 
     object.encode("name", name);
-    object.encodeUri("url", url);
+    object.encode("url", url);
   }
 }
 
@@ -150,18 +149,18 @@ class APITag extends APIObject {
   /// CommonMark syntax MAY be used for rich text representation.
   String description;
 
-  void decode(JSONObject object) {
+  void decode(KeyedArchive object) {
     super.decode(object);
 
     name = object.decode("name");
     description = object.decode("description");
   }
 
-  void encode(JSONObject object) {
+  void encode(KeyedArchive object) {
     super.encode(object);
 
     if (name == null) {
-      throw new APIException("APITag must have non-null values for: 'name'.");
+      throw new ArgumentError("APITag must have non-null values for: 'name'.");
     }
     object.encode("name", name);
     object.encode("description", description);

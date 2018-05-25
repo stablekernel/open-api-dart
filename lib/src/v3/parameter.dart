@@ -1,8 +1,7 @@
-import 'package:open_api/src/json_object.dart';
-import 'package:open_api/src/v3/schema.dart';
-import 'package:open_api/src/util.dart';
+import 'package:open_api/src/object.dart';
 import 'package:open_api/src/v3/document.dart';
 import 'package:open_api/src/v3/media_type.dart';
+import 'package:open_api/src/v3/schema.dart';
 
 /// There are four possible parameter locations specified by the in field.
 ///
@@ -230,7 +229,7 @@ class APIParameter extends APIObject {
   // Currently missing:
   // example, examples
 
-  void decode(JSONObject object) {
+  void decode(KeyedArchive object) {
     super.decode(object);
 
     name = object.decode("name");
@@ -241,18 +240,18 @@ class APIParameter extends APIObject {
     _deprecated = object.decode("deprecated");
     _allowEmptyValue = object.decode("allowEmptyValue");
 
-    schema = object.decode("schema", inflate: () => new APISchemaObject());
+    schema = object.decodeObject("schema", () => new APISchemaObject());
     style = object.decode("style");
     _explode = object.decode("explode");
     _allowReserved = object.decode("allowReserved");
     content = object.decodeObjectMap("content", () => new APIMediaType());
   }
 
-  void encode(JSONObject object) {
+  void encode(KeyedArchive object) {
     super.encode(object);
 
     if (name == null || location == null) {
-      throw new APIException("APIParameter must have non-null values for: 'name', 'location'.");
+      throw new ArgumentError("APIParameter must have non-null values for: 'name', 'location'.");
     }
 
     object.encode("name", name);

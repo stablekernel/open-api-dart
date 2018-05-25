@@ -1,5 +1,4 @@
-import 'package:open_api/src/json_object.dart';
-import 'package:open_api/src/util.dart';
+import 'package:open_api/src/object.dart';
 import 'package:open_api/src/v3/header.dart';
 import 'package:open_api/src/v3/parameter.dart';
 
@@ -41,7 +40,7 @@ class APIEncoding extends APIObject {
   /// See [APIParameter] for details on the style property. The behavior follows the same values as query parameters, including default values. This property SHALL be ignored if the request body media type is not application/x-www-form-urlencoded.
   String style;
 
-  void decode(JSONObject object) {
+  void decode(KeyedArchive object) {
     super.decode(object);
 
     contentType = object.decode("contentType");
@@ -51,7 +50,7 @@ class APIEncoding extends APIObject {
     style = object.decode("style");
   }
 
-  void encode(JSONObject object) {
+  void encode(KeyedArchive object) {
     super.encode(object);
 
     object.encode("contentType", contentType);

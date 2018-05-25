@@ -1,5 +1,4 @@
-import 'package:open_api/src/json_object.dart';
-import 'package:open_api/src/util.dart';
+import 'package:open_api/src/object.dart';
 import 'package:open_api/src/v3/operation.dart';
 import 'package:open_api/src/v3/parameter.dart';
 
@@ -43,12 +42,7 @@ class APIPath extends APIObject {
 
   // todo (joeconwaystk): alternative servers not yet implemented
 
-  void decode(JSONObject object) {
-    // todo (joeconwaystk): Hasn't been common enough to use time on implementing yet.
-    if (object.containsKey(r"$ref")) {
-      return;
-    }
-
+  void decode(KeyedArchive object) {
     super.decode(object);
 
     summary = object.decode("summary");
@@ -61,11 +55,11 @@ class APIPath extends APIObject {
         return;
       }
       operations ??= {};
-      operations[methodName] = object.decode(methodName, inflate: () => new APIOperation.empty());
+      operations[methodName] = object.decodeObject(methodName, () => new APIOperation.empty());
     });
   }
 
-  void encode(JSONObject object) {
+  void encode(KeyedArchive object) {
     super.encode(object);
 
     object.encode("summary", summary);

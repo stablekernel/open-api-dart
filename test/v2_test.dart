@@ -17,14 +17,14 @@ void main() {
       // to this path, from this path: https://github.com/kubernetes/kubernetes/blob/master/api/openapi-spec/swagger.json.
       var file = new File("test/specs/kubernetes.json");
       var contents = file.readAsStringSync();
-      original = JSON.decode(contents);
-      doc = new APIDocument.fromJSON(contents);
+      original = json.decode(contents);
+      doc = new APIDocument.fromMap(original);
     });
 
     test("Has all metadata", () {
       expect(doc.version, "2.0");
       expect(doc.info.title, "Kubernetes");
-      expect(doc.info.version, "v1.9.0");
+      expect(doc.info.version, isNotNull);
       expect(doc.host, isNull);
       expect(doc.basePath, isNull);
       expect(doc.tags, isNull);
@@ -80,7 +80,7 @@ void main() {
     });
 
     test("Can encode as JSON", () {
-      expect(JSON.encode(doc.asMap()), new isInstanceOf<String>());
+      expect(json.encode(doc.asMap()), new isInstanceOf<String>());
     });
   });
 }

@@ -1,10 +1,13 @@
-import 'package:open_api/src/json_object.dart';
+import 'package:codable/cast.dart' as cast;
+import 'package:open_api/src/object.dart';
 import 'package:open_api/src/v3/callback.dart';
 import 'package:open_api/src/v3/parameter.dart';
-import 'package:open_api/src/v3/response.dart';
 import 'package:open_api/src/v3/request_body.dart';
+import 'package:open_api/src/v3/response.dart';
 import 'package:open_api/src/v3/security.dart';
-import 'package:open_api/src/util.dart';
+import 'package:open_api/src/v3/path.dart';
+import 'package:open_api/src/v3/document.dart';
+import 'package:open_api/src/v3/server.dart';
 
 /// Describes a single API operation on a path.
 class APIOperation extends APIObject {
@@ -64,6 +67,11 @@ class APIOperation extends APIObject {
   ///
   /// The key is a unique identifier for the [APICallback]. Each value in the map is a [APICallback] that describes a request that may be initiated by the API provider and the expected responses. The key value used to identify the callback object is an expression, evaluated at runtime, that identifies a URL to use for the callback operation.
   Map<String, APICallback> callbacks;
+
+  /// An alternative server array to service this operation.
+  ///
+  /// If an alternative server object is specified at the [APIPath] or [APIDocument] level, it will be overridden by this value.
+  List<APIServerDescription> servers;
 
   /// Declares this operation to be deprecated.
   ///
@@ -125,7 +133,11 @@ class APIOperation extends APIObject {
     });
   }
 
-  void decode(JSONObject object) {
+
+  @override
+  Map<String, cast.Cast> get castMap => {"tags": cast.List(cast.String)};
+
+  void decode(KeyedArchive object) {
     super.decode(object);
 
     tags = object.decode("tags");
@@ -133,18 +145,19 @@ class APIOperation extends APIObject {
     description = object.decode("description");
     id = object.decode("operationId");
     parameters = object.decodeObjects("parameters", () => new APIParameter.empty());
-    requestBody = object.decode("requestBody", inflate: () => new APIRequestBody.empty());
+    requestBody = object.decodeObject("requestBody", () => new APIRequestBody.empty());
     responses = object.decodeObjectMap("responses", () => new APIResponse.empty());
     callbacks = object.decodeObjectMap("callbacks", () => new APICallback());
     _deprecated = object.decode("deprecated");
     security = object.decodeObjects("security", () => new APISecurityRequirement.empty());
+    servers = object.decodeObjects("servers", () => APIServerDescription.empty());
   }
 
-  void encode(JSONObject object) {
+  void encode(KeyedArchive object) {
     super.encode(object);
 
     if (responses == null) {
-      throw new APIException("APIOperation must have non-null values for: 'responses'.");
+      throw new ArgumentError("Invalid specification. APIOperation must have non-null values for: 'responses'.");
     }
 
     object.encode("tags", tags);
@@ -157,5 +170,6 @@ class APIOperation extends APIObject {
     object.encodeObjectMap("callbacks", callbacks);
     object.encode("deprecated", _deprecated);
     object.encodeObjects("security", security);
+    object.encodeObjects("servers", servers);
   }
 }

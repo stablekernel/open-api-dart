@@ -1,6 +1,5 @@
-import 'package:open_api/src/util.dart';
+import 'package:open_api/src/object.dart';
 import 'package:open_api/src/v2/types.dart';
-import 'package:open_api/src/json_object.dart';
 
 enum APISchemaRepresentation {
   primitive,
@@ -72,7 +71,7 @@ class APIProperty extends APIObject {
     return APISchemaRepresentation.primitive;
   }
 
-  void decode(JSONObject object) {
+  void decode(KeyedArchive object) {
     super.decode(object);
 
     type = APITypeCodec.decode(object.decode("type"));
@@ -94,7 +93,7 @@ class APIProperty extends APIObject {
     enumerated = object.decode("enum");
   }
 
-  void encode(JSONObject object) {
+  void encode(KeyedArchive object) {
     super.encode(object);
 
     object.encode("type", APITypeCodec.encode(type));
