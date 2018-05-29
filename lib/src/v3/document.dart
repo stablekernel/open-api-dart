@@ -49,11 +49,7 @@ class APIDocument extends APIObject {
   List<APITag> tags;
 
   Map<String, dynamic> asMap() {
-    final container = new KeyedArchive({});
-
-    encode(container);
-
-    return container;
+    return KeyedArchive.archive(this);
   }
 
   void decode(KeyedArchive object) {
