@@ -14,7 +14,7 @@ class APIDocument extends APIObject {
 
   /// Creates a specification from decoded JSON or YAML document object.
   APIDocument.fromMap(Map<String, dynamic> map) {
-    decode(KeyedArchive.unarchive(map));
+    decode(KeyedArchive.unarchive(map, allowReferences: true));
   }
 
   String version = "2.0";
@@ -35,11 +35,7 @@ class APIDocument extends APIObject {
   Map<String, APISecurityScheme> securityDefinitions = {};
 
   Map<String, dynamic> asMap() {
-    final container = new KeyedArchive({});
-
-    encode(container);
-
-    return container;
+    return KeyedArchive.archive(this, allowReferences: true);
   }
 
   @override

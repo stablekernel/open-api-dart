@@ -12,7 +12,7 @@ class APIDocument extends APIObject {
 
   /// Creates a specification from decoded JSON or YAML document object.
   APIDocument.fromMap(Map<String, dynamic> map) {
-    decode(KeyedArchive.unarchive(map));
+    decode(KeyedArchive.unarchive(map, allowReferences: true));
   }
 
   /// This string MUST be the semantic version number of the OpenAPI Specification version that the OpenAPI document uses.
@@ -49,7 +49,7 @@ class APIDocument extends APIObject {
   List<APITag> tags;
 
   Map<String, dynamic> asMap() {
-    return KeyedArchive.archive(this);
+    return KeyedArchive.archive(this, allowReferences: true);
   }
 
   void decode(KeyedArchive object) {
