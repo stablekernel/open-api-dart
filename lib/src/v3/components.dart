@@ -40,14 +40,17 @@ class APIComponents extends APIObject {
   /// An object to hold reusable [APICallback].
   Map<String, APICallback> callbacks = {};
 
-  APIObject resolveUri(String uri) {
-    final segments = Uri.parse(Uri.parse(uri).fragment).pathSegments;
+  /// Returns a component definition for [uri].
+  ///
+  /// Construct [uri] as a path, e.g. `Uri(path: /components/schemas/name)`.
+  APIObject resolveUri(Uri uri) {
+    final segments = uri.pathSegments;
     if (segments.length != 3) {
-      throw new ArgumentError("Invalid reference URI: must be of form #/components/<type>/<name>");
+      throw new ArgumentError("Invalid reference URI. Must be a path URI of the form: '/components/<type>/<name>'");
     }
 
     if (segments.first != "components") {
-      throw new ArgumentError("Invalid reference URI: does not begin with #/components/");
+      throw new ArgumentError("Invalid reference URI: does not begin with /components/");
     }
 
     var namedMap = null;
@@ -62,7 +65,7 @@ class APIComponents extends APIObject {
     }
 
     if (namedMap == null) {
-      throw new ArgumentError("Invalid reference URI: component type '${segments[1]}' does not exist");
+      throw new ArgumentError("Invalid reference URI: component type '${segments[1]}' does not exist.");
     }
 
     return namedMap[segments.last];
@@ -73,7 +76,7 @@ class APIComponents extends APIObject {
       throw new ArgumentError("APIObject is not a reference to a component.");
     }
 
-    return resolveUri(refObject.referenceURI.toString());
+    return resolveUri(refObject.referenceURI);
   }
 
   void decode(KeyedArchive object) {

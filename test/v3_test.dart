@@ -4,21 +4,24 @@ import 'dart:io';
 import 'dart:convert';
 
 void main() {
-  group("Resolution", () {
+  group("Components and resolution", () {
     test("Can resolve object against registry", () {
       final components = new APIComponents();
       components.schemas["foo"] = new APISchemaObject.string();
 
-      final ref = new APISchemaObject()..referenceURI = Uri.parse("#/components/schemas/foo");
+      final ref = new APISchemaObject()..referenceURI = Uri.parse("/components/schemas/foo");
       final orig = components.resolve(ref);
       expect(orig.type, APIType.string);
       expect(ref.type, isNull);
+
+      final APISchemaObject constructed = components.resolveUri(Uri(path: "/components/schemas/foo"));
+      expect(constructed.type, APIType.string);
     });
 
     test("Invalid ref uri format throws error", () {
       final components = new APIComponents();
       try {
-        components.resolve(new APISchemaObject()..referenceURI = Uri.parse("/components/schemas/foo"));
+        components.resolve(new APISchemaObject()..referenceURI = Uri.parse("#/components/schemas/foo"));
         expect(true, false);
       } on ArgumentError catch (e) {
         expect(e.message, contains("Invalid reference URI"));
@@ -41,7 +44,33 @@ void main() {
 
     test("Nonexisting component returns null", () {
       final components = new APIComponents();
-      expect(components.resolve(new APISchemaObject()..referenceURI = Uri.parse( "#/components/schemas/foo")), isNull);
+      expect(components.resolve(new APISchemaObject()..referenceURI = Uri.parse("/components/schemas/foo")), isNull);
+    });
+
+    test("URIs are paths internally, but fragments when serialized", () {
+      final doc = new APIDocument.fromMap({
+        "openapi": "3.0.0",
+        "info": {"title":"x", "version":"1"},
+        "paths": <String, dynamic>{},
+        "components": {
+          "schemas": {
+            "string": {
+              "type": "string",
+            },
+            "container": {
+              "\$ref": "#/components/schemas/string"
+            }
+          }
+        }
+      });
+
+      expect(doc.components.schemas["container"].referenceURI.path, "/components/schemas/string");
+
+      doc.components.schemas["other"] = new APISchemaObject()..referenceURI = Uri(path: "/components/schemas/container");
+
+      final out = doc.asMap();
+      expect(out["components"]["schemas"]["container"][r"$ref"], "#/components/schemas/string");
+      expect(out["components"]["schemas"]["other"][r"$ref"], "#/components/schemas/container");
     });
   });
 
