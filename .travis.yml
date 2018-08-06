@@ -1,6 +1,6 @@
 language: dart
 dart:
-  - dev
+  - stable
 
 before_script:
   - mkdir test/specs
@@ -10,7 +10,6 @@ before_script:
 jobs:
   include:
   - stage: test
-    env: DART_VM_OPTIONS=--preview-dart-2
     script: pub get && pub run test -j1
 
 stages:
