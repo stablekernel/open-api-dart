@@ -279,5 +279,15 @@ void main() {
       expect(r400.headers["initial"], isNotNull);
       expect(r400.headers["second"], isNotNull);
     });
-  });
+
+    test("'addResponse' guards against null value", () {
+      var op = new APIOperation("op", null);
+
+      op.addResponse(400, new APIResponse.schema("KINDABAD", APISchemaObject.string(format: "second")));
+      expect(op.responses["400"].content["application/json"].schema.format, "second");
+
+      op.addResponse(400, new APIResponse.schema("REALBAD", new APISchemaObject.string(format: "third")));
+      expect(op.responses["400"].content["application/json"].schema.oneOf.length, 2);
+    });
+  });;
 }
