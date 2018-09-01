@@ -60,7 +60,7 @@ class APIResponse extends APIObject {
     }
 
     final schema = existingContent.schema;
-    if (schema.oneOf != null) {
+    if (schema?.oneOf != null) {
       schema.oneOf.add(bodyObject);
     } else {
       final container = new APISchemaObject()..oneOf = [

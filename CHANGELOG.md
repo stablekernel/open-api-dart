@@ -1,5 +1,13 @@
 # Changelog
 
+## 2.0.1
+
+- Fix bug when merging APIResponse bodies
+
+# 2.0.0
+
+- Update for Dart 2
+
 ## 1.0.2
 
 - Adds `APIResponse.addHeader` and `APIResponse.addContent`.

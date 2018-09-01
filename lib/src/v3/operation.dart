@@ -125,10 +125,10 @@ class APIOperation extends APIObject {
     }
 
     existingResponse.description = "${existingResponse.description ?? ""}\n${response.description}";
-    response.headers.forEach((name, header) {
+    response.headers?.forEach((name, header) {
       existingResponse.addHeader(name, header);
     });
-    response.content.forEach((contentType, mediaType) {
+    response.content?.forEach((contentType, mediaType) {
       existingResponse.addContent(contentType, mediaType.schema);
     });
   }
