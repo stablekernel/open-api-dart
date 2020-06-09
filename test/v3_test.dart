@@ -167,6 +167,29 @@ void main() {
     });
   });
 
+  group("Security", () {
+    test("Can parse security requirements", () {
+      final doc = new APIDocument.fromMap({
+        "openapi": "3.0.0",
+        "info": {"title": "x", "version": "1"},
+        "paths": <String, dynamic>{
+          "/foo": {
+            "get": {
+              "summary": "Lorem Ipsum",
+              "security": [
+                {
+                  "test": [],
+                }
+              ],
+            },
+          },
+        },
+      });
+      expect(doc.paths.values.first.operations.values.first.security,
+          hasLength(1));
+    });
+  });
+
   group("Schema", () {
     test("Can read/emit schema object with additionalProperties=true", () {
       final doc = new APIDocument.fromMap({
