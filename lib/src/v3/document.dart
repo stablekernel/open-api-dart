@@ -59,9 +59,9 @@ class APIDocument extends APIObject {
     info = object.decodeObject("info", () => new APIInfo.empty());
     servers = object.decodeObjects("servers", () => new APIServerDescription.empty());
     paths = object.decodeObjectMap("paths", () => new APIPath());
-    components =
-        object.decodeObject("components", () => new APIComponents());
-    security = object.decode("security");
+    components = object.decodeObject("components", () => new APIComponents());
+    security =
+        object.decodeObjects("security", () => APISecurityRequirement.empty());
     tags = object.decodeObjects("tags", () => new APITag.empty());
   }
 
