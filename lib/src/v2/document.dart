@@ -1,11 +1,11 @@
 import 'package:codable/cast.dart' as cast;
-import 'package:open_api/src/object.dart';
-import 'package:open_api/src/v2/metadata.dart';
-import 'package:open_api/src/v2/parameter.dart';
-import 'package:open_api/src/v2/path.dart';
-import 'package:open_api/src/v2/response.dart';
-import 'package:open_api/src/v2/schema.dart';
-import 'package:open_api/src/v2/security.dart';
+import 'package:open_api_forked/src/object.dart';
+import 'package:open_api_forked/src/v2/metadata.dart';
+import 'package:open_api_forked/src/v2/parameter.dart';
+import 'package:open_api_forked/src/v2/path.dart';
+import 'package:open_api_forked/src/v2/response.dart';
+import 'package:open_api_forked/src/v2/schema.dart';
+import 'package:open_api_forked/src/v2/security.dart';
 
 /// Represents an OpenAPI 2.0 specification.
 class APIDocument extends APIObject {

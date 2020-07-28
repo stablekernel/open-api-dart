@@ -1,8 +1,8 @@
-import 'package:open_api/src/object.dart';
-import 'package:open_api/src/v3/components.dart';
-import 'package:open_api/src/v3/document.dart';
-import 'package:open_api/src/v3/operation.dart';
-import 'package:open_api/src/v3/parameter.dart';
+import 'package:open_api_forked/src/object.dart';
+import 'package:open_api_forked/src/v3/components.dart';
+import 'package:open_api_forked/src/v3/document.dart';
+import 'package:open_api_forked/src/v3/operation.dart';
+import 'package:open_api_forked/src/v3/parameter.dart';
 
 enum APISecuritySchemeType { apiKey, http, oauth2, openID }
 

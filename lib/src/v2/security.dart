@@ -1,6 +1,6 @@
 import 'package:codable/cast.dart' as cast;
-import 'package:open_api/src/object.dart';
-import 'package:open_api/src/v2/parameter.dart';
+import 'package:open_api_forked/src/object.dart';
+import 'package:open_api_forked/src/v2/parameter.dart';
 
 /// Represents a OAuth 2.0 security scheme flow in the OpenAPI specification.
 enum APISecuritySchemeFlow { implicit, password, application, authorizationCode }

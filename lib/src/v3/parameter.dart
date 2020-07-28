@@ -1,7 +1,7 @@
-import 'package:open_api/src/object.dart';
-import 'package:open_api/src/v3/document.dart';
-import 'package:open_api/src/v3/media_type.dart';
-import 'package:open_api/src/v3/schema.dart';
+import 'package:open_api_forked/src/object.dart';
+import 'package:open_api_forked/src/v3/document.dart';
+import 'package:open_api_forked/src/v3/media_type.dart';
+import 'package:open_api_forked/src/v3/schema.dart';
 
 /// There are four possible parameter locations specified by the in field.
 ///

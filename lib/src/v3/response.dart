@@ -1,7 +1,7 @@
-import 'package:open_api/src/object.dart';
-import 'package:open_api/src/v3/header.dart';
-import 'package:open_api/src/v3/media_type.dart';
-import 'package:open_api/src/v3/schema.dart';
+import 'package:open_api_forked/src/object.dart';
+import 'package:open_api_forked/src/v3/header.dart';
+import 'package:open_api_forked/src/v3/media_type.dart';
+import 'package:open_api_forked/src/v3/schema.dart';
 
 /// Describes a single response from an API Operation, including design-time, static links to operations based on the response.
 class APIResponse extends APIObject {

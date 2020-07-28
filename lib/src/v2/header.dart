@@ -1,6 +1,6 @@
 import 'package:codable/codable.dart';
-import 'package:open_api/src/v2/property.dart';
-import 'package:open_api/src/v2/types.dart';
+import 'package:open_api_forked/src/v2/property.dart';
+import 'package:open_api_forked/src/v2/types.dart';
 
 /// Represents a header in the OpenAPI specification.
 class APIHeader extends APIProperty {

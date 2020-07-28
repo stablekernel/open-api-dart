@@ -1,4 +1,4 @@
-import 'package:open_api/src/object.dart';
+import 'package:open_api_forked/src/object.dart';
 
 /// An object representing a Server.
 class APIServerDescription extends APIObject {

@@ -1,5 +1,5 @@
-import 'package:open_api/src/object.dart';
-import 'package:open_api/src/v2/types.dart';
+import 'package:open_api_forked/src/object.dart';
+import 'package:open_api_forked/src/v2/types.dart';
 
 enum APISchemaRepresentation {
   primitive,

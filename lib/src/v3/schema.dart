@@ -1,6 +1,6 @@
 import 'package:codable/cast.dart' as cast;
-import 'package:open_api/src/object.dart';
-import 'package:open_api/src/v3/types.dart';
+import 'package:open_api_forked/src/object.dart';
+import 'package:open_api_forked/src/v3/types.dart';
 
 enum APISchemaAdditionalPropertyPolicy {
   /// When [APISchemaObject] prevents properties other than those defined by [APISchemaObject.properties] from being included

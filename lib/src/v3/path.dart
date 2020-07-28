@@ -1,6 +1,6 @@
-import 'package:open_api/src/object.dart';
-import 'package:open_api/src/v3/operation.dart';
-import 'package:open_api/src/v3/parameter.dart';
+import 'package:open_api_forked/src/object.dart';
+import 'package:open_api_forked/src/v3/operation.dart';
+import 'package:open_api_forked/src/v3/parameter.dart';
 
 /// Describes the operations available on a single path.
 ///

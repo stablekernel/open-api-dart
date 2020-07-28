@@ -1,5 +1,9 @@
 # Changelog
 
+## 2.0.1+1
+
+- forked version to fix v3 security requirements
+
 ## 2.0.1
 
 - Fix bug when merging APIResponse bodies

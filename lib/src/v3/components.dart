@@ -1,11 +1,11 @@
-import 'package:open_api/src/object.dart';
-import 'package:open_api/src/v3/callback.dart';
-import 'package:open_api/src/v3/header.dart';
-import 'package:open_api/src/v3/parameter.dart';
-import 'package:open_api/src/v3/request_body.dart';
-import 'package:open_api/src/v3/response.dart';
-import 'package:open_api/src/v3/schema.dart';
-import 'package:open_api/src/v3/security.dart';
+import 'package:open_api_forked/src/object.dart';
+import 'package:open_api_forked/src/v3/callback.dart';
+import 'package:open_api_forked/src/v3/header.dart';
+import 'package:open_api_forked/src/v3/parameter.dart';
+import 'package:open_api_forked/src/v3/request_body.dart';
+import 'package:open_api_forked/src/v3/response.dart';
+import 'package:open_api_forked/src/v3/schema.dart';
+import 'package:open_api_forked/src/v3/security.dart';
 
 /// Holds a set of reusable objects for different aspects of the OAS.
 ///

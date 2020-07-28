@@ -1,13 +1,13 @@
 import 'package:codable/cast.dart' as cast;
-import 'package:open_api/src/object.dart';
-import 'package:open_api/src/v3/callback.dart';
-import 'package:open_api/src/v3/parameter.dart';
-import 'package:open_api/src/v3/request_body.dart';
-import 'package:open_api/src/v3/response.dart';
-import 'package:open_api/src/v3/security.dart';
-import 'package:open_api/src/v3/path.dart';
-import 'package:open_api/src/v3/document.dart';
-import 'package:open_api/src/v3/server.dart';
+import 'package:open_api_forked/src/object.dart';
+import 'package:open_api_forked/src/v3/callback.dart';
+import 'package:open_api_forked/src/v3/parameter.dart';
+import 'package:open_api_forked/src/v3/request_body.dart';
+import 'package:open_api_forked/src/v3/response.dart';
+import 'package:open_api_forked/src/v3/security.dart';
+import 'package:open_api_forked/src/v3/path.dart';
+import 'package:open_api_forked/src/v3/document.dart';
+import 'package:open_api_forked/src/v3/server.dart';
 
 /// Describes a single API operation on a path.
 class APIOperation extends APIObject {

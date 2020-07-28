@@ -1,6 +1,6 @@
-import 'package:open_api/src/object.dart';
-import 'package:open_api/src/v2/operation.dart';
-import 'package:open_api/src/v2/parameter.dart';
+import 'package:open_api_forked/src/object.dart';
+import 'package:open_api_forked/src/v2/operation.dart';
+import 'package:open_api_forked/src/v2/parameter.dart';
 
 /// Represents a path (also known as a route) in the OpenAPI specification.
 class APIPath extends APIObject {

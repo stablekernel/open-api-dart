@@ -1,9 +1,9 @@
-import 'package:open_api/src/object.dart';
-import 'package:open_api/src/v3/components.dart';
-import 'package:open_api/src/v3/metadata.dart';
-import 'package:open_api/src/v3/path.dart';
-import 'package:open_api/src/v3/security.dart';
-import 'package:open_api/src/v3/server.dart';
+import 'package:open_api_forked/src/object.dart';
+import 'package:open_api_forked/src/v3/components.dart';
+import 'package:open_api_forked/src/v3/metadata.dart';
+import 'package:open_api_forked/src/v3/path.dart';
+import 'package:open_api_forked/src/v3/security.dart';
+import 'package:open_api_forked/src/v3/server.dart';
 
 /// This is the root document object of the OpenAPI document.
 class APIDocument extends APIObject {

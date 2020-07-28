@@ -1,4 +1,4 @@
-import 'package:open_api/v3.dart';
+import 'package:open_api_forked/v3.dart';
 import 'package:test/test.dart';
 import 'dart:io';
 import 'dart:convert';
