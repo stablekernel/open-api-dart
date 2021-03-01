@@ -18,7 +18,7 @@ class APIDocument extends APIObject {
   }
 
   String version = "2.0";
-  APIInfo info = APIInfo();
+  APIInfo? info = APIInfo();
   String? host;
   String? basePath;
 
@@ -55,9 +55,9 @@ class APIDocument extends APIObject {
     schemes = object["schemes"];
     consumes = object["consumes"];
     produces = object["produces"];
-    security = object["security"] ?? [];
+    security = object["security"];
 
-    info = object.decodeObject("info", () => APIInfo()) ?? APIInfo();
+    info = object.decodeObject("info", () => APIInfo());
     tags = object.decodeObjects("tags", () => APITag());
     paths = object.decodeObjectMap("paths", () => APIPath());
     responses = object.decodeObjectMap("responses", () => APIResponse());

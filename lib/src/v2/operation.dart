@@ -16,8 +16,8 @@ class APIOperation extends APIObject {
         "security": cast.List(cast.Map(cast.String, cast.List(cast.String))),
       };
 
-  String summary = "";
-  String description = "";
+  String? summary = "";
+  String? description = "";
   String? id;
   bool? deprecated;
 
@@ -33,8 +33,8 @@ class APIOperation extends APIObject {
     super.decode(object);
 
     tags = object.decode("tags");
-    summary = object.decode("summary") ?? "";
-    description = object.decode("description") ?? "";
+    summary = object.decode("summary");
+    description = object.decode("description");
     id = object.decode("operationId");
     consumes = object.decode("consumes");
     produces = object.decode("produces");
