@@ -19,7 +19,7 @@ class APIOperation extends APIObject {
   String? summary = "";
   String? description = "";
   String? id;
-  bool? deprecated = false;
+  bool deprecated = false;
 
   List<String?>? tags = [];
   List<String?>? schemes = [];

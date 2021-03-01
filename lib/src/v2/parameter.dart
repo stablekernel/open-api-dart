@@ -48,14 +48,14 @@ class APIParameter extends APIProperty {
 
   String? name;
   String? description;
-  bool? isRequired = false;
+  bool isRequired = false;
   APIParameterLocation? location;
 
   // Valid if location is body.
   APISchemaObject? schema;
 
   // Valid if location is not body.
-  bool? allowEmptyValue = false;
+  bool allowEmptyValue = false;
   APIProperty? items;
 
   void decode(KeyedArchive json) {
