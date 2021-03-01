@@ -7,7 +7,7 @@ import 'package:open_api/src/v2/types.dart';
 enum APIParameterLocation { query, header, path, formData, body }
 
 class APIParameterLocationCodec {
-  static APIParameterLocation decode(String location) {
+  static APIParameterLocation? decode(String location) {
     switch (location) {
       case "query":
         return APIParameterLocation.query;
@@ -19,12 +19,12 @@ class APIParameterLocationCodec {
         return APIParameterLocation.formData;
       case "body":
         return APIParameterLocation.body;
+      default:
+        return null;
     }
-
-    return null;
   }
 
-  static String encode(APIParameterLocation location) {
+  static String? encode(APIParameterLocation location) {
     switch (location) {
       case APIParameterLocation.query:
         return "query";
@@ -36,8 +36,9 @@ class APIParameterLocationCodec {
         return "formData";
       case APIParameterLocation.body:
         return "body";
+      default:
+        return null;
     }
-    return null;
   }
 }
 
@@ -45,17 +46,17 @@ class APIParameterLocationCodec {
 class APIParameter extends APIProperty {
   APIParameter();
 
-  String name;
-  String description;
+  String? name;
+  String? description;
   bool required = false;
-  APIParameterLocation location;
+  APIParameterLocation? location;
 
   // Valid if location is body.
-  APISchemaObject schema;
+  APISchemaObject? schema;
 
   // Valid if location is not body.
   bool allowEmptyValue = false;
-  APIProperty items;
+  APIProperty? items;
 
   void decode(KeyedArchive json) {
     name = json.decode("name");
@@ -68,12 +69,12 @@ class APIParameter extends APIProperty {
     }
 
     if (location == APIParameterLocation.body) {
-      schema = json.decodeObject("schema", () => new APISchemaObject());
+      schema = json.decodeObject("schema", () => APISchemaObject());
     } else {
       super.decode(json);
       allowEmptyValue = json.decode("allowEmptyValue") ?? false;
       if (type == APIType.array) {
-        items = json.decodeObject("items", () => new APIProperty());
+        items = json.decodeObject("items", () => APIProperty());
       }
     }
   }
@@ -81,7 +82,7 @@ class APIParameter extends APIProperty {
   void encode(KeyedArchive json) {
     json.encode("name", name);
     json.encode("description", description);
-    json.encode("in", APIParameterLocationCodec.encode(location));
+    json.encode("in", APIParameterLocationCodec.encode(location!));
     json.encode("required", required);
 
     if (location == APIParameterLocation.body) {

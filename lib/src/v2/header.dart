@@ -6,14 +6,14 @@ import 'package:open_api/src/v2/types.dart';
 class APIHeader extends APIProperty {
   APIHeader();
 
-  String description;
-  APIProperty items;
+  String? description;
+  APIProperty? items;
 
   void decode(KeyedArchive json) {
     super.decode(json);
     description = json.decode("description");
     if (type == APIType.array) {
-      items = json.decodeObject("items", () => new APIProperty());
+      items = json.decodeObject("items", () => APIProperty());
     }
   }
 

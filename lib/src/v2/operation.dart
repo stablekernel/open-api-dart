@@ -18,16 +18,16 @@ class APIOperation extends APIObject {
 
   String summary = "";
   String description = "";
-  String id;
+  String? id;
   bool deprecated = false;
 
   List<String> tags = [];
   List<String> schemes = [];
   List<String> consumes = [];
   List<String> produces = [];
-  List<APIParameter> parameters = [];
+  List<APIParameter?> parameters = [];
   List<Map<String, List<String>>> security = [];
-  Map<String, APIResponse> responses = {};
+  Map<String, APIResponse?> responses = {};
 
   void decode(KeyedArchive object) {
     super.decode(object);
@@ -39,8 +39,8 @@ class APIOperation extends APIObject {
     consumes = object.decode("consumes");
     produces = object.decode("produces");
     deprecated = object.decode("deprecated") ?? false;
-    parameters = object.decodeObjects("parameters", () => new APIParameter());
-    responses = object.decodeObjectMap("responses", () => new APIResponse());
+    parameters = object.decodeObjects("parameters", () => APIParameter())!;
+    responses = object.decodeObjectMap("responses", () => APIResponse())!;
     schemes = object.decode("schemes");
     security = object.decode("security");
   }
