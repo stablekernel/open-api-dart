@@ -10,8 +10,8 @@ class APIEncoding extends APIObject {
       this.style,
       bool? allowReserved,
       bool? explode}) {
-    this.allowReserved = allowReserved ?? false;
-    this.explode = explode ?? false;
+    this.allowReserved = allowReserved;
+    this.explode = explode;
   }
 
   APIEncoding.empty();
@@ -29,22 +29,22 @@ class APIEncoding extends APIObject {
   /// Determines whether the parameter value SHOULD allow reserved characters, as defined by RFC3986 :/?#[]@!$&'()*+,;= to be included without percent-encoding.
   ///
   /// The default value is false. This property SHALL be ignored if the request body media type is not application/x-www-form-urlencoded.
-  bool get allowReserved => _allowReserved;
-  set allowReserved(bool f) {
+  bool? get allowReserved => _allowReserved;
+  set allowReserved(bool? f) {
     _allowReserved = f;
   }
 
-  bool _allowReserved = false;
+  bool? _allowReserved = false;
 
   /// When this is true, property values of type array or object generate separate parameters for each value of the array, or key-value-pair of the map.
   ///
   /// For other types of properties this property has no effect. When style is form, the default value is true. For all other styles, the default value is false. This property SHALL be ignored if the request body media type is not application/x-www-form-urlencoded.
-  bool get explode => _explode;
-  set explode(bool f) {
+  bool? get explode => _explode;
+  set explode(bool? f) {
     _explode = f;
   }
 
-  bool _explode = false;
+  bool? _explode = false;
 
   /// Describes how a specific property value will be serialized depending on its type.
   ///
@@ -56,8 +56,8 @@ class APIEncoding extends APIObject {
 
     contentType = object.decode("contentType");
     headers = object.decodeObjectMap("headers", () => APIHeader());
-    _allowReserved = object.decode("allowReserved") ?? false;
-    _explode = object.decode("explode") ?? false;
+    _allowReserved = object.decode("allowReserved");
+    _explode = object.decode("explode");
     style = object.decode("style");
   }
 

@@ -19,12 +19,12 @@ class APIOperation extends APIObject {
   String summary = "";
   String description = "";
   String? id;
-  bool deprecated = false;
+  bool? deprecated;
 
-  List<String?> tags = [];
-  List<String?> schemes = [];
-  List<String?> consumes = [];
-  List<String?> produces = [];
+  List<String?>? tags = [];
+  List<String?>? schemes = [];
+  List<String?>? consumes = [];
+  List<String?>? produces = [];
   List<APIParameter?>? parameters = [];
   List<Map<String, List<String>>?>? security = [];
   Map<String, APIResponse?>? responses = {};
@@ -38,7 +38,7 @@ class APIOperation extends APIObject {
     id = object.decode("operationId");
     consumes = object.decode("consumes");
     produces = object.decode("produces");
-    deprecated = object.decode("deprecated") ?? false;
+    deprecated = object.decode("deprecated");
     parameters = object.decodeObjects("parameters", () => APIParameter());
     responses = object.decodeObjectMap("responses", () => APIResponse());
     schemes = object.decode("schemes");

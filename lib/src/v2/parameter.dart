@@ -48,14 +48,14 @@ class APIParameter extends APIProperty {
 
   String? name;
   String? description;
-  bool required = false;
+  bool? isRequired = false;
   APIParameterLocation? location;
 
   // Valid if location is body.
   APISchemaObject? schema;
 
   // Valid if location is not body.
-  bool allowEmptyValue = false;
+  bool? allowEmptyValue = false;
   APIProperty? items;
 
   void decode(KeyedArchive json) {
@@ -63,16 +63,16 @@ class APIParameter extends APIProperty {
     description = json.decode("description");
     location = APIParameterLocationCodec.decode(json.decode("in"));
     if (location == APIParameterLocation.path) {
-      required = true;
+      isRequired = true;
     } else {
-      required = json.decode("required") ?? false;
+      isRequired = json.decode("required");
     }
 
     if (location == APIParameterLocation.body) {
       schema = json.decodeObject("schema", () => APISchemaObject());
     } else {
       super.decode(json);
-      allowEmptyValue = json.decode("allowEmptyValue") ?? false;
+      allowEmptyValue = json.decode("allowEmptyValue");
       if (type == APIType.array) {
         items = json.decodeObject("items", () => APIProperty());
       }
@@ -83,7 +83,7 @@ class APIParameter extends APIProperty {
     json.encode("name", name);
     json.encode("description", description);
     json.encode("in", APIParameterLocationCodec.encode(location!));
-    json.encode("required", required);
+    json.encode("required", isRequired);
 
     if (location == APIParameterLocation.body) {
       json.encodeObject("schema", schema);

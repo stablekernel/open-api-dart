@@ -10,7 +10,7 @@ class APISchemaObject extends APIProperty {
   String? description;
   String? example;
   List<String?>? isRequired = [];
-  bool readOnly = false;
+  bool? readOnly = false;
 
   /// Valid when type == array
   APISchemaObject? items;
@@ -40,7 +40,7 @@ class APISchemaObject extends APIProperty {
     description = json.decode("description");
     isRequired = json.decode("required");
     example = json.decode("example");
-    readOnly = json.decode("readOnly") ?? false;
+    readOnly = json.decode("readOnly");
 
     items = json.decodeObject("items", () => APISchemaObject());
     additionalProperties =
