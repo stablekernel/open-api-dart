@@ -150,7 +150,7 @@ class APIOperation extends APIObject {
         object.decodeObject("requestBody", () => APIRequestBody.empty());
     responses = object.decodeObjectMap("responses", () => APIResponse.empty());
     callbacks = object.decodeObjectMap("callbacks", () => APICallback());
-    _deprecated = object.decode("deprecated");
+    _deprecated = object.decode("deprecated") ?? false;
     security =
         object.decodeObjects("security", () => APISecurityRequirement.empty());
     servers =

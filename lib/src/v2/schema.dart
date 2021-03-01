@@ -9,7 +9,7 @@ class APISchemaObject extends APIProperty {
   String? title;
   String? description;
   String? example;
-  List<String> isRequired = [];
+  List<String?>? isRequired = [];
   bool readOnly = false;
 
   /// Valid when type == array

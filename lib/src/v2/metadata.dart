@@ -6,9 +6,9 @@ class APIInfo extends APIObject {
   APIInfo();
 
   String title = "API";
-  String description = "Description";
-  String version = "1.0";
-  String termsOfServiceURL = "";
+  String? description = "Description";
+  String? version = "1.0";
+  String? termsOfServiceURL = "";
   APIContact contact = APIContact();
   APILicense license = APILicense();
 
@@ -18,8 +18,10 @@ class APIInfo extends APIObject {
     title = object.decode("title");
     description = object.decode("description");
     termsOfServiceURL = object.decode("termsOfService");
-    contact = object.decodeObject("contact", () => APIContact())!;
-    license = object.decodeObject("license", () => APILicense())!;
+    contact =
+        object.decodeObject("contact", () => APIContact()) ?? APIContact();
+    license =
+        object.decodeObject("license", () => APILicense()) ?? APILicense();
     version = object.decode("version");
   }
 

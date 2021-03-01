@@ -22,17 +22,17 @@ class APIDocument extends APIObject {
   String? host;
   String? basePath;
 
-  List<APITag?> tags = [];
-  List<String> schemes = [];
-  List<String> consumes = [];
-  List<String> produces = [];
-  List<Map<String, List<String>>> security = [];
+  List<APITag?>? tags = [];
+  List<String>? schemes = [];
+  List<String>? consumes = [];
+  List<String>? produces = [];
+  List<Map<String, List<String?>>?> security = [];
 
-  Map<String, APIPath?> paths = {};
-  Map<String, APIResponse?> responses = {};
-  Map<String, APIParameter?> parameters = {};
-  Map<String, APISchemaObject?> definitions = {};
-  Map<String, APISecurityScheme?> securityDefinitions = {};
+  Map<String, APIPath?>? paths = {};
+  Map<String, APIResponse?>? responses = {};
+  Map<String, APIParameter?>? parameters = {};
+  Map<String, APISchemaObject?>? definitions = {};
+  Map<String, APISecurityScheme?>? securityDefinitions = {};
 
   Map<String, dynamic> asMap() {
     return KeyedArchive.archive(this, allowReferences: true);
@@ -52,20 +52,20 @@ class APIDocument extends APIObject {
     version = object["swagger"];
     host = object["host"];
     basePath = object["basePath"];
-    schemes = object["schemes"] ?? [];
-    consumes = object["consumes"] ?? [];
-    produces = object["produces"] ?? [];
+    schemes = object["schemes"];
+    consumes = object["consumes"];
+    produces = object["produces"];
     security = object["security"] ?? [];
 
-    info = object.decodeObject("info", () => APIInfo())!;
-    tags = object.decodeObjects("tags", () => APITag())!;
-    paths = object.decodeObjectMap("paths", () => APIPath())!;
-    responses = object.decodeObjectMap("responses", () => APIResponse())!;
-    parameters = object.decodeObjectMap("parameters", () => APIParameter())!;
+    info = object.decodeObject("info", () => APIInfo()) ?? APIInfo();
+    tags = object.decodeObjects("tags", () => APITag());
+    paths = object.decodeObjectMap("paths", () => APIPath());
+    responses = object.decodeObjectMap("responses", () => APIResponse());
+    parameters = object.decodeObjectMap("parameters", () => APIParameter());
     definitions =
-        object.decodeObjectMap("definitions", () => APISchemaObject())!;
+        object.decodeObjectMap("definitions", () => APISchemaObject());
     securityDefinitions = object.decodeObjectMap(
-        "securityDefinitions", () => APISecurityScheme())!;
+        "securityDefinitions", () => APISecurityScheme());
   }
 
   void encode(KeyedArchive object) {

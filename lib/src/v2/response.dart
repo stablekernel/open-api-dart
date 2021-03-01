@@ -15,7 +15,7 @@ class APIResponse extends APIObject {
 
     description = object.decode("description");
     schema = object.decodeObject("schema", () => APISchemaObject());
-    headers = object.decodeObjectMap("headers", () => APIHeader())!;
+    headers = object.decodeObjectMap("headers", () => APIHeader()) ?? {};
   }
 
   void encode(KeyedArchive object) {

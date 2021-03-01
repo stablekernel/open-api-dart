@@ -51,8 +51,7 @@ class APIPath extends APIObject {
 
     summary = object.decode("summary");
     description = object.decode("description");
-    parameters =
-        object.decodeObjects("parameters", () => APIParameter.empty())!;
+    parameters = object.decodeObjects("parameters", () => APIParameter.empty());
 
     final methodNames = [
       "get",

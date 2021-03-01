@@ -239,13 +239,13 @@ class APIParameter extends APIObject {
     location = APIParameterLocationCodec.decode(object.decode("in"))!;
     _required = object.decode("required");
 
-    _deprecated = object.decode("deprecated");
-    _allowEmptyValue = object.decode("allowEmptyValue");
+    _deprecated = object.decode("deprecated") ?? false;
+    _allowEmptyValue = object.decode("allowEmptyValue") ?? false;
 
-    schema = object.decodeObject("schema", () => APISchemaObject())!;
+    schema = object.decodeObject("schema", () => APISchemaObject());
     style = object.decode("style");
-    _explode = object.decode("explode");
-    _allowReserved = object.decode("allowReserved");
+    _explode = object.decode("explode") ?? false;
+    _allowReserved = object.decode("allowReserved") ?? false;
     content = object.decodeObjectMap("content", () => APIMediaType());
   }
 

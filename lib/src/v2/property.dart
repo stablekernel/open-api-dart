@@ -12,7 +12,7 @@ enum APISchemaRepresentation {
 enum APICollectionFormat { csv, ssv, tsv, pipes }
 
 class APICollectionFormatCodec {
-  static APICollectionFormat? decode(String location) {
+  static APICollectionFormat? decode(String? location) {
     switch (location) {
       case "csv":
         return APICollectionFormat.csv;
@@ -27,7 +27,7 @@ class APICollectionFormatCodec {
     }
   }
 
-  static String? encode(APICollectionFormat location) {
+  static String? encode(APICollectionFormat? location) {
     switch (location) {
       case APICollectionFormat.csv:
         return "csv";
@@ -97,10 +97,10 @@ class APIProperty extends APIObject {
   void encode(KeyedArchive object) {
     super.encode(object);
 
-    object.encode("type", APITypeCodec.encode(type!));
+    object.encode("type", APITypeCodec.encode(type));
     object.encode("format", format);
     object.encode(
-        "collectionFormat", APICollectionFormatCodec.encode(collectionFormat!));
+        "collectionFormat", APICollectionFormatCodec.encode(collectionFormat));
     object.encode("default", defaultValue);
     object.encode("maximum", maximum);
     object.encode("exclusiveMaximum", exclusiveMaximum);

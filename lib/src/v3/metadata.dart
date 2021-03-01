@@ -41,7 +41,9 @@ class APIInfo extends APIObject {
 
     title = object.decode("title");
     description = object.decode("description");
-    termsOfServiceURL = object.decode("termsOfService") as Uri?;
+    termsOfServiceURL = object.decode("termsOfService") != null
+        ? Uri.tryParse(object.decode("termsOfService"))
+        : null;
     contact = object.decodeObject("contact", () => APIContact());
     license = object.decodeObject("license", () => APILicense.empty());
     version = object.decode("version");
@@ -86,7 +88,9 @@ class APIContact extends APIObject {
     super.decode(object);
 
     name = object.decode("name");
-    url = object.decode("url");
+    url = object.decode("url") != null
+        ? Uri.tryParse(object.decode("url"))
+        : null;
     email = object.decode("email");
   }
 

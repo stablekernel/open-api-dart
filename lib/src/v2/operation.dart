@@ -21,26 +21,26 @@ class APIOperation extends APIObject {
   String? id;
   bool deprecated = false;
 
-  List<String> tags = [];
-  List<String> schemes = [];
-  List<String> consumes = [];
-  List<String> produces = [];
-  List<APIParameter?> parameters = [];
-  List<Map<String, List<String>>> security = [];
-  Map<String, APIResponse?> responses = {};
+  List<String?> tags = [];
+  List<String?> schemes = [];
+  List<String?> consumes = [];
+  List<String?> produces = [];
+  List<APIParameter?>? parameters = [];
+  List<Map<String, List<String>>?>? security = [];
+  Map<String, APIResponse?>? responses = {};
 
   void decode(KeyedArchive object) {
     super.decode(object);
 
     tags = object.decode("tags");
-    summary = object.decode("summary");
-    description = object.decode("description");
+    summary = object.decode("summary") ?? "";
+    description = object.decode("description") ?? "";
     id = object.decode("operationId");
     consumes = object.decode("consumes");
     produces = object.decode("produces");
     deprecated = object.decode("deprecated") ?? false;
-    parameters = object.decodeObjects("parameters", () => APIParameter())!;
-    responses = object.decodeObjectMap("responses", () => APIResponse())!;
+    parameters = object.decodeObjects("parameters", () => APIParameter());
+    responses = object.decodeObjectMap("responses", () => APIResponse());
     schemes = object.decode("schemes");
     security = object.decode("security");
   }

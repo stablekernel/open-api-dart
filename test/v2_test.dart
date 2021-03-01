@@ -40,46 +40,46 @@ void main() {
     });
 
     test("Has paths", () {
-      expect(doc!.paths.length, greaterThan(0));
-      expect(doc!.paths.length, original!["paths"].length);
+      expect(doc!.paths!.length, greaterThan(0));
+      expect(doc!.paths!.length, original!["paths"].length);
 
       Map<String, dynamic> originalPaths = original!["paths"];
-      doc!.paths.forEach((k, v) {
+      doc!.paths!.forEach((k, v) {
         expect(originalPaths.keys.contains(k), true);
       });
     });
 
     test("Sample - Namespace", () {
-      var namespacePath = doc!.paths["/api/v1/namespaces"];
+      var namespacePath = doc!.paths!["/api/v1/namespaces"];
 
       var getNamespace = namespacePath!.operations["get"];
       expect(getNamespace!.description, contains("of kind Namespace"));
       expect(getNamespace.consumes, ["*/*"]);
       expect(getNamespace.produces, contains("application/json"));
       expect(getNamespace.produces, contains("application/yaml"));
-      expect(getNamespace.parameters.length, 8);
+      expect(getNamespace.parameters!.length, 8);
       expect(
-          getNamespace.parameters
+          getNamespace.parameters!
               .firstWhere((p) => p!.name == "limit")!
               .location,
           APIParameterLocation.query);
       expect(
-          getNamespace.parameters.firstWhere((p) => p!.name == "limit")!.type,
+          getNamespace.parameters!.firstWhere((p) => p!.name == "limit")!.type,
           APIType.integer);
-      expect(getNamespace.responses.keys, contains("401"));
-      expect(getNamespace.responses.keys, contains("200"));
+      expect(getNamespace.responses!.keys, contains("401"));
+      expect(getNamespace.responses!.keys, contains("200"));
 
       var postNamespace = namespacePath.operations["post"];
-      expect(postNamespace!.parameters.length, 1);
-      expect(postNamespace.parameters.first!.name, "body");
+      expect(postNamespace!.parameters!.length, 1);
+      expect(postNamespace.parameters!.first!.name, "body");
       expect(
-          postNamespace.parameters.first!.location, APIParameterLocation.body);
+          postNamespace.parameters!.first!.location, APIParameterLocation.body);
     });
 
     test("Sample - Reference", () {
-      var apiPath = doc!.paths["/api/"];
+      var apiPath = doc!.paths!["/api/"];
       var apiPathGet = apiPath!.operations["get"];
-      var response = apiPathGet!.responses["200"];
+      var response = apiPathGet!.responses!["200"];
       var schema = response!.schema;
       expect(schema!.description, contains("APIVersions lists the"));
       expect(schema.isRequired, ["versions", "serverAddressByClientCIDRs"]);

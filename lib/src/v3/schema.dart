@@ -187,7 +187,7 @@ class APISchemaObject extends APIObject {
   ///
   /// An object instance is valid against this keyword if its property set
   /// contains all elements in this keyword's array value.
-  List<String>? isRequired;
+  List<String?>? isRequired;
 
   /// The value of this keyword MUST be an array.  This array SHOULD have
   /// at least one element.  Elements in the array SHOULD be unique.
@@ -271,7 +271,7 @@ class APISchemaObject extends APIObject {
 
     //
 
-    type = APITypeCodec.decode(object.decode("type"))!;
+    type = APITypeCodec.decode(object.decode("type"));
     allOf = object.decodeObjects("allOf", () => APISchemaObject());
     anyOf = object.decodeObjects("anyOf", () => APISchemaObject());
     oneOf = object.decodeObjects("oneOf", () => APISchemaObject());
@@ -327,7 +327,7 @@ class APISchemaObject extends APIObject {
 
     //
 
-    object.encode("type", APITypeCodec.encode(type!));
+    object.encode("type", APITypeCodec.encode(type));
     object.encodeObjects("allOf", allOf);
     object.encodeObjects("anyOf", anyOf);
     object.encodeObjects("oneOf", oneOf);

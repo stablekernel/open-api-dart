@@ -8,7 +8,7 @@ class APIServerDescription extends APIObject {
   /// A URL to the target host.
   ///
   /// REQUIRED. This URL supports Server Variables and MAY be relative, to indicate that the host location is relative to the location where the OpenAPI document is being served. Variable substitutions will be made when a variable is named in {brackets}.
-  late Uri url;
+  Uri? url;
 
   /// An optional string describing the host designated by the URL.
   ///
@@ -23,7 +23,9 @@ class APIServerDescription extends APIObject {
   void decode(KeyedArchive object) {
     super.decode(object);
 
-    url = object.decode("url");
+    url = object.decode("url") != null
+        ? Uri.tryParse(object.decode("url"))
+        : null;
     description = object.decode("description");
     variables =
         object.decodeObjectMap("variables", () => APIServerVariable.empty());
