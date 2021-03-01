@@ -90,7 +90,7 @@ void main() {
     });
 
     test("Can encode as JSON", () {
-      expect(json.encode(doc!.asMap()), (object) => isA<String>());
+      expect(json.encode(doc!.asMap()), isA<String>());
     });
   });
 }
