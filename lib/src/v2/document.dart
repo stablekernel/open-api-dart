@@ -52,10 +52,10 @@ class APIDocument extends APIObject {
     version = object["swagger"];
     host = object["host"];
     basePath = object["basePath"];
-    schemes = object["schemes"];
-    consumes = object["consumes"];
-    produces = object["produces"];
-    security = object["security"];
+    schemes = object["schemes"] ?? [];
+    consumes = object["consumes"] ?? [];
+    produces = object["produces"] ?? [];
+    security = object["security"] ?? [];
 
     info = object.decodeObject("info", () => APIInfo())!;
     tags = object.decodeObjects("tags", () => APITag())!;
