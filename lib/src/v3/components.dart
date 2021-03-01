@@ -78,11 +78,9 @@ class APIComponents extends APIObject {
       case "callbacks":
         namedMap = callbacks;
         break;
-    }
-
-    if (namedMap == null) {
-      throw ArgumentError(
-          "Invalid reference URI: component type '${segments[1]}' does not exist.");
+      default:
+        throw ArgumentError(
+            "Invalid reference URI: component type '${segments[1]}' does not exist.");
     }
 
     return namedMap[segments.last];

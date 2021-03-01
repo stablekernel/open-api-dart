@@ -40,7 +40,7 @@ class APISchemaObject extends APIProperty {
     description = json.decode("description");
     isRequired = json.decode("required");
     example = json.decode("example");
-    readOnly = json.decode("readOnly");
+    readOnly = json.decode("readOnly") ?? false;
 
     items = json.decodeObject("items", () => APISchemaObject());
     additionalProperties =

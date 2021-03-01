@@ -7,7 +7,7 @@ import 'package:open_api/src/v2/types.dart';
 enum APIParameterLocation { query, header, path, formData, body }
 
 class APIParameterLocationCodec {
-  static APIParameterLocation? decode(String location) {
+  static APIParameterLocation? decode(String? location) {
     switch (location) {
       case "query":
         return APIParameterLocation.query;
@@ -24,7 +24,7 @@ class APIParameterLocationCodec {
     }
   }
 
-  static String? encode(APIParameterLocation location) {
+  static String? encode(APIParameterLocation? location) {
     switch (location) {
       case APIParameterLocation.query:
         return "query";
@@ -65,14 +65,14 @@ class APIParameter extends APIProperty {
     if (location == APIParameterLocation.path) {
       isRequired = true;
     } else {
-      isRequired = json.decode("required");
+      isRequired = json.decode("required") ?? false;
     }
 
     if (location == APIParameterLocation.body) {
       schema = json.decodeObject("schema", () => APISchemaObject());
     } else {
       super.decode(json);
-      allowEmptyValue = json.decode("allowEmptyValue");
+      allowEmptyValue = json.decode("allowEmptyValue") ?? false;
       if (type == APIType.array) {
         items = json.decodeObject("items", () => APIProperty());
       }

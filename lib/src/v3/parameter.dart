@@ -30,7 +30,7 @@ enum APIParameterLocation {
 }
 
 class APIParameterLocationCodec {
-  static APIParameterLocation? decode(String location) {
+  static APIParameterLocation? decode(String? location) {
     switch (location) {
       case "query":
         return APIParameterLocation.query;
@@ -45,7 +45,7 @@ class APIParameterLocationCodec {
     }
   }
 
-  static String? encode(APIParameterLocation location) {
+  static String? encode(APIParameterLocation? location) {
     switch (location) {
       case APIParameterLocation.query:
         return "query";

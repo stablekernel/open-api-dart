@@ -7,7 +7,7 @@ import 'package:open_api/src/v3/parameter.dart';
 enum APISecuritySchemeType { apiKey, http, oauth2, openID }
 
 class APISecuritySchemeTypeCodec {
-  static APISecuritySchemeType? decode(String type) {
+  static APISecuritySchemeType? decode(String? type) {
     switch (type) {
       case "apiKey":
         return APISecuritySchemeType.apiKey;
@@ -22,7 +22,7 @@ class APISecuritySchemeTypeCodec {
     }
   }
 
-  static String? encode(APISecuritySchemeType type) {
+  static String? encode(APISecuritySchemeType? type) {
     switch (type) {
       case APISecuritySchemeType.apiKey:
         return "apiKey";

@@ -11,7 +11,7 @@ enum APISecuritySchemeFlow {
 }
 
 class APISecuritySchemeFlowCodec {
-  static APISecuritySchemeFlow? decode(String flow) {
+  static APISecuritySchemeFlow? decode(String? flow) {
     switch (flow) {
       case "accessCode":
         return APISecuritySchemeFlow.authorizationCode;
@@ -26,7 +26,7 @@ class APISecuritySchemeFlowCodec {
     }
   }
 
-  static String? encode(APISecuritySchemeFlow flow) {
+  static String? encode(APISecuritySchemeFlow? flow) {
     switch (flow) {
       case APISecuritySchemeFlow.authorizationCode:
         return "accessCode";
