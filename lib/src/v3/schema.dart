@@ -215,7 +215,7 @@ class APISchemaObject extends APIObject {
   String? format;
   dynamic defaultValue;
 
-  bool? get isNullable => _nullable;
+  bool? get isNullable => _nullable ?? false;
 
   set isNullable(bool? n) {
     _nullable = n;
@@ -223,19 +223,19 @@ class APISchemaObject extends APIObject {
 
   // APIDiscriminator discriminator;
 
-  bool? get isReadOnly => _readOnly;
+  bool? get isReadOnly => _readOnly ?? false;
 
   set isReadOnly(bool? n) {
     _readOnly = n;
   }
 
-  bool? get isWriteOnly => _writeOnly;
+  bool? get isWriteOnly => _writeOnly ?? false;
 
   set isWriteOnly(bool? n) {
     _writeOnly = n;
   }
 
-  bool? get isDeprecated => _deprecated;
+  bool? get isDeprecated => _deprecated ?? false;
 
   set isDeprecated(bool? n) {
     _deprecated = n;
