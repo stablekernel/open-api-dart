@@ -7,42 +7,45 @@ class APIInfo extends APIObject {
   APIInfo.empty();
 
   /// Creates empty metadata for specification.
-  APIInfo(this.title, this.version, {this.description, this.termsOfServiceURL, this.license, this.contact});
+  APIInfo(this.title, this.version,
+      {this.description, this.termsOfServiceURL, this.license, this.contact});
 
   /// The title of the application.
   ///
   /// REQUIRED.
-  String title;
+  String? title;
 
   /// A short description of the application.
   ///
   /// CommonMark syntax MAY be used for rich text representation.
-  String description;
+  String? description;
 
   /// The version of the OpenAPI document (which is distinct from the OpenAPI Specification version or the API implementation version).
   ///
   /// REQUIRED.
-  String version;
+  String? version;
 
   /// A URL to the Terms of Service for the API.
   ///
   /// MUST be in the format of a URL.
-  Uri termsOfServiceURL;
+  Uri? termsOfServiceURL;
 
   /// The contact information for the exposed API.
-  APIContact contact;
+  APIContact? contact;
 
   /// The license information for the exposed API.
-  APILicense license;
+  APILicense? license;
 
   void decode(KeyedArchive object) {
     super.decode(object);
 
     title = object.decode("title");
     description = object.decode("description");
-    termsOfServiceURL = object.decode("termsOfService");
-    contact = object.decodeObject("contact", () => new APIContact());
-    license = object.decodeObject("license", () => new APILicense.empty());
+    termsOfServiceURL = object.decode("termsOfService") != null
+        ? Uri.tryParse(object.decode("termsOfService"))
+        : null;
+    contact = object.decodeObject("contact", () => APIContact());
+    license = object.decodeObject("license", () => APILicense.empty());
     version = object.decode("version");
   }
 
@@ -50,7 +53,8 @@ class APIInfo extends APIObject {
     super.encode(object);
 
     if (title == null || version == null) {
-      throw new ArgumentError("APIInfo must have non-null values for: 'title', 'version'.");
+      throw ArgumentError(
+          "APIInfo must have non-null values for: 'title', 'version'.");
     }
 
     object.encode("title", title);
@@ -68,23 +72,25 @@ class APIContact extends APIObject {
   APIContact.empty();
 
   /// The identifying name of the contact person/organization.
-  String name;
+  String? name;
 
   /// The URL pointing to the contact information.
   ///
   /// MUST be in the format of a URL.
-  Uri url;
+  Uri? url;
 
   /// The email address of the contact person/organization.
   ///
   /// MUST be in the format of an email address.
-  String email;
+  String? email;
 
   void decode(KeyedArchive object) {
     super.decode(object);
 
     name = object.decode("name");
-    url = object.decode("url");
+    url = object.decode("url") != null
+        ? Uri.tryParse(object.decode("url"))
+        : null;
     email = object.decode("email");
   }
 
@@ -105,12 +111,12 @@ class APILicense extends APIObject {
   /// The license name used for the API.
   ///
   /// REQUIRED.
-  String name;
+  String? name;
 
   /// A URL to the license used for the API.
   ///
   /// MUST be in the format of a URL.
-  Uri url;
+  Uri? url;
 
   void decode(KeyedArchive object) {
     super.decode(object);
@@ -123,7 +129,7 @@ class APILicense extends APIObject {
     super.encode(object);
 
     if (name == null) {
-      throw new ArgumentError("APILicense must have non-null values for: 'name'.");
+      throw ArgumentError("APILicense must have non-null values for: 'name'.");
     }
 
     object.encode("name", name);
@@ -142,12 +148,12 @@ class APITag extends APIObject {
   /// The name of the tag.
   ///
   /// REQUIRED.
-  String name;
+  String? name;
 
   /// A short description for the tag.
   ///
   /// CommonMark syntax MAY be used for rich text representation.
-  String description;
+  String? description;
 
   void decode(KeyedArchive object) {
     super.decode(object);
@@ -160,7 +166,7 @@ class APITag extends APIObject {
     super.encode(object);
 
     if (name == null) {
-      throw new ArgumentError("APITag must have non-null values for: 'name'.");
+      throw ArgumentError("APITag must have non-null values for: 'name'.");
     }
     object.encode("name", name);
     object.encode("description", description);

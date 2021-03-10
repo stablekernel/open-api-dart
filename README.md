@@ -6,9 +6,9 @@ Example
 ---
 
 ```dart
-final file = new File("test/specs/kubernetes.json");
+final file = File("test/specs/kubernetes.json");
 final contents = await file.readAsString();
-final doc = new APIDocument.fromJSON(contents);
+final doc = APIDocument.fromJSON(contents);
 
 final output = JSON.encode(doc.asMap());
 ```

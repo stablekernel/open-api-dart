@@ -19,9 +19,12 @@ class APIObject extends Coding {
 
   @mustCallSuper
   void encode(KeyedArchive object) {
-    final invalidKeys = extensions.keys.where((key) => !key.startsWith("x-")).map((key) => "'$key'").toList();
+    final invalidKeys = extensions.keys
+        .where((key) => !key.startsWith("x-"))
+        .map((key) => "'$key'")
+        .toList();
     if (invalidKeys.length > 0) {
-      throw new ArgumentError(
+      throw ArgumentError(
           "extension keys must start with 'x-'. The following keys are invalid: ${invalidKeys.join(", ")}");
     }
 

@@ -6,16 +6,16 @@ import 'package:open_api_forked/src/v2/schema.dart';
 class APIResponse extends APIObject {
   APIResponse();
 
-  String description = "";
-  APISchemaObject schema;
-  Map<String, APIHeader> headers = {};
+  String? description = "";
+  APISchemaObject? schema;
+  Map<String, APIHeader?>? headers = {};
 
   void decode(KeyedArchive object) {
     super.decode(object);
 
     description = object.decode("description");
-    schema = object.decodeObject("schema", () => new APISchemaObject());
-    headers = object.decodeObjectMap("headers", () => new APIHeader());
+    schema = object.decodeObject("schema", () => APISchemaObject());
+    headers = object.decodeObjectMap("headers", () => APIHeader());
   }
 
   void encode(KeyedArchive object) {

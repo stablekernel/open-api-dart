@@ -6,20 +6,20 @@ import 'package:open_api_forked/src/v2/property.dart';
 class APISchemaObject extends APIProperty {
   APISchemaObject();
 
-  String title;
-  String description;
-  String example;
-  List<String> required = [];
+  String? title;
+  String? description;
+  String? example;
+  List<String?>? isRequired = [];
   bool readOnly = false;
 
   /// Valid when type == array
-  APISchemaObject items;
+  APISchemaObject? items;
 
   /// Valid when type == null
-  Map<String, APISchemaObject> properties;
+  Map<String, APISchemaObject?>? properties;
 
   /// Valid when type == object
-  APISchemaObject additionalProperties;
+  APISchemaObject? additionalProperties;
 
   @override
   APISchemaRepresentation get representation {
@@ -38,14 +38,14 @@ class APISchemaObject extends APIProperty {
 
     title = json.decode("title");
     description = json.decode("description");
-    required = json.decode("required");
+    isRequired = json.decode("required");
     example = json.decode("example");
     readOnly = json.decode("readOnly") ?? false;
 
-    items = json.decodeObject("items", () => new APISchemaObject());
-    additionalProperties = json.decodeObject("additionalProperties", () => new APISchemaObject());
-    properties =
-        json.decodeObjectMap("properties", () => new APISchemaObject());
+    items = json.decodeObject("items", () => APISchemaObject());
+    additionalProperties =
+        json.decodeObject("additionalProperties", () => APISchemaObject());
+    properties = json.decodeObjectMap("properties", () => APISchemaObject());
   }
 
   void encode(KeyedArchive json) {
@@ -53,7 +53,7 @@ class APISchemaObject extends APIProperty {
 
     json.encode("title", title);
     json.encode("description", description);
-    json.encode("required", required);
+    json.encode("required", isRequired);
     json.encode("example", example);
     json.encode("readOnly", readOnly);
 
