@@ -1,5 +1,5 @@
-import 'package:codable/cast.dart' as cast;
-import 'package:codable/codable.dart';
+import 'package:codable_forked/cast.dart' as cast;
+import 'package:codable_forked/codable.dart';
 import 'package:open_api_forked/src/v2/property.dart';
 
 /// Represents a schema object in the OpenAPI specification.

@@ -1,4 +1,4 @@
-import 'package:codable/codable.dart';
+import 'package:codable_forked/codable.dart';
 import 'package:open_api_forked/src/v2/property.dart';
 import 'package:open_api_forked/src/v2/types.dart';
 

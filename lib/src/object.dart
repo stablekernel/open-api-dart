@@ -1,7 +1,7 @@
 import 'package:meta/meta.dart';
-import 'package:codable/codable.dart';
+import 'package:codable_forked/codable.dart';
 
-export 'package:codable/codable.dart';
+export 'package:codable_forked/codable.dart';
 
 class APIObject extends Coding {
   Map<String, dynamic> extensions = {};

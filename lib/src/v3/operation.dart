@@ -1,4 +1,4 @@
-import 'package:codable/cast.dart' as cast;
+import 'package:codable_forked/cast.dart' as cast;
 import 'package:open_api_forked/src/object.dart';
 import 'package:open_api_forked/src/v3/callback.dart';
 import 'package:open_api_forked/src/v3/parameter.dart';
