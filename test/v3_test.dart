@@ -207,7 +207,7 @@ void main() {
           },
         },
       });
-      expect(doc.paths.values.first.operations.values.first.security,
+      expect(doc.paths!.values.first!.operations!.values.first?.security,
           hasLength(1));
     });
   });
