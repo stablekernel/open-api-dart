@@ -1,5 +1,9 @@
 # Changelog
 
+## 3.0.0
+
+- nullsafety migration
+
 ## 2.0.1+1
 
 - forked version to fix v3 security requirements
