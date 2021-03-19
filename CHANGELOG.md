@@ -1,6 +1,6 @@
 # Changelog
 
-## 3.0.0+1
+## 3.0.0+2
 
 - Rename APISchemaObject.isRequired back to required
 
