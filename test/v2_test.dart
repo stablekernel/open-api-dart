@@ -82,7 +82,7 @@ void main() {
       var response = apiPathGet!.responses!["200"];
       var schema = response!.schema;
       expect(schema!.description, contains("APIVersions lists the"));
-      expect(schema.isRequired, ["versions", "serverAddressByClientCIDRs"]);
+      expect(schema.required, ["versions", "serverAddressByClientCIDRs"]);
       expect(
           schema.properties!["serverAddressByClientCIDRs"]!.items!
               .properties!["clientCIDR"]!.description,

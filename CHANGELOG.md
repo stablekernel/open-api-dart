@@ -1,5 +1,9 @@
 # Changelog
 
+## 3.0.0+1
+
+- Rename APISchemaObject.isRequired back to required
+
 ## 3.0.0
 
 - nullsafety migration

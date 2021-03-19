@@ -187,7 +187,7 @@ class APISchemaObject extends APIObject {
   ///
   /// An object instance is valid against this keyword if its property set
   /// contains all elements in this keyword's array value.
-  List<String?>? isRequired;
+  List<String?>? required;
 
   /// The value of this keyword MUST be an array.  This array SHOULD have
   /// at least one element.  Elements in the array SHOULD be unique.
@@ -267,7 +267,7 @@ class APISchemaObject extends APIObject {
     enumerated = object.decode("enum");
     minProperties = object.decode("minProperties");
     maxProperties = object.decode("maxProperties");
-    isRequired = object.decode("required");
+    required = object.decode("required");
 
     //
 
@@ -323,7 +323,7 @@ class APISchemaObject extends APIObject {
     object.encode("enum", enumerated);
     object.encode("minProperties", minProperties);
     object.encode("maxProperties", maxProperties);
-    object.encode("required", isRequired);
+    object.encode("required", required);
 
     //
 
