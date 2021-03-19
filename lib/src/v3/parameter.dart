@@ -159,8 +159,8 @@ class APIParameter extends APIObject {
   /// Determines whether this parameter is mandatory.
   ///
   /// If the parameter location is "path", this property is REQUIRED and its value MUST be true. Otherwise, the property MAY be included and its default value is false.
-  bool? get isRequired =>
-      (location == APIParameterLocation.path ? true : _required);
+  bool get isRequired =>
+      (location == APIParameterLocation.path ? true : _required ?? false);
 
   set isRequired(bool? f) {
     _required = f;
@@ -169,7 +169,7 @@ class APIParameter extends APIObject {
   bool? _required = false;
 
   /// Specifies that a parameter is deprecated and SHOULD be transitioned out of usage.
-  bool? get isDeprecated => _deprecated;
+  bool get isDeprecated => _deprecated ?? false;
 
   set isDeprecated(bool? f) {
     _deprecated = f;
