@@ -1,5 +1,9 @@
 # Changelog
 
+## 3.0.0+3
+
+- fix header parameters, update dependency on codable.
+
 ## 3.0.0+2
 
 - Rename APISchemaObject.isRequired back to required

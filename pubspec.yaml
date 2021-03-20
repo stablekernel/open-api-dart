@@ -1,6 +1,6 @@
 name: open_api_forked
 description: Data structures for OpenAPI (Swagger) specification. Reads and writes JSON specifications. Fork, with a couple of fixes and null safety by @hpoul
-version: 3.0.0+2
+version: 3.0.0+3
 #homepage: https://github.com/stablekernel/open-api-dart
 homepage: https://github.com/hpoul/open-api-dart
 author: stable|kernel <jobs@stablekernel.com>
@@ -9,7 +9,7 @@ environment:
   sdk: ">=2.12.0 <3.0.0"
 
 dependencies:
-  codable_forked: ^1.0.0
+  codable_forked: ^1.0.0+1
   meta: ^1.3.0
 
 dev_dependencies:

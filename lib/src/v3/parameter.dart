@@ -180,6 +180,7 @@ class APIParameter extends APIObject {
   /// The location of the parameter.
   ///
   /// REQUIRED. Possible values are "query", "header", "path" or "cookie".
+  /// EXCEPT when used as response header 🤦️
   APIParameterLocation? location;
 
   /// The schema defining the type used for the parameter.
@@ -236,7 +237,7 @@ class APIParameter extends APIObject {
 
     name = object.decode("name");
     description = object.decode("description");
-    location = APIParameterLocationCodec.decode(object.decode("in"))!;
+    location = APIParameterLocationCodec.decode(object.decode("in"));
     _required = object.decode("required");
 
     _deprecated = object.decode("deprecated");
