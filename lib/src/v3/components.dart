@@ -1,11 +1,13 @@
-import 'package:open_api/src/object.dart';
-import 'package:open_api/src/v3/callback.dart';
-import 'package:open_api/src/v3/header.dart';
-import 'package:open_api/src/v3/parameter.dart';
-import 'package:open_api/src/v3/request_body.dart';
-import 'package:open_api/src/v3/response.dart';
-import 'package:open_api/src/v3/schema.dart';
-import 'package:open_api/src/v3/security.dart';
+import 'package:conduit_codable/conduit_codable.dart';
+import 'package:conduit_open_api/src/object.dart';
+import 'package:conduit_open_api/src/util/map_helper.dart';
+import 'package:conduit_open_api/src/v3/callback.dart';
+import 'package:conduit_open_api/src/v3/header.dart';
+import 'package:conduit_open_api/src/v3/parameter.dart';
+import 'package:conduit_open_api/src/v3/request_body.dart';
+import 'package:conduit_open_api/src/v3/response.dart';
+import 'package:conduit_open_api/src/v3/schema.dart';
+import 'package:conduit_open_api/src/v3/security.dart';
 
 /// Holds a set of reusable objects for different aspects of the OAS.
 ///
@@ -16,29 +18,29 @@ class APIComponents extends APIObject {
   APIComponents.empty();
 
   /// An object to hold reusable [APISchemaObject?].
-  Map<String, APISchemaObject?>? schemas = {};
+  Map<String, APISchemaObject> schemas = {};
 
   /// An object to hold reusable [APIResponse?].
-  Map<String, APIResponse?>? responses = {};
+  Map<String, APIResponse> responses = {};
 
   /// An object to hold reusable [APIParameter?].
-  Map<String, APIParameter?>? parameters = {};
+  Map<String, APIParameter> parameters = {};
 
   //Map<String, APIExample> examples = {};
 
   /// An object to hold reusable [APIRequestBody?].
-  Map<String, APIRequestBody?>? requestBodies = {};
+  Map<String, APIRequestBody> requestBodies = {};
 
   /// An object to hold reusable [APIHeader].
-  Map<String, APIHeader?>? headers = {};
+  Map<String, APIHeader> headers = {};
 
   /// An object to hold reusable [APISecurityScheme?].
-  Map<String, APISecurityScheme?>? securitySchemes = {};
+  Map<String, APISecurityScheme> securitySchemes = {};
 
   //Map<String, APILink> links = {};
 
   /// An object to hold reusable [APICallback?].
-  Map<String, APICallback?>? callbacks = {};
+  Map<String, APICallback> callbacks = {};
 
   /// Returns a component definition for [uri].
   ///
@@ -55,7 +57,7 @@ class APIComponents extends APIObject {
           "Invalid reference URI: does not begin with /components/");
     }
 
-    var namedMap = null;
+    Map<String, APIObject?>? namedMap;
     switch (segments[1]) {
       case "schemas":
         namedMap = schemas;
@@ -78,9 +80,11 @@ class APIComponents extends APIObject {
       case "callbacks":
         namedMap = callbacks;
         break;
-      default:
-        throw ArgumentError(
-            "Invalid reference URI: component type '${segments[1]}' does not exist.");
+    }
+
+    if (namedMap == null) {
+      throw ArgumentError(
+          "Invalid reference URI: component type '${segments[1]}' does not exist.");
     }
 
     return namedMap[segments.last];
@@ -94,35 +98,46 @@ class APIComponents extends APIObject {
     return resolveUri(refObject.referenceURI!) as T?;
   }
 
+  @override
   void decode(KeyedArchive object) {
     super.decode(object);
 
-    schemas = object.decodeObjectMap("schemas", () => APISchemaObject())!;
-    responses = object.decodeObjectMap("responses", () => APIResponse.empty());
-    parameters =
-        object.decodeObjectMap("parameters", () => APIParameter.empty());
+    schemas = removeNullsFromMap(
+        object.decodeObjectMap("schemas", () => APISchemaObject()));
+    responses = removeNullsFromMap(
+        object.decodeObjectMap("responses", () => APIResponse.empty()));
+    parameters = removeNullsFromMap(
+        object.decodeObjectMap("parameters", () => APIParameter.empty()));
 //    examples = object.decodeObjectMap("examples", () => APIExample());
-    requestBodies =
-        object.decodeObjectMap("requestBodies", () => APIRequestBody.empty());
-    headers = object.decodeObjectMap("headers", () => APIHeader());
+    requestBodies = removeNullsFromMap(
+        object.decodeObjectMap("requestBodies", () => APIRequestBody.empty()));
+    headers = removeNullsFromMap(
+        object.decodeObjectMap("headers", () => APIHeader()));
 
-    securitySchemes =
-        object.decodeObjectMap("securitySchemes", () => APISecurityScheme());
+    securitySchemes = removeNullsFromMap(
+        object.decodeObjectMap("securitySchemes", () => APISecurityScheme()));
 //    links = object.decodeObjectMap("links", () => APILink());
-    callbacks = object.decodeObjectMap("callbacks", () => APICallback());
+    callbacks = removeNullsFromMap(
+        object.decodeObjectMap("callbacks", () => APICallback()));
   }
 
+  @override
   void encode(KeyedArchive object) {
     super.encode(object);
 
-    object.encodeObjectMap("schemas", schemas);
-    object.encodeObjectMap("responses", responses);
-    object.encodeObjectMap("parameters", parameters);
+    if (schemas.isNotEmpty) object.encodeObjectMap("schemas", schemas);
+    if (responses.isNotEmpty) object.encodeObjectMap("responses", responses);
+    if (parameters.isNotEmpty) object.encodeObjectMap("parameters", parameters);
 //    object.encodeObjectMap("examples", examples);
-    object.encodeObjectMap("requestBodies", requestBodies);
-    object.encodeObjectMap("headers", headers);
-    object.encodeObjectMap("securitySchemes", securitySchemes);
+    if (requestBodies.isNotEmpty) {
+      object.encodeObjectMap("requestBodies", requestBodies);
+    }
+    if (headers.isNotEmpty) object.encodeObjectMap("headers", headers);
+    if (securitySchemes.isNotEmpty) {
+      object.encodeObjectMap("securitySchemes", securitySchemes);
+    }
+
 //    object.encodeObjectMap("links", links);
-    object.encodeObjectMap("callbacks", callbacks);
+    if (callbacks.isNotEmpty) object.encodeObjectMap("callbacks", callbacks);
   }
 }

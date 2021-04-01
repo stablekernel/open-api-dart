@@ -1,9 +1,11 @@
-import 'package:open_api/src/object.dart';
+import 'package:conduit_codable/conduit_codable.dart';
+import 'package:conduit_open_api/src/object.dart';
 
 /// An object representing a Server.
 class APIServerDescription extends APIObject {
-  APIServerDescription.empty();
   APIServerDescription(this.url, {this.description, this.variables});
+
+  APIServerDescription.empty();
 
   /// A URL to the target host.
   ///
@@ -20,17 +22,17 @@ class APIServerDescription extends APIObject {
   /// The value is used for substitution in the server's URL template.
   Map<String, APIServerVariable?>? variables;
 
+  @override
   void decode(KeyedArchive object) {
     super.decode(object);
 
-    url = object.decode("url") != null
-        ? Uri.tryParse(object.decode("url"))
-        : null;
+    url = object.decode("url");
     description = object.decode("description");
     variables =
         object.decodeObjectMap("variables", () => APIServerVariable.empty());
   }
 
+  @override
   void encode(KeyedArchive object) {
     super.encode(object);
 
@@ -47,9 +49,10 @@ class APIServerDescription extends APIObject {
 
 /// An object representing a Server Variable for server URL template substitution.
 class APIServerVariable extends APIObject {
-  APIServerVariable.empty();
   APIServerVariable(this.defaultValue,
       {this.availableValues, this.description});
+
+  APIServerVariable.empty();
 
   /// An enumeration of string values to be used if the substitution options are from a limited set.
   List<String>? availableValues;
@@ -64,14 +67,17 @@ class APIServerVariable extends APIObject {
   /// CommonMark syntax MAY be used for rich text representation.
   String? description;
 
+  @override
   void decode(KeyedArchive object) {
     super.decode(object);
 
-    availableValues = List<String>.from(object.decode("enum"));
+    final enumMap = object.decode("enum") as List<String>;
+    availableValues = List<String>.from(enumMap);
     defaultValue = object.decode("default");
     description = object.decode("description");
   }
 
+  @override
   void encode(KeyedArchive object) {
     super.encode(object);
 

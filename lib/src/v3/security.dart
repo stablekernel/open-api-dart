@@ -1,8 +1,9 @@
-import 'package:open_api/src/object.dart';
-import 'package:open_api/src/v3/components.dart';
-import 'package:open_api/src/v3/document.dart';
-import 'package:open_api/src/v3/operation.dart';
-import 'package:open_api/src/v3/parameter.dart';
+import 'package:conduit_codable/conduit_codable.dart';
+import 'package:conduit_open_api/src/object.dart';
+import 'package:conduit_open_api/src/v3/components.dart';
+import 'package:conduit_open_api/src/v3/document.dart';
+import 'package:conduit_open_api/src/v3/operation.dart';
+import 'package:conduit_open_api/src/v3/parameter.dart';
 
 enum APISecuritySchemeType { apiKey, http, oauth2, openID }
 
@@ -102,10 +103,11 @@ class APISecurityScheme extends APIObject {
   /// For openID only. REQUIRED if so.
   Uri? connectURL;
 
+  @override
   void decode(KeyedArchive object) {
     super.decode(object);
 
-    type = APISecuritySchemeTypeCodec.decode(object.decode("type"))!;
+    type = APISecuritySchemeTypeCodec.decode(object.decode("type"));
     description = object.decode("description");
 
     switch (type) {
@@ -138,6 +140,7 @@ class APISecurityScheme extends APIObject {
     }
   }
 
+  @override
   void encode(KeyedArchive object) {
     super.encode(object);
 
@@ -146,7 +149,7 @@ class APISecurityScheme extends APIObject {
           "APISecurityScheme must have non-null values for: 'type'.");
     }
 
-    object.encode("type", APISecuritySchemeTypeCodec.encode(type!));
+    object.encode("type", APISecuritySchemeTypeCodec.encode(type));
     object.encode("description", description);
 
     switch (type) {
@@ -158,7 +161,7 @@ class APISecurityScheme extends APIObject {
           }
 
           object.encode("name", name);
-          object.encode("in", APIParameterLocationCodec.encode(location!));
+          object.encode("in", APIParameterLocationCodec.encode(location));
         }
         break;
       case APISecuritySchemeType.oauth2:
@@ -230,6 +233,7 @@ class APISecuritySchemeOAuth2Flow extends APIObject {
   /// REQUIRED. A map between the scope name and a short description for it.
   Map<String, String>? scopes;
 
+  @override
   void encode(KeyedArchive object) {
     super.encode(object);
 
@@ -239,6 +243,7 @@ class APISecuritySchemeOAuth2Flow extends APIObject {
     object.encode("scopes", scopes);
   }
 
+  @override
   void decode(KeyedArchive object) {
     super.decode(object);
 
@@ -246,8 +251,7 @@ class APISecuritySchemeOAuth2Flow extends APIObject {
 
     tokenURL = object.decode("tokenUrl");
     refreshURL = object.decode("refreshUrl");
-
-    scopes = Map<String, String>.from(object.decode("scopes"));
+    scopes = object.decode<Map<String, String>>("scopes");
   }
 }
 
@@ -259,28 +263,36 @@ class APISecuritySchemeOAuth2Flow extends APIObject {
 
 /// When a list of [APISecurityRequirement] is defined on the [APIDocument] or [APIOperation], only one of [APISecurityRequirement] in the list needs to be satisfied to authorize the request.
 class APISecurityRequirement extends APIObject {
-  APISecurityRequirement.empty();
   APISecurityRequirement(this.requirements);
+  APISecurityRequirement.empty();
 
   /// Each name MUST correspond to a security scheme which is declared in [APIComponents.securitySchemes].
   ///
   /// If the security scheme is of type [APISecuritySchemeType.oauth2] or [APISecuritySchemeType.openID], then the value is a list of scope names required for the execution. For other security scheme types, the array MUST be empty.
   Map<String, List<String>>? requirements;
 
+  @override
   void encode(KeyedArchive object) {
     super.encode(object);
 
-    requirements?.forEach((key, value) {
-      object.encode(key, value);
-    });
+    if (requirements != null) {
+      requirements!.forEach((key, value) {
+        object.encode(key, value);
+      });
+    }
   }
 
+  @override
   void decode(KeyedArchive object) {
     super.decode(object);
 
-    object.keys.forEach((key) {
-      final req = List<String>.from(object.decode(key));
-      requirements?[key] = req;
-    });
+    for (final key in object.keys) {
+      final decoded = object.decode<Iterable<dynamic>>(key);
+      if (decoded != null) {
+        final req = List<String>.from(decoded);
+        requirements ??= <String, List<String>>{};
+        requirements![key] = req;
+      }
+    }
   }
 }

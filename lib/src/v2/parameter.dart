@@ -1,7 +1,7 @@
-import 'package:codable/codable.dart';
-import 'package:open_api/src/v2/property.dart';
-import 'package:open_api/src/v2/schema.dart';
-import 'package:open_api/src/v2/types.dart';
+import 'package:conduit_codable/conduit_codable.dart';
+import 'package:conduit_open_api/src/v2/property.dart';
+import 'package:conduit_open_api/src/v2/schema.dart';
+import 'package:conduit_open_api/src/v2/types.dart';
 
 /// Represents a parameter location in the OpenAPI specification.
 enum APIParameterLocation { query, header, path, formData, body }
@@ -58,6 +58,7 @@ class APIParameter extends APIProperty {
   bool allowEmptyValue = false;
   APIProperty? items;
 
+  @override
   void decode(KeyedArchive json) {
     name = json.decode("name");
     description = json.decode("description");
@@ -79,17 +80,20 @@ class APIParameter extends APIProperty {
     }
   }
 
+  @override
   void encode(KeyedArchive json) {
     json.encode("name", name);
     json.encode("description", description);
-    json.encode("in", APIParameterLocationCodec.encode(location!));
+    json.encode("in", APIParameterLocationCodec.encode(location));
     json.encode("required", isRequired);
 
     if (location == APIParameterLocation.body) {
       json.encodeObject("schema", schema);
     } else {
       super.encode(json);
-      json.encode("allowEmptyValue", allowEmptyValue);
+      if (allowEmptyValue) {
+        json.encode("allowEmptyValue", allowEmptyValue);
+      }
       if (type == APIType.array) {
         json.encodeObject("items", items);
       }

@@ -1,9 +1,10 @@
-import 'package:open_api/src/object.dart';
-import 'package:open_api/src/v3/components.dart';
-import 'package:open_api/src/v3/metadata.dart';
-import 'package:open_api/src/v3/path.dart';
-import 'package:open_api/src/v3/security.dart';
-import 'package:open_api/src/v3/server.dart';
+import 'package:conduit_codable/conduit_codable.dart';
+import 'package:conduit_open_api/src/object.dart';
+import 'package:conduit_open_api/src/v3/components.dart';
+import 'package:conduit_open_api/src/v3/metadata.dart';
+import 'package:conduit_open_api/src/v3/path.dart';
+import 'package:conduit_open_api/src/v3/security.dart';
+import 'package:conduit_open_api/src/v3/server.dart';
 
 /// This is the root document object of the OpenAPI document.
 class APIDocument extends APIObject {
@@ -18,12 +19,12 @@ class APIDocument extends APIObject {
   /// This string MUST be the semantic version number of the OpenAPI Specification version that the OpenAPI document uses.
   ///
   /// REQUIRED. The openapi field SHOULD be used by tooling specifications and clients to interpret the OpenAPI document. This is not related to the API info.version string.
-  String? version = "3.0.0";
+  String version = "3.0.0";
 
   /// Provides metadata about the API.
   ///
   /// REQUIRED. The metadata MAY be used by tooling as required.
-  APIInfo? info;
+  APIInfo info = APIInfo.empty();
 
   /// An array of [APIServerDescription], which provide connectivity information to a target server.
   ///
@@ -52,25 +53,29 @@ class APIDocument extends APIObject {
     return KeyedArchive.archive(this, allowReferences: true);
   }
 
+  @override
   void decode(KeyedArchive object) {
     super.decode(object);
 
-    version = object.decode("openapi");
-    info = object.decodeObject("info", () => APIInfo.empty())!;
+    version = object.decode("openapi") ?? "3.0.0";
+    info =
+        object.decodeObject("info", () => APIInfo.empty()) ?? APIInfo.empty();
     servers =
         object.decodeObjects("servers", () => APIServerDescription.empty());
     paths = object.decodeObjectMap("paths", () => APIPath());
     components = object.decodeObject("components", () => APIComponents());
-    security = object.decode("security");
+    security =
+        object.decodeObjects("security", () => APISecurityRequirement.empty());
     tags = object.decodeObjects("tags", () => APITag.empty());
   }
 
+  @override
   void encode(KeyedArchive object) {
     super.encode(object);
 
-    if (version == null || info == null || paths == null) {
+    if (!info.isValid || paths == null) {
       throw ArgumentError(
-          "APIDocument must have non-null values for: 'version', 'info', 'paths'.");
+          "APIDocument must have values for: 'version', 'info' and 'paths'.");
     }
 
     object.encode("openapi", version);
@@ -78,7 +83,7 @@ class APIDocument extends APIObject {
     object.encodeObjects("servers", servers);
     object.encodeObjectMap("paths", paths);
     object.encodeObject("components", components);
-    object.encode("security", security);
+    object.encodeObjects("security", security);
     object.encodeObjects("tags", tags);
   }
 }

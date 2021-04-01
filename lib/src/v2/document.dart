@@ -1,11 +1,13 @@
-import 'package:codable/cast.dart' as cast;
-import 'package:open_api/src/object.dart';
-import 'package:open_api/src/v2/metadata.dart';
-import 'package:open_api/src/v2/parameter.dart';
-import 'package:open_api/src/v2/path.dart';
-import 'package:open_api/src/v2/response.dart';
-import 'package:open_api/src/v2/schema.dart';
-import 'package:open_api/src/v2/security.dart';
+import 'package:conduit_codable/conduit_codable.dart';
+import 'package:conduit_codable/cast.dart' as cast;
+import 'package:conduit_open_api/src/object.dart';
+import 'package:conduit_open_api/src/util/list_helper.dart';
+import 'package:conduit_open_api/src/v2/metadata.dart';
+import 'package:conduit_open_api/src/v2/parameter.dart';
+import 'package:conduit_open_api/src/v2/path.dart';
+import 'package:conduit_open_api/src/v2/response.dart';
+import 'package:conduit_open_api/src/v2/schema.dart';
+import 'package:conduit_open_api/src/v2/security.dart';
 
 /// Represents an OpenAPI 2.0 specification.
 class APIDocument extends APIObject {
@@ -26,7 +28,7 @@ class APIDocument extends APIObject {
   List<String>? schemes = [];
   List<String>? consumes = [];
   List<String>? produces = [];
-  List<Map<String, List<String?>>?> security = [];
+  List<Map<String, List<String?>>?>? security = [];
 
   Map<String, APIPath?>? paths = {};
   Map<String, APIResponse?>? responses = {};
@@ -40,22 +42,26 @@ class APIDocument extends APIObject {
 
   @override
   Map<String, cast.Cast> get castMap => {
-        "schemes": cast.List(cast.String),
-        "consumes": cast.List(cast.String),
-        "produces": cast.List(cast.String),
-        "security": cast.List(cast.Map(cast.String, cast.List(cast.String)))
+        "schemes": const cast.List(cast.string),
+        "consumes": const cast.List(cast.string),
+        "produces": const cast.List(cast.string),
+        "security":
+            const cast.List(cast.Map(cast.string, cast.List(cast.string)))
       };
 
+  @override
   void decode(KeyedArchive object) {
     super.decode(object);
 
-    version = object["swagger"];
-    host = object["host"];
-    basePath = object["basePath"];
-    schemes = object["schemes"];
-    consumes = object["consumes"];
-    produces = object["produces"];
-    security = object["security"];
+    version = object["swagger"] as String;
+    host = object["host"] as String?;
+    basePath = object["basePath"] as String?;
+    schemes = removeNullsFromList(object["schemes"] as List<String?>?);
+
+    /// remove
+    consumes = removeNullsFromList(object["consumes"] as List<String?>?);
+    produces = removeNullsFromList(object["produces"] as List<String?>?);
+    security = object["security"] as List<Map<String, List<String?>>?>;
 
     info = object.decodeObject("info", () => APIInfo());
     tags = object.decodeObjects("tags", () => APITag());
@@ -68,6 +74,7 @@ class APIDocument extends APIObject {
         "securityDefinitions", () => APISecurityScheme());
   }
 
+  @override
   void encode(KeyedArchive object) {
     super.encode(object);
 

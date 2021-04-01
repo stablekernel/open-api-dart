@@ -1,5 +1,6 @@
-import 'package:open_api/src/object.dart';
-import 'package:open_api/src/v2/types.dart';
+import 'package:conduit_codable/conduit_codable.dart';
+import 'package:conduit_open_api/src/object.dart';
+import 'package:conduit_open_api/src/v2/types.dart';
 
 enum APISchemaRepresentation {
   primitive,
@@ -72,6 +73,7 @@ class APIProperty extends APIObject {
     return APISchemaRepresentation.primitive;
   }
 
+  @override
   void decode(KeyedArchive object) {
     super.decode(object);
 
@@ -94,6 +96,7 @@ class APIProperty extends APIObject {
     enumerated = object.decode("enum");
   }
 
+  @override
   void encode(KeyedArchive object) {
     super.encode(object);
 

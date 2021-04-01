@@ -1,3 +1,8 @@
+# 1.0.0-b1
+Completed work on migrating to conduit_codable and nnbd migration.
+Added lint package and resolved all automated fixes.
+renamed project to conduit_open_api
+nnbd migration
 # Changelog
 
 ## 2.0.1
@@ -20,7 +25,7 @@
 ## 1.0.0
 
 - Adds support for OpenAPI 3.0
-- Splits Swagger (2.0) and OpenAPI (3.0) into 'package:open_api/v2.dart' and 'package:open_api/v3.dart'.
+- Splits Swagger (2.0) and OpenAPI (3.0) into 'package:conduit_open_api/v2.dart' and 'package:conduit_open_api/v3.dart'.
 
 ## 0.9.1
 

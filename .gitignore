@@ -13,3 +13,4 @@ doc/api/
 *.iml
 test/specs/kubernetes.json
 test/specs/stripe.json
+test/specs/petstore-simple.json

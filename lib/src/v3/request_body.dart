@@ -1,21 +1,19 @@
-import 'package:open_api/src/object.dart';
-import 'package:open_api/src/v3/media_type.dart';
-import 'package:open_api/src/v3/schema.dart';
+import 'package:conduit_codable/conduit_codable.dart';
+import 'package:conduit_open_api/src/object.dart';
+import 'package:conduit_open_api/src/v3/media_type.dart';
+import 'package:conduit_open_api/src/v3/schema.dart';
 
 /// Describes a single request body.
 class APIRequestBody extends APIObject {
+  APIRequestBody(this.content, {this.description, this.isRequired = false});
+
   APIRequestBody.empty();
 
-  APIRequestBody(this.content, {this.description, bool isRequired = false}) {
-    this.isRequired = isRequired;
-  }
-
   APIRequestBody.schema(APISchemaObject schema,
-      {Iterable<String> contentTypes: const ["application/json"],
+      {Iterable<String> contentTypes = const ["application/json"],
       this.description,
-      bool isRequired = false}) {
-    this.isRequired = isRequired;
-    this.content = contentTypes.fold({}, (prev, elem) {
+      this.isRequired = false}) {
+    content = contentTypes.fold({}, (prev, elem) {
       prev![elem] = APIMediaType(schema: schema);
       return prev;
     });
@@ -34,22 +32,18 @@ class APIRequestBody extends APIObject {
   /// Determines if the request body is required in the request.
   ///
   /// Defaults to false.
-  bool get isRequired => _required;
+  bool isRequired = false;
 
-  set isRequired(bool f) {
-    _required = f;
-  }
-
-  bool _required = false;
-
+  @override
   void decode(KeyedArchive object) {
     super.decode(object);
 
     description = object.decode("description");
-    _required = object.decode("required");
-    content = object.decodeObjectMap("content", () => APIMediaType())!;
+    isRequired = object.decode("required") ?? false;
+    content = object.decodeObjectMap("content", () => APIMediaType());
   }
 
+  @override
   void encode(KeyedArchive object) {
     super.encode(object);
 
@@ -59,7 +53,7 @@ class APIRequestBody extends APIObject {
     }
 
     object.encode("description", description);
-    object.encode("required", _required);
+    object.encode("required", isRequired);
     object.encodeObjectMap("content", content);
   }
 }

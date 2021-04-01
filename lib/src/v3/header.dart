@@ -1,6 +1,6 @@
-import 'package:codable/codable.dart';
-import 'package:open_api/src/v3/parameter.dart';
-import 'package:open_api/src/v3/schema.dart';
+import 'package:conduit_codable/conduit_codable.dart';
+import 'package:conduit_open_api/src/v3/parameter.dart';
+import 'package:conduit_open_api/src/v3/schema.dart';
 
 /// [APIHeader] follows the structure of the [APIParameter] with the following changes:
 ///
