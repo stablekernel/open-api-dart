@@ -1,7 +1,7 @@
 enum APIType { string, number, integer, boolean, array, file, object }
 
 class APITypeCodec {
-  static APIType decode(String type) {
+  static APIType? decode(String? type) {
     switch (type) {
       case "string":
         return APIType.string;
@@ -21,7 +21,7 @@ class APITypeCodec {
     return null;
   }
 
-  static String encode(APIType type) {
+  static String? encode(APIType? type) {
     switch (type) {
       case APIType.string:
         return "string";
@@ -37,8 +37,8 @@ class APITypeCodec {
         return "file";
       case APIType.object:
         return "object";
+      default:
+        return null;
     }
-
-    return null;
   }
 }

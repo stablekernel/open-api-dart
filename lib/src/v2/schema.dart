@@ -1,25 +1,25 @@
-import 'package:codable/cast.dart' as cast;
-import 'package:codable/codable.dart';
-import 'package:open_api/src/v2/property.dart';
+import 'package:conduit_codable/conduit_codable.dart';
+import 'package:conduit_codable/cast.dart' as cast;
+import 'package:conduit_open_api/src/v2/property.dart';
 
 /// Represents a schema object in the OpenAPI specification.
 class APISchemaObject extends APIProperty {
   APISchemaObject();
 
-  String title;
-  String description;
-  String example;
-  List<String> required = [];
+  String? title;
+  String? description;
+  String? example;
+  List<String?>? isRequired = [];
   bool readOnly = false;
 
   /// Valid when type == array
-  APISchemaObject items;
+  APISchemaObject? items;
 
   /// Valid when type == null
-  Map<String, APISchemaObject> properties;
+  Map<String, APISchemaObject?>? properties;
 
   /// Valid when type == object
-  APISchemaObject additionalProperties;
+  APISchemaObject? additionalProperties;
 
   @override
   APISchemaRepresentation get representation {
@@ -31,29 +31,32 @@ class APISchemaObject extends APIProperty {
   }
 
   @override
-  Map<String, cast.Cast> get castMap => {"required": cast.List(cast.String)};
+  Map<String, cast.Cast> get castMap =>
+      {"required": const cast.List(cast.string)};
 
+  @override
   void decode(KeyedArchive json) {
     super.decode(json);
 
     title = json.decode("title");
     description = json.decode("description");
-    required = json.decode("required");
+    isRequired = json.decode("required");
     example = json.decode("example");
     readOnly = json.decode("readOnly") ?? false;
 
-    items = json.decodeObject("items", () => new APISchemaObject());
-    additionalProperties = json.decodeObject("additionalProperties", () => new APISchemaObject());
-    properties =
-        json.decodeObjectMap("properties", () => new APISchemaObject());
+    items = json.decodeObject("items", () => APISchemaObject());
+    additionalProperties =
+        json.decodeObject("additionalProperties", () => APISchemaObject());
+    properties = json.decodeObjectMap("properties", () => APISchemaObject());
   }
 
+  @override
   void encode(KeyedArchive json) {
     super.encode(json);
 
     json.encode("title", title);
     json.encode("description", description);
-    json.encode("required", required);
+    json.encode("required", isRequired);
     json.encode("example", example);
     json.encode("readOnly", readOnly);
 

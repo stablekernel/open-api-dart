@@ -1,7 +1,8 @@
-import 'package:codable/cast.dart' as cast;
-import 'package:open_api/src/object.dart';
-import 'package:open_api/src/v2/parameter.dart';
-import 'package:open_api/src/v2/response.dart';
+import 'package:conduit_codable/conduit_codable.dart';
+import 'package:conduit_codable/cast.dart' as cast;
+import 'package:conduit_open_api/src/object.dart';
+import 'package:conduit_open_api/src/v2/parameter.dart';
+import 'package:conduit_open_api/src/v2/response.dart';
 
 /// Represents a HTTP operation (a path/method pair) in the OpenAPI specification.
 class APIOperation extends APIObject {
@@ -9,26 +10,28 @@ class APIOperation extends APIObject {
 
   @override
   Map<String, cast.Cast> get castMap => {
-        "tags": cast.List(cast.String),
-        "consumes": cast.List(cast.String),
-        "produces": cast.List(cast.String),
-        "schemes": cast.List(cast.String),
-        "security": cast.List(cast.Map(cast.String, cast.List(cast.String))),
+        "tags": const cast.List(cast.string),
+        "consumes": const cast.List(cast.string),
+        "produces": const cast.List(cast.string),
+        "schemes": const cast.List(cast.string),
+        "security":
+            const cast.List(cast.Map(cast.string, cast.List(cast.string))),
       };
 
-  String summary = "";
-  String description = "";
-  String id;
-  bool deprecated = false;
+  String? summary = "";
+  String? description = "";
+  String? id;
+  bool? deprecated;
 
-  List<String> tags = [];
-  List<String> schemes = [];
-  List<String> consumes = [];
-  List<String> produces = [];
-  List<APIParameter> parameters = [];
-  List<Map<String, List<String>>> security = [];
-  Map<String, APIResponse> responses = {};
+  List<String?>? tags = [];
+  List<String?>? schemes = [];
+  List<String?>? consumes = [];
+  List<String?>? produces = [];
+  List<APIParameter?>? parameters = [];
+  List<Map<String, List<String>>?>? security = [];
+  Map<String, APIResponse?>? responses = {};
 
+  @override
   void decode(KeyedArchive object) {
     super.decode(object);
 
@@ -38,13 +41,14 @@ class APIOperation extends APIObject {
     id = object.decode("operationId");
     consumes = object.decode("consumes");
     produces = object.decode("produces");
-    deprecated = object.decode("deprecated") ?? false;
-    parameters = object.decodeObjects("parameters", () => new APIParameter());
-    responses = object.decodeObjectMap("responses", () => new APIResponse());
+    deprecated = object.decode("deprecated");
+    parameters = object.decodeObjects("parameters", () => APIParameter());
+    responses = object.decodeObjectMap("responses", () => APIResponse());
     schemes = object.decode("schemes");
     security = object.decode("security");
   }
 
+  @override
   void encode(KeyedArchive object) {
     super.encode(object);
 

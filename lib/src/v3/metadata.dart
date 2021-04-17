@@ -1,56 +1,63 @@
-import 'package:open_api/src/object.dart';
+import 'package:conduit_codable/conduit_codable.dart';
+import 'package:conduit_open_api/src/object.dart';
 
 /// The object provides metadata about the API.
 ///
 /// The metadata MAY be used by the clients if needed, and MAY be presented in editing or documentation generation tools for convenience.
 class APIInfo extends APIObject {
-  APIInfo.empty();
-
   /// Creates empty metadata for specification.
-  APIInfo(this.title, this.version, {this.description, this.termsOfServiceURL, this.license, this.contact});
+  APIInfo(this.title, this.version,
+      {this.description, this.termsOfServiceURL, this.license, this.contact});
+
+  APIInfo.empty();
 
   /// The title of the application.
   ///
   /// REQUIRED.
-  String title;
+  String? title;
 
   /// A short description of the application.
   ///
   /// CommonMark syntax MAY be used for rich text representation.
-  String description;
+  String? description;
 
   /// The version of the OpenAPI document (which is distinct from the OpenAPI Specification version or the API implementation version).
   ///
   /// REQUIRED.
-  String version;
+  String? version;
 
   /// A URL to the Terms of Service for the API.
   ///
   /// MUST be in the format of a URL.
-  Uri termsOfServiceURL;
+  Uri? termsOfServiceURL;
 
   /// The contact information for the exposed API.
-  APIContact contact;
+  APIContact? contact;
 
   /// The license information for the exposed API.
-  APILicense license;
+  APILicense? license;
 
+  bool get isValid => title != null && version != null;
+
+  @override
   void decode(KeyedArchive object) {
     super.decode(object);
 
     title = object.decode("title");
     description = object.decode("description");
     termsOfServiceURL = object.decode("termsOfService");
-    contact = object.decodeObject("contact", () => new APIContact());
-    license = object.decodeObject("license", () => new APILicense.empty());
+    contact = object.decodeObject("contact", () => APIContact());
+    license = object.decodeObject("license", () => APILicense.empty());
     version = object.decode("version");
   }
 
+  @override
   void encode(KeyedArchive object) {
     super.encode(object);
 
     if (title == null || version == null) {
-      throw new ArgumentError("APIInfo must have non-null values for: 'title', 'version'.");
+      throw ArgumentError(
+          "APIInfo must have non-null values for: 'title', 'version'.");
     }
 
     object.encode("title", title);
@@ -68,18 +75,19 @@ class APIContact extends APIObject {
   APIContact.empty();
 
   /// The identifying name of the contact person/organization.
-  String name;
+  String? name;
 
   /// The URL pointing to the contact information.
   ///
   /// MUST be in the format of a URL.
-  Uri url;
+  Uri? url;
 
   /// The email address of the contact person/organization.
   ///
   /// MUST be in the format of an email address.
-  String email;
+  String? email;
 
+  @override
   void decode(KeyedArchive object) {
     super.decode(object);
 
@@ -88,6 +96,7 @@ class APIContact extends APIObject {
     email = object.decode("email");
   }
 
+  @override
   void encode(KeyedArchive object) {
     super.encode(object);
 
@@ -99,19 +108,20 @@ class APIContact extends APIObject {
 
 /// License information for the exposed API.
 class APILicense extends APIObject {
-  APILicense.empty();
   APILicense(this.name, {this.url});
+  APILicense.empty();
 
   /// The license name used for the API.
   ///
   /// REQUIRED.
-  String name;
+  String? name;
 
   /// A URL to the license used for the API.
   ///
   /// MUST be in the format of a URL.
-  Uri url;
+  Uri? url;
 
+  @override
   void decode(KeyedArchive object) {
     super.decode(object);
 
@@ -119,11 +129,12 @@ class APILicense extends APIObject {
     url = object.decode("url");
   }
 
+  @override
   void encode(KeyedArchive object) {
     super.encode(object);
 
     if (name == null) {
-      throw new ArgumentError("APILicense must have non-null values for: 'name'.");
+      throw ArgumentError("APILicense must have non-null values for: 'name'.");
     }
 
     object.encode("name", name);
@@ -135,20 +146,21 @@ class APILicense extends APIObject {
 ///
 /// It is not mandatory to have a [APITag] per tag defined in the [APIOperation] instances.
 class APITag extends APIObject {
-  APITag.empty();
-
   APITag(this.name, {this.description});
+
+  APITag.empty();
 
   /// The name of the tag.
   ///
   /// REQUIRED.
-  String name;
+  String? name;
 
   /// A short description for the tag.
   ///
   /// CommonMark syntax MAY be used for rich text representation.
-  String description;
+  String? description;
 
+  @override
   void decode(KeyedArchive object) {
     super.decode(object);
 
@@ -156,11 +168,12 @@ class APITag extends APIObject {
     description = object.decode("description");
   }
 
+  @override
   void encode(KeyedArchive object) {
     super.encode(object);
 
     if (name == null) {
-      throw new ArgumentError("APITag must have non-null values for: 'name'.");
+      throw ArgumentError("APITag must have non-null values for: 'name'.");
     }
     object.encode("name", name);
     object.encode("description", description);

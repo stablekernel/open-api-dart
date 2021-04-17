@@ -1,4 +1,5 @@
-import 'package:open_api/src/object.dart';
+import 'package:conduit_codable/conduit_codable.dart';
+import 'package:conduit_open_api/src/object.dart';
 
 /// Represents a metadata for an API in the OpenAPI specification.
 class APIInfo extends APIObject {
@@ -6,23 +7,25 @@ class APIInfo extends APIObject {
   APIInfo();
 
   String title = "API";
-  String description = "Description";
-  String version = "1.0";
-  String termsOfServiceURL = "";
-  APIContact contact = new APIContact();
-  APILicense license = new APILicense();
+  String? description = "Description";
+  String? version = "1.0";
+  String? termsOfServiceURL = "";
+  APIContact? contact = APIContact();
+  APILicense? license = APILicense();
 
+  @override
   void decode(KeyedArchive object) {
     super.decode(object);
 
-    title = object.decode("title");
+    title = object.decode<String>("title") ?? '';
     description = object.decode("description");
     termsOfServiceURL = object.decode("termsOfService");
-    contact = object.decodeObject("contact", () => new APIContact());
-    license = object.decodeObject("license", () => new APILicense());
+    contact = object.decodeObject("contact", () => APIContact());
+    license = object.decodeObject("license", () => APILicense());
     version = object.decode("version");
   }
 
+  @override
   void encode(KeyedArchive object) {
     super.encode(object);
 
@@ -39,18 +42,20 @@ class APIInfo extends APIObject {
 class APIContact extends APIObject {
   APIContact();
 
+  @override
   void decode(KeyedArchive object) {
     super.decode(object);
 
-    name = object.decode("name");
-    url = object.decode("url");
-    email = object.decode("email");
+    name = object.decode("name") ?? "default";
+    url = object.decode("url") ?? "http://localhost";
+    email = object.decode("email") ?? "default";
   }
 
   String name = "default";
   String url = "http://localhost";
   String email = "default";
 
+  @override
   void encode(KeyedArchive object) {
     super.encode(object);
 
@@ -64,16 +69,18 @@ class APIContact extends APIObject {
 class APILicense extends APIObject {
   APILicense();
 
+  @override
   void decode(KeyedArchive object) {
     super.decode(object);
 
-    name = object.decode("name");
-    url = object.decode("url");
+    name = object.decode("name") ?? "default";
+    url = object.decode("url") ?? "http://localhost";
   }
 
   String name = "default";
   String url = "http://localhost";
 
+  @override
   void encode(KeyedArchive object) {
     super.encode(object);
 
@@ -85,6 +92,7 @@ class APILicense extends APIObject {
 class APITag extends APIObject {
   APITag();
 
+  @override
   void decode(KeyedArchive object) {
     super.decode(object);
 
@@ -92,9 +100,10 @@ class APITag extends APIObject {
     description = object.decode("description");
   }
 
-  String name;
-  String description;
+  String? name;
+  String? description;
 
+  @override
   void encode(KeyedArchive object) {
     super.encode(object);
 
