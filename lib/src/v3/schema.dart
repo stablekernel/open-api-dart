@@ -187,7 +187,7 @@ class APISchemaObject extends APIObject {
   ///
   /// An object instance is valid against this keyword if its property set
   /// contains all elements in this keyword's array value.
-  List<String?>? required;
+  List<String>? required;
 
   /// The value of this keyword MUST be an array.  This array SHOULD have
   /// at least one element.  Elements in the array SHOULD be unique.
