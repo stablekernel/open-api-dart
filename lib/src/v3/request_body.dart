@@ -47,7 +47,7 @@ class APIRequestBody extends APIObject {
     super.decode(object);
 
     description = object.decode("description");
-    _required = object.decode("required");
+    _required = object.decode("required") ?? _required;
     content = object.decodeObjectMap("content", () => APIMediaType())!;
   }
 
