@@ -87,11 +87,12 @@ class APIComponents extends APIObject {
   }
 
   T? resolve<T extends APIObject>(T refObject) {
-    if (refObject.referenceURI == null) {
+    final referenceURI = refObject.referenceURI;
+    if (referenceURI == null) {
       throw ArgumentError("APIObject is not a reference to a component.");
     }
 
-    return resolveUri(refObject.referenceURI!) as T?;
+    return resolveUri(referenceURI) as T?;
   }
 
   void decode(KeyedArchive object) {

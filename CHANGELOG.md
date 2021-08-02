@@ -1,5 +1,9 @@
 # Changelog
 
+## 3.0.0+4
+
+- Remove forced null unwraps.
+
 ## 3.0.0+3
 
 - fix header parameters, update dependency on codable.

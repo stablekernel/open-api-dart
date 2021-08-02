@@ -93,8 +93,7 @@ class APIOperation extends APIObject {
   /// If [parameters] is null, invoking this method will set it to a list containing [parameter].
   /// Otherwise, [parameter] is added to [parameters].
   void addParameter(APIParameter parameter) {
-    parameters ??= [];
-    parameters!.add(parameter);
+    (parameters ??= []).add(parameter);
   }
 
   /// Adds [requirement] to [security].
@@ -102,9 +101,7 @@ class APIOperation extends APIObject {
   /// If [security] is null, invoking this method will set it to a list containing [requirement].
   /// Otherwise, [requirement] is added to [security].
   void addSecurityRequirement(APISecurityRequirement requirement) {
-    security ??= [];
-
-    security!.add(requirement);
+    (security ??= []).add(requirement);
   }
 
   /// Adds [response] to [responses], merging schemas if necessary.
@@ -115,13 +112,13 @@ class APIOperation extends APIObject {
   /// and headers are added to the list of possible content and headers for the existing response. Descriptions
   /// of each response are joined together. All headers are marked as optional..
   void addResponse(int statusCode, APIResponse response) {
-    responses ??= {};
+    final responses = this.responses ??= {};
 
     final key = "$statusCode";
 
-    final existingResponse = responses![key];
+    final existingResponse = responses[key];
     if (existingResponse == null) {
-      responses![key] = response;
+      responses[key] = response;
       return;
     }
 

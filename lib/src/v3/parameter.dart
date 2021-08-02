@@ -260,7 +260,7 @@ class APIParameter extends APIObject {
 
     object.encode("name", name);
     object.encode("description", description);
-    object.encode("in", APIParameterLocationCodec.encode(location!));
+    object.encode("in", APIParameterLocationCodec.encode(location));
 
     if (location == APIParameterLocation.path) {
       object.encode("required", true);

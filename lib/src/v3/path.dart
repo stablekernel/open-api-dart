@@ -6,8 +6,13 @@ import 'package:open_api_forked/src/v3/parameter.dart';
 ///
 /// An [APIPath] MAY be empty, due to ACL constraints. The path itself is still exposed to the documentation viewer but they will not know which operations and parameters are available.
 class APIPath extends APIObject {
-  APIPath.empty();
-  APIPath({this.summary, this.description, this.parameters, this.operations});
+  APIPath.empty() : operations = {};
+  APIPath({
+    this.summary,
+    this.description,
+    this.parameters,
+    Map<String, APIOperation?>? operations,
+  }) : operations = operations ?? {};
 
   /// An optional, string summary, intended to apply to all operations in this path.
   String? summary;
@@ -25,7 +30,7 @@ class APIPath extends APIObject {
   /// Definitions of operations on this path.
   ///
   /// Keys are lowercased HTTP methods, e.g. get, put, delete, post, etc.
-  Map<String, APIOperation?>? operations;
+  Map<String, APIOperation?> operations;
 
   /// Returns true if this path has path parameters [parameterNames].
   ///
@@ -67,8 +72,7 @@ class APIPath extends APIObject {
       if (!object.containsKey(methodName)) {
         return;
       }
-      operations ??= {};
-      operations![methodName] =
+      operations[methodName] =
           object.decodeObject(methodName, () => APIOperation.empty());
     });
   }
@@ -80,7 +84,7 @@ class APIPath extends APIObject {
     object.encode("description", description);
     object.encodeObjects("parameters", parameters);
 
-    operations!.forEach((opName, op) {
+    operations.forEach((opName, op) {
       object.encodeObject(opName.toLowerCase(), op);
     });
   }

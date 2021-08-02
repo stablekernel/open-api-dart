@@ -82,7 +82,7 @@ class APIParameter extends APIProperty {
   void encode(KeyedArchive json) {
     json.encode("name", name);
     json.encode("description", description);
-    json.encode("in", APIParameterLocationCodec.encode(location!));
+    json.encode("in", APIParameterLocationCodec.encode(location));
     json.encode("required", isRequired);
 
     if (location == APIParameterLocation.body) {

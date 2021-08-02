@@ -146,7 +146,7 @@ class APISecurityScheme extends APIObject {
           "APISecurityScheme must have non-null values for: 'type'.");
     }
 
-    object.encode("type", APISecuritySchemeTypeCodec.encode(type!));
+    object.encode("type", APISecuritySchemeTypeCodec.encode(type));
     object.encode("description", description);
 
     switch (type) {
@@ -158,7 +158,7 @@ class APISecurityScheme extends APIObject {
           }
 
           object.encode("name", name);
-          object.encode("in", APIParameterLocationCodec.encode(location!));
+          object.encode("in", APIParameterLocationCodec.encode(location));
         }
         break;
       case APISecuritySchemeType.oauth2:

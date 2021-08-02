@@ -108,9 +108,9 @@ class APISecurityScheme extends APIObject {
       /* nothing to do */
     } else if (type == "apiKey") {
       object.encode("name", apiKeyName);
-      object.encode("in", APIParameterLocationCodec.encode(apiKeyLocation!));
+      object.encode("in", APIParameterLocationCodec.encode(apiKeyLocation));
     } else if (type == "oauth2") {
-      object.encode("flow", APISecuritySchemeFlowCodec.encode(oauthFlow!));
+      object.encode("flow", APISecuritySchemeFlowCodec.encode(oauthFlow));
 
       object.encode("authorizationUrl", authorizationURL);
       object.encode("tokenUrl", tokenURL);

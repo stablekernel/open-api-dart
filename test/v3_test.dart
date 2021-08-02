@@ -136,9 +136,9 @@ void main() {
         expect(p, isNotNull);
         expect(p!.description, isNull);
 
-        expect(p.operations!.length, 2);
+        expect(p.operations.length, 2);
 
-        final getOp = p.operations!["get"];
+        final getOp = p.operations["get"];
         final getParams = getOp!.parameters;
         final getResponses = getOp.responses;
         expect(getOp.description, contains("10 most recent reversals"));
@@ -207,7 +207,7 @@ void main() {
           },
         },
       });
-      expect(doc.paths!.values.first!.operations!.values.first?.security,
+      expect(doc.paths!.values.first!.operations.values.first?.security,
           hasLength(1));
     });
   });

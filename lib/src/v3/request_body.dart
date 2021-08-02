@@ -15,8 +15,9 @@ class APIRequestBody extends APIObject {
       this.description,
       bool isRequired = false}) {
     this.isRequired = isRequired;
-    this.content = contentTypes.fold({}, (prev, elem) {
-      prev![elem] = APIMediaType(schema: schema);
+    this.content =
+        contentTypes.fold<Map<String, APIMediaType?>>({}, (prev, elem) {
+      prev[elem] = APIMediaType(schema: schema);
       return prev;
     });
   }
