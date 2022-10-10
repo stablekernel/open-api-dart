@@ -1,5 +1,9 @@
 # Changelog
 
+## 3.0.0+6
+
+- add openIDConnect security scheme type.
+
 ## 3.0.0+5
 
 - Remove forced null unwraps.

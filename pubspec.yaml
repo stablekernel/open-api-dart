@@ -1,6 +1,6 @@
 name: open_api_forked
 description: Data structures for OpenAPI (Swagger) specification. Reads and writes JSON specifications. Fork, with a couple of fixes and null safety by @hpoul
-version: 3.0.0+5
+version: 3.0.0+6
 #homepage: https://github.com/stablekernel/open-api-dart
 homepage: https://github.com/hpoul/open-api-dart
 #author: stable|kernel <jobs@stablekernel.com>

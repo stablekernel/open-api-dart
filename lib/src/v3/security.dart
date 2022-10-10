@@ -4,7 +4,13 @@ import 'package:open_api_forked/src/v3/document.dart';
 import 'package:open_api_forked/src/v3/operation.dart';
 import 'package:open_api_forked/src/v3/parameter.dart';
 
-enum APISecuritySchemeType { apiKey, http, oauth2, openID }
+enum APISecuritySchemeType {
+  apiKey,
+  http,
+  oauth2,
+  openID,
+  openIdConnect,
+}
 
 class APISecuritySchemeTypeCodec {
   static APISecuritySchemeType? decode(String? type) {
@@ -17,6 +23,8 @@ class APISecuritySchemeTypeCodec {
         return APISecuritySchemeType.oauth2;
       case "openID":
         return APISecuritySchemeType.openID;
+      case "openIdConnect":
+        return APISecuritySchemeType.openIdConnect;
       default:
         return null;
     }
@@ -43,6 +51,7 @@ class APISecuritySchemeTypeCodec {
 /// Supported schemes are HTTP authentication, an API key (either as a header or as a query parameter), OAuth2's common flows (implicit, password, application and access code) as defined in RFC6749, and OpenID Connect Discovery.
 class APISecurityScheme extends APIObject {
   APISecurityScheme();
+
   APISecurityScheme.empty();
 
   APISecurityScheme.http(this.scheme) : type = APISecuritySchemeType.http;
@@ -105,7 +114,7 @@ class APISecurityScheme extends APIObject {
   void decode(KeyedArchive object) {
     super.decode(object);
 
-    type = APISecuritySchemeTypeCodec.decode(object.decode("type"))!;
+    type = APISecuritySchemeTypeCodec.decode(object.decode("type"));
     description = object.decode("description");
 
     switch (type) {
@@ -128,13 +137,14 @@ class APISecurityScheme extends APIObject {
         }
         break;
       case APISecuritySchemeType.openID:
+      case APISecuritySchemeType.openIdConnect:
         {
           connectURL = object.decode("openIdConnectUrl");
         }
         break;
       default:
         throw ArgumentError(
-            "APISecurityScheme must have non-null values for: 'type'.");
+            "APISecurityScheme must have non-null values for: 'type' ${object.decode("type")}.");
     }
   }
 
@@ -201,14 +211,18 @@ class APISecurityScheme extends APIObject {
 /// Allows configuration of the supported OAuth Flows.
 class APISecuritySchemeOAuth2Flow extends APIObject {
   APISecuritySchemeOAuth2Flow.empty();
-  APISecuritySchemeOAuth2Flow.code(
-      this.authorizationURL, this.tokenURL, this.refreshURL, this.scopes);
-  APISecuritySchemeOAuth2Flow.implicit(
-      this.authorizationURL, this.refreshURL, this.scopes);
-  APISecuritySchemeOAuth2Flow.password(
-      this.tokenURL, this.refreshURL, this.scopes);
-  APISecuritySchemeOAuth2Flow.client(
-      this.tokenURL, this.refreshURL, this.scopes);
+
+  APISecuritySchemeOAuth2Flow.code(this.authorizationURL, this.tokenURL,
+      this.refreshURL, this.scopes);
+
+  APISecuritySchemeOAuth2Flow.implicit(this.authorizationURL, this.refreshURL,
+      this.scopes);
+
+  APISecuritySchemeOAuth2Flow.password(this.tokenURL, this.refreshURL,
+      this.scopes);
+
+  APISecuritySchemeOAuth2Flow.client(this.tokenURL, this.refreshURL,
+      this.scopes);
 
   /// The authorization URL to be used for this flow.
   ///
@@ -260,6 +274,7 @@ class APISecuritySchemeOAuth2Flow extends APIObject {
 /// When a list of [APISecurityRequirement] is defined on the [APIDocument] or [APIOperation], only one of [APISecurityRequirement] in the list needs to be satisfied to authorize the request.
 class APISecurityRequirement extends APIObject {
   APISecurityRequirement.empty();
+
   APISecurityRequirement(this.requirements);
 
   /// Each name MUST correspond to a security scheme which is declared in [APIComponents.securitySchemes].
