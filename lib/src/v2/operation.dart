@@ -1,7 +1,7 @@
-import 'package:codable/cast.dart' as cast;
-import 'package:open_api/src/object.dart';
-import 'package:open_api/src/v2/parameter.dart';
-import 'package:open_api/src/v2/response.dart';
+import 'package:codable_forked/cast.dart' as cast;
+import 'package:open_api_forked/src/object.dart';
+import 'package:open_api_forked/src/v2/parameter.dart';
+import 'package:open_api_forked/src/v2/response.dart';
 
 /// Represents a HTTP operation (a path/method pair) in the OpenAPI specification.
 class APIOperation extends APIObject {
@@ -16,18 +16,18 @@ class APIOperation extends APIObject {
         "security": cast.List(cast.Map(cast.String, cast.List(cast.String))),
       };
 
-  String summary = "";
-  String description = "";
-  String id;
+  String? summary = "";
+  String? description = "";
+  String? id;
   bool deprecated = false;
 
-  List<String> tags = [];
-  List<String> schemes = [];
-  List<String> consumes = [];
-  List<String> produces = [];
-  List<APIParameter> parameters = [];
-  List<Map<String, List<String>>> security = [];
-  Map<String, APIResponse> responses = {};
+  List<String?>? tags = [];
+  List<String?>? schemes = [];
+  List<String?>? consumes = [];
+  List<String?>? produces = [];
+  List<APIParameter?>? parameters = [];
+  List<Map<String, List<String>>?>? security = [];
+  Map<String, APIResponse?>? responses = {};
 
   void decode(KeyedArchive object) {
     super.decode(object);
@@ -39,8 +39,8 @@ class APIOperation extends APIObject {
     consumes = object.decode("consumes");
     produces = object.decode("produces");
     deprecated = object.decode("deprecated") ?? false;
-    parameters = object.decodeObjects("parameters", () => new APIParameter());
-    responses = object.decodeObjectMap("responses", () => new APIResponse());
+    parameters = object.decodeObjects("parameters", () => APIParameter());
+    responses = object.decodeObjectMap("responses", () => APIResponse());
     schemes = object.decode("schemes");
     security = object.decode("security");
   }

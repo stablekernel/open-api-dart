@@ -1,11 +1,11 @@
-import 'package:open_api/src/object.dart';
-import 'package:open_api/src/v3/callback.dart';
-import 'package:open_api/src/v3/header.dart';
-import 'package:open_api/src/v3/parameter.dart';
-import 'package:open_api/src/v3/request_body.dart';
-import 'package:open_api/src/v3/response.dart';
-import 'package:open_api/src/v3/schema.dart';
-import 'package:open_api/src/v3/security.dart';
+import 'package:open_api_forked/src/object.dart';
+import 'package:open_api_forked/src/v3/callback.dart';
+import 'package:open_api_forked/src/v3/header.dart';
+import 'package:open_api_forked/src/v3/parameter.dart';
+import 'package:open_api_forked/src/v3/request_body.dart';
+import 'package:open_api_forked/src/v3/response.dart';
+import 'package:open_api_forked/src/v3/schema.dart';
+import 'package:open_api_forked/src/v3/security.dart';
 
 /// Holds a set of reusable objects for different aspects of the OAS.
 ///
@@ -15,85 +15,102 @@ class APIComponents extends APIObject {
 
   APIComponents.empty();
 
-  /// An object to hold reusable [APISchemaObject].
-  Map<String, APISchemaObject> schemas = {};
+  /// An object to hold reusable [APISchemaObject?].
+  Map<String, APISchemaObject?>? schemas = {};
 
-  /// An object to hold reusable [APIResponse].
-  Map<String, APIResponse> responses = {};
+  /// An object to hold reusable [APIResponse?].
+  Map<String, APIResponse?>? responses = {};
 
-  /// An object to hold reusable [APIParameter].
-  Map<String, APIParameter> parameters = {};
+  /// An object to hold reusable [APIParameter?].
+  Map<String, APIParameter?>? parameters = {};
 
   //Map<String, APIExample> examples = {};
 
-  /// An object to hold reusable [APIRequestBody].
-  Map<String, APIRequestBody> requestBodies = {};
+  /// An object to hold reusable [APIRequestBody?].
+  Map<String, APIRequestBody?>? requestBodies = {};
 
   /// An object to hold reusable [APIHeader].
-  Map<String, APIHeader> headers = {};
+  Map<String, APIHeader?>? headers = {};
 
-  /// An object to hold reusable [APISecurityScheme].
-  Map<String, APISecurityScheme> securitySchemes = {};
+  /// An object to hold reusable [APISecurityScheme?].
+  Map<String, APISecurityScheme?>? securitySchemes = {};
 
   //Map<String, APILink> links = {};
 
-  /// An object to hold reusable [APICallback].
-  Map<String, APICallback> callbacks = {};
+  /// An object to hold reusable [APICallback?].
+  Map<String, APICallback?>? callbacks = {};
 
   /// Returns a component definition for [uri].
   ///
   /// Construct [uri] as a path, e.g. `Uri(path: /components/schemas/name)`.
-  APIObject resolveUri(Uri uri) {
+  APIObject? resolveUri(Uri uri) {
     final segments = uri.pathSegments;
     if (segments.length != 3) {
-      throw new ArgumentError("Invalid reference URI. Must be a path URI of the form: '/components/<type>/<name>'");
+      throw ArgumentError(
+          "Invalid reference URI. Must be a path URI of the form: '/components/<type>/<name>'");
     }
 
     if (segments.first != "components") {
-      throw new ArgumentError("Invalid reference URI: does not begin with /components/");
+      throw ArgumentError(
+          "Invalid reference URI: does not begin with /components/");
     }
 
     var namedMap = null;
     switch (segments[1]) {
-      case "schemas": namedMap = schemas; break;
-      case "responses": namedMap = responses; break;
-      case "parameters": namedMap = parameters; break;
-      case "requestBodies": namedMap = requestBodies; break;
-      case "headers": namedMap = headers; break;
-      case "securitySchemes": namedMap = securitySchemes; break;
-      case "callbacks": namedMap = callbacks; break;
-    }
-
-    if (namedMap == null) {
-      throw new ArgumentError("Invalid reference URI: component type '${segments[1]}' does not exist.");
+      case "schemas":
+        namedMap = schemas;
+        break;
+      case "responses":
+        namedMap = responses;
+        break;
+      case "parameters":
+        namedMap = parameters;
+        break;
+      case "requestBodies":
+        namedMap = requestBodies;
+        break;
+      case "headers":
+        namedMap = headers;
+        break;
+      case "securitySchemes":
+        namedMap = securitySchemes;
+        break;
+      case "callbacks":
+        namedMap = callbacks;
+        break;
+      default:
+        throw ArgumentError(
+            "Invalid reference URI: component type '${segments[1]}' does not exist.");
     }
 
     return namedMap[segments.last];
   }
 
-  T resolve<T extends APIObject>(T refObject) {
-    if (refObject.referenceURI == null) {
-      throw new ArgumentError("APIObject is not a reference to a component.");
+  T? resolve<T extends APIObject>(T refObject) {
+    final referenceURI = refObject.referenceURI;
+    if (referenceURI == null) {
+      throw ArgumentError("APIObject is not a reference to a component.");
     }
 
-    return resolveUri(refObject.referenceURI);
+    return resolveUri(referenceURI) as T?;
   }
 
   void decode(KeyedArchive object) {
     super.decode(object);
 
-    schemas = object.decodeObjectMap("schemas", () => new APISchemaObject());
-    responses = object.decodeObjectMap("responses", () => new APIResponse.empty());
-    parameters = object.decodeObjectMap("parameters", () => new APIParameter.empty());
-//    examples = object.decodeObjectMap("examples", () => new APIExample());
+    schemas = object.decodeObjectMap("schemas", () => APISchemaObject())!;
+    responses = object.decodeObjectMap("responses", () => APIResponse.empty());
+    parameters =
+        object.decodeObjectMap("parameters", () => APIParameter.empty());
+//    examples = object.decodeObjectMap("examples", () => APIExample());
     requestBodies =
-        object.decodeObjectMap("requestBodies", () => new APIRequestBody.empty());
-    headers = object.decodeObjectMap("headers", () => new APIHeader());
+        object.decodeObjectMap("requestBodies", () => APIRequestBody.empty());
+    headers = object.decodeObjectMap("headers", () => APIHeader());
 
-    securitySchemes = object.decodeObjectMap(
-        "securitySchemes", () => new APISecurityScheme());
-//    links = object.decodeObjectMap("links", () => new APILink());
-    callbacks = object.decodeObjectMap("callbacks", () => new APICallback());
+    securitySchemes =
+        object.decodeObjectMap("securitySchemes", () => APISecurityScheme());
+//    links = object.decodeObjectMap("links", () => APILink());
+    callbacks = object.decodeObjectMap("callbacks", () => APICallback());
   }
 
   void encode(KeyedArchive object) {

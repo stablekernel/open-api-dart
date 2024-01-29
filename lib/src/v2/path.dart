@@ -1,13 +1,13 @@
-import 'package:open_api/src/object.dart';
-import 'package:open_api/src/v2/operation.dart';
-import 'package:open_api/src/v2/parameter.dart';
+import 'package:open_api_forked/src/object.dart';
+import 'package:open_api_forked/src/v2/operation.dart';
+import 'package:open_api_forked/src/v2/parameter.dart';
 
 /// Represents a path (also known as a route) in the OpenAPI specification.
 class APIPath extends APIObject {
   APIPath();
 
-  List<APIParameter> parameters = [];
-  Map<String, APIOperation> operations = {};
+  List<APIParameter?> parameters = [];
+  Map<String, APIOperation?> operations = {};
 
   void decode(KeyedArchive object) {
     super.decode(object);
@@ -16,9 +16,9 @@ class APIPath extends APIObject {
       if (k == r"$ref") {
         // todo: reference
       } else if (k == "parameters") {
-        parameters = object.decodeObjects(k, () => new APIParameter());
+        parameters = object.decodeObjects(k, () => APIParameter())!;
       } else {
-        operations[k] = object.decodeObject(k, () => new APIOperation());
+        operations[k] = object.decodeObject(k, () => APIOperation());
       }
     });
   }

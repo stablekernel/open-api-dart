@@ -1,5 +1,29 @@
 # Changelog
 
+## 3.0.0+6
+
+- add openIDConnect security scheme type.
+
+## 3.0.0+5
+
+- Remove forced null unwraps.
+
+## 3.0.0+3
+
+- fix header parameters, update dependency on codable.
+
+## 3.0.0+2
+
+- Rename APISchemaObject.isRequired back to required
+
+## 3.0.0
+
+- nullsafety migration
+
+## 2.0.1+1
+
+- forked version to fix v3 security requirements
+
 ## 2.0.1
 
 - Fix bug when merging APIResponse bodies

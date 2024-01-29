@@ -1,12 +1,12 @@
-import 'package:open_api/src/object.dart';
-import 'package:open_api/src/v3/path.dart';
+import 'package:open_api_forked/src/object.dart';
+import 'package:open_api_forked/src/v3/path.dart';
 
 /// A map of possible out-of band callbacks related to the parent operation.
 ///
 /// Each value in the map is a [APIPath] that describes a set of requests that may be initiated by the API provider and the expected responses. The key value used to identify the callback object is an expression, evaluated at runtime, that identifies a URL to use for the callback operation.
 class APICallback extends APIObject {
-  APICallback({this.paths});
-  APICallback.empty();
+  APICallback({Map<String, APIPath>? paths}) : paths = paths ?? {};
+  APICallback.empty() : paths = {};
 
   /// Callback paths.
   ///
@@ -19,14 +19,15 @@ class APICallback extends APIObject {
     paths = {};
     object.forEach((key, dynamic value) {
       if (value is! KeyedArchive) {
-        throw new ArgumentError("Invalid specification. Callback contains non-object value.");
+        throw ArgumentError(
+            "Invalid specification. Callback contains non-object value.");
       }
-      paths[key] = value.decode(key, inflate: () => new APIPath());
+      paths[key] = value.decodeObject(key, () => APIPath())!;
     });
   }
 
   void encode(KeyedArchive object) {
     super.encode(object);
-    throw new StateError("APICallback.encode: not yet implemented.");
+    throw StateError("APICallback.encode: not yet implemented.");
   }
 }

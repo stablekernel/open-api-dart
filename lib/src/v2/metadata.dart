@@ -1,4 +1,4 @@
-import 'package:open_api/src/object.dart';
+import 'package:open_api_forked/src/object.dart';
 
 /// Represents a metadata for an API in the OpenAPI specification.
 class APIInfo extends APIObject {
@@ -6,11 +6,11 @@ class APIInfo extends APIObject {
   APIInfo();
 
   String title = "API";
-  String description = "Description";
-  String version = "1.0";
-  String termsOfServiceURL = "";
-  APIContact contact = new APIContact();
-  APILicense license = new APILicense();
+  String? description = "Description";
+  String? version = "1.0";
+  String? termsOfServiceURL = "";
+  APIContact? contact = APIContact();
+  APILicense? license = APILicense();
 
   void decode(KeyedArchive object) {
     super.decode(object);
@@ -18,8 +18,8 @@ class APIInfo extends APIObject {
     title = object.decode("title");
     description = object.decode("description");
     termsOfServiceURL = object.decode("termsOfService");
-    contact = object.decodeObject("contact", () => new APIContact());
-    license = object.decodeObject("license", () => new APILicense());
+    contact = object.decodeObject("contact", () => APIContact());
+    license = object.decodeObject("license", () => APILicense());
     version = object.decode("version");
   }
 
@@ -92,8 +92,8 @@ class APITag extends APIObject {
     description = object.decode("description");
   }
 
-  String name;
-  String description;
+  String? name;
+  String? description;
 
   void encode(KeyedArchive object) {
     super.encode(object);

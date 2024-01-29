@@ -1,5 +1,5 @@
-import 'package:open_api/src/object.dart';
-import 'package:open_api/src/v2/types.dart';
+import 'package:open_api_forked/src/object.dart';
+import 'package:open_api_forked/src/v2/types.dart';
 
 enum APISchemaRepresentation {
   primitive,
@@ -12,7 +12,7 @@ enum APISchemaRepresentation {
 enum APICollectionFormat { csv, ssv, tsv, pipes }
 
 class APICollectionFormatCodec {
-  static APICollectionFormat decode(String location) {
+  static APICollectionFormat? decode(String? location) {
     switch (location) {
       case "csv":
         return APICollectionFormat.csv;
@@ -22,12 +22,12 @@ class APICollectionFormatCodec {
         return APICollectionFormat.tsv;
       case "pipes":
         return APICollectionFormat.pipes;
+      default:
+        return null;
     }
-
-    return null;
   }
 
-  static String encode(APICollectionFormat location) {
+  static String? encode(APICollectionFormat? location) {
     switch (location) {
       case APICollectionFormat.csv:
         return "csv";
@@ -37,29 +37,30 @@ class APICollectionFormatCodec {
         return "tsv";
       case APICollectionFormat.pipes:
         return "pipes";
+      default:
+        return null;
     }
-    return null;
   }
 }
 
 class APIProperty extends APIObject {
-  APIType type;
-  String format;
+  APIType? type;
+  String? format;
 
-  APICollectionFormat collectionFormat;
+  APICollectionFormat? collectionFormat;
   dynamic defaultValue;
-  num maximum;
-  bool exclusiveMaximum;
-  num minimum;
-  bool exclusiveMinimum;
-  int maxLength;
-  int minLength;
-  String pattern;
-  int maxItems;
-  int minItems;
-  bool uniqueItems;
-  num multipleOf;
-  List<dynamic> enumerated;
+  num? maximum;
+  bool? exclusiveMaximum;
+  num? minimum;
+  bool? exclusiveMinimum;
+  int? maxLength;
+  int? minLength;
+  String? pattern;
+  int? maxItems;
+  int? minItems;
+  bool? uniqueItems;
+  num? multipleOf;
+  List<dynamic>? enumerated;
 
   APISchemaRepresentation get representation {
     if (type == APIType.array) {
